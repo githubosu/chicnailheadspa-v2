@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Services & Menu — Chic Nail &amp; Head Spa</title>
-<meta name="description" content="The full service menu at Chic Nail & Head Spa — pedicures, manicures, acrylic, gel, dip, head spa, waxing, kids and extras. Plain City, OH.">
+<title>Services &amp; Pricing — Chic Nail &amp; Head Spa</title>
+<meta name="description" content="The full service menu at Chic Nail & Head Spa — pedicures, manicures, acrylic, gel, dip, head spa, waxing, kids and finishing touches. Plain City, OH.">
 <link rel="icon" href="assets/favicon.png">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="site.css">
@@ -13,93 +13,94 @@
 <body>
 
 <!-- ── Header ─────────────────────────────────────────────────────── -->
-<header class="site-header">
-  <div class="container site-header__inner">
-    <a class="brand" href="index.html" aria-label="Chic Nail & Head Spa — home">
-      <img src="assets/logo-lockup.png" alt="Chic Nail & Head Spa">
+<header class="hdr hdr--page">
+  <div class="wrap hdr__inner">
+    <a href="index.html" aria-label="Chic Nail & Head Spa — home">
+      <img class="hdr__logo" src="assets/logo-lockup.png" alt="Chic Nail & Head Spa">
     </a>
-    <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><i class="ph-light ph-list"></i></button>
-    <nav class="nav" aria-label="Primary">
+    <button class="hdr__toggle" aria-label="Menu" aria-expanded="false"><i class="ph-light ph-list"></i></button>
+    <nav class="hdr__nav" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="services.html" aria-current="page">Services</a>
-      <a href="tel:+16143899999" class="btn btn--primary nav__cta"><i class="ph-light ph-calendar-blank"></i> Reserve a time</a>
+      <a href="index.html#visit">Visit</a>
+      <a href="tel:+16143899999" class="btn btn--primary btn--sm"><i class="ph-light ph-calendar-blank"></i> Book now</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <!-- ── Page intro ───────────────────────────────────────────────── -->
-  <section class="section" style="padding-bottom:var(--space-12)">
-    <div class="container center">
-      <span class="overline">The menu</span>
-      <h1 style="font-size:var(--fs-display-2)">Services &amp; pricing</h1>
-      <hr class="gilt-rule">
-      <p class="lead prose">Every service is unhurried and finished with care. Prices marked
-        &ldquo;+&rdquo; vary with length, shape and design. Tap a category to filter.</p>
+  <!-- ── Hero band ────────────────────────────────────────────────── -->
+  <section class="sp-hero">
+    <div class="sp-hero__grid">
+      <div>
+        <span class="overline">Plain City, Ohio</span>
+        <h1 class="serif sp-hero__title" style="margin-top:16px">Services &amp;<br><em>pricing</em></h1>
+      </div>
+      <div>
+        <p>A considered list, done beautifully. Every service includes a complimentary consultation. Prices are starting rates — ask us for a personalized quote.</p>
+        <div class="sp-hero__hours">
+          <span>Mon–Fri · 9–7</span><span>Sat · 9–6</span><span>Sun · 10–5</span>
+        </div>
+      </div>
     </div>
+    <div class="sp-hero__rule"></div>
   </section>
 
-  <!-- ── Tabs + menu (rendered from menu-data.js) ─────────────────── -->
-  <section class="section" style="padding-top:0">
-    <div class="container">
-      <div id="menu-tabs" class="tabs" role="tablist" aria-label="Service categories"></div>
-      <div id="menu-body"></div>
-    </div>
-  </section>
+  <!-- ── Category sections (rendered from menu-data.js) ───────────── -->
+  <div id="sp-cats"></div>
 
   <!-- ── Booking CTA ──────────────────────────────────────────────── -->
-  <section class="section section--soft">
-    <div class="container cta-band reveal">
-      <span class="overline">Ready when you are</span>
-      <h2>Reserve your time</h2>
-      <p class="lead prose">Call to book, or stop by — walk-ins welcome when the chairs are open.</p>
-      <div class="hero__actions" style="justify-content:center; margin-top:var(--space-8)">
-        <a href="tel:+16143899999" class="btn btn--primary"><i class="ph-light ph-phone"></i> (614) 389-9999</a>
+  <section class="sp-book" id="contact">
+    <div class="sp-book__grid">
+      <div class="reveal">
+        <span class="overline overline--gilt">Reserve your time</span>
+        <h2 class="serif" style="margin-top:14px">Ready to be <em class="ital--gilt">pampered</em>?</h2>
+        <p>Call to book your appointment, or stop by — we’re happy to help you choose the right treatment.</p>
+        <div class="sp-book__actions">
+          <a href="tel:+16143899999" class="btn btn--primary btn--lg"><i class="ph-light ph-phone"></i> Book by phone</a>
+          <a href="tel:+16143899999" class="sp-book__phone"><i class="ph-light ph-phone"></i> (614) 389-9999</a>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="sp-book__card">
+          <img src="assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa">
+          <div>
+            <div>12076 Sycamore Trace</div>
+            <div>Plain City, OH 43064</div>
+            <div style="margin-top:10px">Mon – Fri · 9–7 · Sat · 9–6 · Sun · 10–5</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </main>
 
 <!-- ── Footer ───────────────────────────────────────────────────── -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <img src="assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa">
-        <p>A boutique nail salon and Japanese-style head spa. Unhurried, polished, restorative.</p>
-        <div class="footer-social">
-          <a href="https://www.instagram.com/chicnailandheadspa/" aria-label="Instagram" target="_blank" rel="noopener"><i class="ph-light ph-instagram-logo"></i></a>
-          <a href="https://www.facebook.com/chicnailandheadspa" aria-label="Facebook" target="_blank" rel="noopener"><i class="ph-light ph-facebook-logo"></i></a>
-          <a href="https://share.google/pF2zbYmZ7iCQ1ilxV" aria-label="Google" target="_blank" rel="noopener"><i class="ph-light ph-map-pin"></i></a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Visit</h4>
-        <ul>
-          <li>12076 Sycamore Trace</li>
-          <li>Plain City, OH 43064</li>
-          <li><a href="tel:+16143899999">(614) 389-9999</a></li>
-          <li><a href="mailto:Chicnailheadspa@gmail.com">Chicnailheadspa@gmail.com</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Hours</h4>
-        <ul>
-          <li>Mon – Fri · 9 – 7</li>
-          <li>Sat · 9 – 6</li>
-          <li>Sun · 10 – 5</li>
-        </ul>
-      </div>
+<footer class="ftr">
+  <div class="wrap ftr__grid">
+    <div><img class="ftr__logo" src="assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa"></div>
+    <div class="ftr__col">
+      <div class="ftr__col-h">Explore</div>
+      <a href="index.html">Home</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#visit">Visit</a>
+      <a href="services.html">Full menu</a>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 Chic Nail &amp; Head Spa</span>
-      <span>Plain City, Ohio</span>
+    <div class="ftr__col">
+      <div class="ftr__col-h">Get in touch</div>
+      <span>(614) 389-9999</span>
+      <span>Chicnailheadspa@gmail.com</span>
+      <div class="ftr__social">
+        <a href="https://www.facebook.com/chicnailandheadspa" target="_blank" rel="noopener" aria-label="Facebook"><i class="ph-light ph-facebook-logo"></i></a>
+        <a href="https://www.instagram.com/chicnailandheadspa/" target="_blank" rel="noopener" aria-label="Instagram"><i class="ph-light ph-instagram-logo"></i></a>
+        <a href="https://share.google/pF2zbYmZ7iCQ1ilxV" target="_blank" rel="noopener" aria-label="Google reviews"><i class="ph-light ph-google-logo"></i></a>
+      </div>
     </div>
   </div>
+  <div class="ftr__bottom">© 2026 Chic Nail &amp; Head Spa · Plain City, Ohio</div>
 </footer>
 
 <script src="menu-data.js"></script>
-<script src="menu-render.js"></script>
-<script src="site.js"></script>
+<script src="services-page.js"></script>
 </body>
 </html>
