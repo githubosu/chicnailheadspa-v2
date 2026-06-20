@@ -1,3 +1,4 @@
+<!-- @dsCard group="Website" viewport="1280x900" name="Services · Accordion" subtitle="Spa-minimal accordion — Head Spa coming soon, mobile-first" -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,12 +8,9 @@
 <link rel="icon" href="./assets/favicon.png">
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
-<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <style>
   html, body { margin: 0; background: var(--surface-page); }
   #root { min-height: 100vh; }
-  @keyframes evoFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes evoBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 </style>
 </head>
 <body>
@@ -22,12 +20,8 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="./_ds_bundle.js"></script>
 <script src="./menu-data.js"></script>
-<!-- Shared chrome (EvoHeader / EvoFooter) lives in EvolvedHome.jsx -->
-<script type="text/babel" src="EvolvedHome.jsx"></script>
 <script type="text/babel">
-const BOOK_TEL = 'tel:+16143899999';
-const HERO_IMG = './assets/services-hero.jpg';
-const HERO_FALLBACK = 'https://chicnailheadspa.com/assets/images/gallery/salon-2.png';
+const BOOK_URL = 'tel:+16143899999';
 
 const CATS = [
   { key: 'pedi',    label: 'Pedicure',   sub: 'From $48' },
@@ -35,13 +29,13 @@ const CATS = [
   { key: 'acrylic', label: 'Acrylic',    sub: 'From $56' },
   { key: 'gelx',    label: 'Gel-X',      sub: 'From $60' },
   { key: 'dip',     label: 'Dip Powder', sub: 'From $56' },
-  { key: 'headspa', label: 'Head Spa',   sub: 'From $45' },
+  { key: 'headspa', label: 'Head Spa',   sub: 'Coming soon', comingSoon: true },
   { key: 'wax',     label: 'Waxing',     sub: 'From $9'  },
-  { key: 'kids',    label: 'Kids',       sub: 'From $12', note: 'Ages 10 & under.' },
+  { key: 'kids',    label: 'Kids',       sub: 'From $12', note: 'Ages 12 & under.' },
   { key: 'extras',  label: 'Extras',     sub: 'From $3',  note: 'Add to any service.' },
 ];
 
-function useMobileSA(bp) {
+function useMobile(bp) {
   const q = '(max-width:' + (bp || 760) + 'px)';
   const [m, setM] = React.useState(() => window.matchMedia ? window.matchMedia(q).matches : false);
   React.useEffect(() => {
@@ -53,7 +47,7 @@ function useMobileSA(bp) {
   return m;
 }
 
-function SATag({ variant, children }) {
+function Tag({ variant, children }) {
   const map = {
     accent:  { bg: 'var(--accent-tint)',    color: 'var(--accent)' },
     gilt:    { bg: 'var(--gilt-soft)',       color: 'var(--honey-600)' },
@@ -63,48 +57,28 @@ function SATag({ variant, children }) {
   return <span style={{ background: s.bg, color: s.color, fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: 'var(--radius-pill)', whiteSpace: 'nowrap' }}>{children}</span>;
 }
 
-/* ── Hero (photo + scrim; sits under the transparent EvoHeader) ────────── */
-function SAHero() {
-  const m = useMobileSA();
-  return (
-    <section style={{ position: 'relative', minHeight: m ? 380 : 480, background: 'var(--espresso-900)', overflow: 'hidden', display: 'flex', alignItems: 'flex-end' }}>
-      <img src={HERO_IMG} alt="" aria-hidden="true"
-        onError={(e) => { e.currentTarget.src = HERO_FALLBACK; e.currentTarget.onerror = null; }}
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(42,29,21,0.58) 0%, rgba(42,29,21,0.40) 38%, rgba(42,29,21,0.85) 100%)' }} />
-      <div style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', width: '100%', padding: m ? '0 24px 40px' : '0 var(--gutter) 60px' }}>
-        <div style={{ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 12, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 14 }}>The Menu</div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: m ? 46 : 72, lineHeight: 1.02, color: 'var(--cream-50)', margin: 0, letterSpacing: '-0.015em' }}>
-          Services &amp; <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pricing</em>
-        </h1>
-        <p style={{ fontFamily: 'var(--font-sans)', fontSize: m ? 15 : 18, lineHeight: 1.6, color: 'var(--cream-100)', maxWidth: 480, margin: '14px 0 0' }}>
-          A short, considered list — every treatment unhurried. Prices are starting rates; ask us for a personalized quote.
-        </p>
-      </div>
-    </section>
-  );
-}
-
 function AccordionRow({ cat, isOpen, onToggle }) {
-  const m = useMobileSA();
+  const m = useMobile();
   const items = window.CNHS_MENU.full.filter((s) => s.cat === cat.key);
   const contentRef = React.useRef(null);
   const [height, setHeight] = React.useState(0);
+
   React.useEffect(() => {
     if (contentRef.current) setHeight(isOpen ? contentRef.current.scrollHeight : 0);
   }, [isOpen, items.length]);
 
   return (
     <div style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-      {/* Trigger row — headers 20% smaller than the original (34→27, 28→22) */}
+      {/* Trigger row */}
       <button onClick={onToggle} style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: m ? '20px 0' : '22px 0', display: 'flex', alignItems: 'center', gap: 16, textAlign: 'left' }}>
         <div style={{ flex: 1, display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
-          <span style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: m ? 22 : 27, color: isOpen ? 'var(--accent)' : 'var(--text-strong)', transition: 'color 200ms ease', lineHeight: 1 }}>
+          <span style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: m ? 28 : 34, color: isOpen ? 'var(--accent)' : 'var(--text-strong)', transition: 'color 200ms ease', lineHeight: 1 }}>
             {cat.label}
           </span>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: cat.comingSoon ? 'var(--honey-500)' : 'var(--text-muted)', letterSpacing: '.06em' }}>{cat.sub}</span>
           {!cat.comingSoon && <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--text-muted)' }}>{items.length} services</span>}
         </div>
+        {/* Expand / collapse icon — hidden for coming soon */}
         {!cat.comingSoon && (
           <div style={{ width: 28, height: 28, borderRadius: '50%', border: '1px solid ' + (isOpen ? 'var(--accent)' : 'var(--border-default)'), display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'border-color 200ms ease, transform 200ms ease', transform: isOpen ? 'rotate(45deg)' : 'none' }}>
             <i className="ph-light ph-plus" style={{ fontSize: 13, color: isOpen ? 'var(--accent)' : 'var(--text-muted)' }} />
@@ -115,6 +89,7 @@ function AccordionRow({ cat, isOpen, onToggle }) {
         )}
       </button>
 
+      {/* Expandable content — skipped for coming soon */}
       {!cat.comingSoon && (
         <div ref={contentRef} style={{ height: height + 'px', overflow: 'hidden', transition: 'height 280ms cubic-bezier(.4,0,.2,1)' }}>
           <div style={{ paddingBottom: 24 }}>
@@ -124,7 +99,7 @@ function AccordionRow({ cat, isOpen, onToggle }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 14.5, color: 'var(--text-strong)' }}>{item.name}</span>
                     {item.dur && <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11.5, color: 'var(--text-muted)' }}>{item.dur}</span>}
-                    {item.tag && <SATag variant={item.tagV}>{item.tag}</SATag>}
+                    {item.tag && <Tag variant={item.tagV}>{item.tag}</Tag>}
                   </div>
                   {item.blurb && <p style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, fontSize: 13, lineHeight: 1.55, color: 'var(--text-muted)', margin: '4px 0 0' }}>{item.blurb}</p>}
                 </div>
@@ -137,7 +112,8 @@ function AccordionRow({ cat, isOpen, onToggle }) {
               </p>
             )}
             <div style={{ marginTop: 16 }}>
-              <a href={BOOK_TEL} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-sans)', fontSize: 12.5, fontWeight: 500, color: 'var(--accent)', textDecoration: 'none', letterSpacing: '.02em' }}>
+              <a href={BOOK_URL} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-sans)', fontSize: 12.5, fontWeight: 500, color: 'var(--accent)', textDecoration: 'none', letterSpacing: '.02em' }}>
                 Book now <i className="ph-light ph-arrow-right" style={{ fontSize: 14 }} />
               </a>
             </div>
@@ -148,25 +124,47 @@ function AccordionRow({ cat, isOpen, onToggle }) {
   );
 }
 
-function ServicesAccordionPage() {
-  const [ready, setReady] = React.useState(!!(window.ChicNailHeadSpaDesignSystem_843afb && window.EvoHeader && window.CNHS_MENU));
+function ServicesAccordion() {
+  const [ready, setReady] = React.useState(!!(window.ChicNailHeadSpaDesignSystem_843afb && window.CNHS_MENU));
   const [open, setOpen] = React.useState('pedi');
-  const m = useMobileSA();
+  const m = useMobile();
+
   React.useEffect(() => {
     if (ready) return;
-    const t = setInterval(() => { if (window.ChicNailHeadSpaDesignSystem_843afb && window.EvoHeader && window.CNHS_MENU) { setReady(true); clearInterval(t); } }, 50);
+    const t = setInterval(() => { if (window.ChicNailHeadSpaDesignSystem_843afb && window.CNHS_MENU) { setReady(true); clearInterval(t); } }, 50);
     return () => clearInterval(t);
   }, [ready]);
-  if (!ready) return null;
+
   const toggle = (key) => setOpen((o) => o === key ? null : key);
-  const c = window.CNHS_MENU.contact;
-  const EvoHeader = window.EvoHeader, EvoFooter = window.EvoFooter;
+  const c = ready ? window.CNHS_MENU.contact : {};
+
+  if (!ready) return null;
 
   return (
-    <div style={{ background: 'var(--surface-page)' }}>
-      <EvoHeader />
-      <SAHero />
-      <main style={{ maxWidth: 720, margin: '0 auto', padding: m ? '32px 20px 80px' : '48px 0 100px' }}>
+    <div style={{ background: 'var(--surface-page)', minHeight: '100vh' }}>
+      {/* Header */}
+      <header style={{ background: 'var(--espresso-900)', height: m ? 60 : 72, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: m ? '0 20px' : '0 48px', position: 'sticky', top: 0, zIndex: 50 }}>
+        <a href="index.html" style={{ textDecoration: 'none' }}>
+          <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: m ? 34 : 46 }} />
+        </a>
+        <a href={BOOK_URL} target="_blank" rel="noopener noreferrer"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--honey-400)', color: 'var(--espresso-900)', fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 13, padding: '10px 22px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>
+          <i className="ph-light ph-calendar-plus" style={{ fontSize: 15 }} />
+          {m ? 'Book' : 'Book now'}
+        </a>
+      </header>
+
+      {/* Page title */}
+      <div style={{ background: 'var(--surface-card)', borderBottom: '1px solid var(--border-subtle)', padding: m ? '36px 20px 28px' : '52px 80px 40px', textAlign: 'center' }}>
+        <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 12 }}>Chic Nail &amp; Head Spa</div>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontWeight: 400, fontSize: m ? 44 : 64, lineHeight: 1, color: 'var(--text-strong)', margin: '0 0 16px' }}>Services &amp; Pricing</h1>
+        <p style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, fontSize: m ? 14 : 15, color: 'var(--text-muted)', margin: '0 auto', maxWidth: 400, lineHeight: 1.6 }}>
+          All prices are starting rates. Ask us for a personalized quote.
+        </p>
+      </div>
+
+      {/* Accordion */}
+      <main style={{ maxWidth: 720, margin: '0 auto', padding: m ? '12px 20px 80px' : '12px 0 100px' }}>
         {CATS.map((cat) => (
           <AccordionRow key={cat.key} cat={cat} isOpen={open === cat.key} onToggle={() => toggle(cat.key)} />
         ))}
@@ -174,12 +172,28 @@ function ServicesAccordionPage() {
           All prices are starting rates. Call {c.phone} for a personalized quote.
         </p>
       </main>
-      <EvoFooter />
+
+      {/* Footer */}
+      <footer style={{ background: 'var(--espresso-900)', color: 'var(--cream-100)', padding: m ? '40px 20px' : '56px 48px', textAlign: 'center' }}>
+        <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: 48, marginBottom: 20 }} />
+        <div style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, fontSize: 14, lineHeight: 2, color: 'var(--taupe-400)' }}>
+          <div>{c.addr1}, {c.addr2}</div>
+          <div>{c.phone}</div>
+          <div style={{ marginTop: 4 }}>{c.hours ? c.hours.join(' · ') : ''}</div>
+        </div>
+        <div style={{ marginTop: 24 }}>
+          <a href={BOOK_URL} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'var(--honey-400)', color: 'var(--espresso-900)', fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 15, padding: '14px 36px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>
+            <i className="ph-light ph-calendar-plus" style={{ fontSize: 18 }} />
+            Book your appointment
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<ServicesAccordionPage />);
+ReactDOM.createRoot(document.getElementById('root')).render(<ServicesAccordion />);
 </script>
 </body>
 </html>
