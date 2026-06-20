@@ -1,0 +1,10 @@
+/* ── Webfonts ───────────────────────────────────────────────────────────────
+   Chic Nail & Head Spa loads its two typefaces from Google Fonts.
+   - Cormorant Garamond : high-contrast display serif (the "spa luxe" voice)
+   - Jost               : geometric humanist sans (UI, body, labels)
+   These are the brand's chosen faces, not substitutions. If self-hosting is
+   required, download the matching weights and replace this @import with local
+   @font-face rules pointing at the binaries in /assets/fonts.
+   @import MUST stay at the very top of the closure (before any other rule).   */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap');

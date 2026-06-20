@@ -1,0 +1,34 @@
+/* ════════════════════════════════════════════════════════════════════════
+   EFFECTS  ·  Chic Nail & Head Spa
+   Radii are soft and rounded. Shadows are warm-tinted, low and diffuse —
+   never hard or gray. Motion is gentle and easing-out (calm, never bouncy).
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Corner radii ─────────────────────────────────────────────────── */
+  --radius-xs:  4px;
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  18px;   /* default card */
+  --radius-xl:  28px;   /* feature panels, imagery */
+  --radius-2xl: 40px;
+  --radius-pill: 999px; /* buttons, tags, chips */
+
+  /* ── Borders ──────────────────────────────────────────────────────── */
+  --border-hairline: 1px solid var(--border-subtle);
+  --border-default-line: 1px solid var(--border-default);
+
+  /* ── Shadows — warm espresso tint, soft & diffuse ─────────────────── */
+  --shadow-xs: 0 1px 2px rgba(36, 31, 29, 0.05);
+  --shadow-sm: 0 2px 8px rgba(36, 31, 29, 0.06);
+  --shadow-md: 0 8px 24px rgba(36, 31, 29, 0.08);
+  --shadow-lg: 0 18px 48px rgba(36, 31, 29, 0.10);
+  --shadow-xl: 0 32px 72px rgba(36, 31, 29, 0.14);
+
+  /* ── Motion ───────────────────────────────────────────────────────── */
+  --dur-fast:  150ms; /* @kind other */
+  --dur:       240ms; /* @kind other */
+  --dur-slow:  400ms; /* @kind other */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */ /* gentle settle */
+  --ease-soft:     cubic-bezier(0.33, 0, 0.2, 1); /* @kind other */
+}

@@ -1,0 +1,107 @@
+/* ════════════════════════════════════════════════════════════════════════
+   COLOR  ·  Chic Nail & Head Spa   ·   Palette: "Finalist B"
+   ────────────────────────────────────────────────────────────────────────
+   EVERYDAY palette — Mocha & Cream. Soft, daylight, serene; latte tones,
+   linen, warm wood. This is the brand's default skin (matches the website &
+   interior direction).
+       Mocha #8A6248 · Honey #B98E4F · Espresso #3A2A20 · Cream #FEF7ED
+
+   RESERVE palette — Bordeaux & Brass. Rich, evening, jewel-box. Used sparingly
+   as a "reserve" accent: gift cards, holiday packaging, VIP touches.
+       Bordeaux #5A2330 · Brass #A8823F · Ink #261A18
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Warm neutrals (cream → espresso) ─────────────────────────────── */
+  --cream-50:    #FEF7ED;  /* page background, lightest */
+  --cream-100:   #F8EFE0;  /* sunken surface */
+  --cream-200:   #F0E4D2;  /* hairline / subtle border */
+  --sand-300:    #E4D6C0;  /* default border */
+  --taupe-400:   #C8B7A0;  /* strong border / disabled text */
+  --stone-500:   #9C8B77;  /* muted text */
+  --ink-700:     #6A5848;  /* secondary text */
+  --ink-800:     #463629;  /* body text */
+  --espresso-900:#3A2A20;  /* headings, inverse surfaces */
+  --espresso-950:#2A1D15;  /* deepest ground */
+
+  /* ── Mocha — primary (warm wood / latte) ──────────────────────────── */
+  --mocha-100:   #EFE0D3;
+  --mocha-200:   #E1CBB8;
+  --mocha-300:   #C9A98F;
+  --mocha-400:   #A8805F;
+  --mocha-500:   #8A6248;  /* PRIMARY */
+  --mocha-600:   #6F4E39;  /* hover */
+  --mocha-700:   #573D2D;  /* press */
+
+  /* ── Honey — secondary (brass / gold) ─────────────────────────────── */
+  --honey-200:   #ECDABA;
+  --honey-300:   #D9BD8A;
+  --honey-400:   #C7A063;
+  --honey-500:   #B98E4F;  /* SECONDARY / gilt accent */
+  --honey-600:   #9C7639;
+
+  /* ── Bordeaux & Brass — RESERVE (VIP / gift / evening) ────────────── */
+  --bordeaux-300:#9C5566;
+  --bordeaux-400:#7A3142;
+  --bordeaux-500:#5A2330;  /* RESERVE primary */
+  --bordeaux-600:#471A26;
+  --ink-bordeaux:#261A18;  /* Bordeaux palette near-black */
+  --brass-400:   #BE9A5A;
+  --brass-500:   #A8823F;  /* RESERVE gilt */
+
+  /* ── Functional hues (kept warm & muted to match the palette) ─────── */
+  --olive-500:   #6E7A4F;  /* success — muted sage/olive */
+  --amber-500:   #C08A2E;  /* warning */
+  --brick-500:   #A8453A;  /* error / destructive */
+  --slate-500:   #5E7385;  /* info — muted dusty blue */
+
+  /* ════════════════════════════════════════════════════════════════
+     SEMANTIC ALIASES  — reference these in components, not the raw scale
+     ════════════════════════════════════════════════════════════════ */
+  --surface-page:    var(--cream-50);
+  --surface-card:    #FFFFFF;
+  --surface-sunken:  var(--cream-100);
+  --surface-raised:  #FFFFFF;
+  --surface-soft:    var(--mocha-100);   /* gentle fill / hover wash */
+  --surface-inverse: var(--espresso-900);
+  --surface-reserve: var(--bordeaux-500);
+
+  --text-strong:    var(--espresso-900);
+  --text-body:      var(--ink-800);
+  --text-secondary: var(--ink-700);
+  --text-muted:     var(--stone-500);
+  --text-disabled:  var(--taupe-400);
+  --text-inverse:   var(--cream-50);
+  --text-on-accent: var(--cream-50);
+
+  --border-subtle:  var(--cream-200);
+  --border-default: var(--sand-300);
+  --border-strong:  var(--taupe-400);
+
+  --accent:        var(--mocha-500);
+  --accent-hover:  var(--mocha-600);
+  --accent-press:  var(--mocha-700);
+  --accent-soft:   var(--mocha-200);
+  --accent-tint:   var(--mocha-100);
+  --on-accent:     var(--cream-50);
+
+  --gilt:          var(--honey-500);   /* gold hairlines, dividers, fine detail */
+  --gilt-strong:   var(--honey-600);
+  --gilt-soft:     var(--honey-200);
+
+  --secondary:       var(--honey-500);
+  --secondary-hover: var(--honey-600);
+  --secondary-soft:  var(--honey-200);
+
+  /* Reserve (Bordeaux) — VIP, gift cards, holiday */
+  --reserve:        var(--bordeaux-500);
+  --reserve-hover:  var(--bordeaux-600);
+  --reserve-soft:   var(--bordeaux-300);
+  --reserve-gilt:   var(--brass-500);
+
+  --success: var(--olive-500);
+  --warning: var(--amber-500);
+  --danger:  var(--brick-500);
+  --info:    var(--slate-500);
+
+  --focus-ring: 0 0 0 3px rgba(138, 98, 72, 0.32);  /* mocha halo */
+}

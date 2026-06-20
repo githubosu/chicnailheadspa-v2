@@ -1,0 +1,38 @@
+/* ════════════════════════════════════════════════════════════════════════
+   BASE  ·  Chic Nail & Head Spa
+   Light element resets + brand defaults. Sets the warm page canvas, body
+   type and serif headings so any page that links styles.css feels on-brand
+   out of the box.
+   ════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--text-body);
+  font: var(--fw-regular) var(--fs-body)/var(--lh-relaxed) var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  color: var(--text-strong);
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+}
+h1 { font-size: var(--fs-h1); line-height: var(--lh-tight); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); font-family: var(--font-sans); font-weight: var(--fw-medium); letter-spacing: 0; }
+h4 { font-size: var(--fs-h4); font-family: var(--font-sans); font-weight: var(--fw-medium); letter-spacing: 0; }
+
+p { margin: 0 0 1em; text-wrap: pretty; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+
+::selection { background: var(--accent-soft); color: var(--espresso-900); }
+
+:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }

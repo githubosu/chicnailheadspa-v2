@@ -1,0 +1,58 @@
+/* ════════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY  ·  Chic Nail & Head Spa
+   Cormorant Garamond (display serif) carries the brand voice in headings &
+   the wordmark. Jost (geometric sans) handles UI, body and the tracked
+   uppercase "overline" labels used throughout the product.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Families ─────────────────────────────────────────────────────── */
+  --font-display: 'Cormorant Garamond', 'Hoefler Text', Georgia, serif;
+  --font-sans:    'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* ── Type scale (px) ──────────────────────────────────────────────── */
+  --fs-display-1: 72px;  /* hero serif */
+  --fs-display-2: 56px;
+  --fs-h1:        40px;
+  --fs-h2:        32px;
+  --fs-h3:        24px;
+  --fs-h4:        20px;
+  --fs-body-lg:   18px;
+  --fs-body:      16px;
+  --fs-small:     14px;
+  --fs-caption:   12px;
+  --fs-overline:  12px;  /* uppercase, tracked */
+
+  /* ── Weights ──────────────────────────────────────────────────────── */
+  --fw-light:   300; /* @kind other */
+  --fw-regular: 400; /* @kind other */
+  --fw-medium:  500; /* @kind other */
+  --fw-semibold:600; /* @kind other */
+
+  /* ── Line heights ─────────────────────────────────────────────────── */
+  --lh-tight:   1.05; /* @kind other */ /* display serif */
+  --lh-snug:    1.2; /* @kind other */
+  --lh-normal:  1.5; /* @kind other */
+  --lh-relaxed: 1.65; /* @kind other */ /* long-form body */
+
+  /* ── Letter spacing ───────────────────────────────────────────────── */
+  --tracking-tight:   -0.01em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-overline:0.22em;  /* the signature tracked label */
+
+  /* ── Semantic roles ───────────────────────────────────────────────── */
+  --text-display: var(--fw-regular) var(--fs-display-1)/var(--lh-tight) var(--font-display);
+  --text-h1:      var(--fw-regular) var(--fs-h1)/var(--lh-snug) var(--font-display);
+  --text-h2:      var(--fw-regular) var(--fs-h2)/var(--lh-snug) var(--font-display);
+  --text-h3:      var(--fw-medium)  var(--fs-h3)/1.3 var(--font-sans);
+  --text-body-role: var(--fw-regular) var(--fs-body)/var(--lh-relaxed) var(--font-sans);
+}
+
+/* Overline / eyebrow label — used above section titles brand-wide */
+.ds-overline {
+  font: var(--fw-medium) var(--fs-overline)/1 var(--font-sans);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--accent);
+}
