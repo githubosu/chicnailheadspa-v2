@@ -1,33 +1,39 @@
 # Chic Nail & Head Spa — v2 website
 
-A static marketing site for **Chic Nail & Head Spa** (Plain City, OH), built on the
-[Chic Nail & Head Spa design system](https://github.com/githubosu/chic-nail-head-spa-design-system).
-
-Quiet-luxury brand: warm cream canvas, mocha & honey "latte" accents, an arch "NC"
-monogram, and a high-contrast serif voice.
+The marketing & booking site for **Chic Nail & Head Spa** (Plain City, OH), built
+directly from the [Chic Nail & Head Spa design system](https://github.com/githubosu/chic-nail-head-spa-design-system)
+website UI kit.
 
 ## Pages
-- **`index.html`** — Home: hero, the two crafts (nail care + head spa), guest favourites, booking CTA.
-- **`services.html`** — Full service menu with category tabs, rendered from `menu-data.js`.
+- **`index.html`** — the interactive site app (React + Babel, no build step):
+  **Home → Services → Booking → Confirmation**, using the design-system component
+  bundle. The header/footer "Services" links open the accordion menu page.
+- **`services-accordion.html`** — standalone **Services & Pricing** page: a
+  spa-minimal accordion of every category, rendered from `menu-data.js`.
 
 ## Stack
-Plain static HTML/CSS/JS — **no build step**. Open `index.html` in a browser, or serve
-the folder with any static server. Hosted via GitHub Pages.
+Plain static files — **no build step**. React, ReactDOM and Babel-standalone load
+from CDN and transpile the `.jsx` in the browser. Hosted on GitHub Pages.
 
 ```
-styles.css        design-system entry point (@imports tokens/*)
-tokens/           color, type, spacing, effects, base, fonts
-assets/           logo lockups, monograms, favicon
-site.css          site-level layout (header, hero, menu, footer)
-site.js           mobile nav + scroll reveal
-menu-data.js      service menu — single source of truth (real prices)
-menu-render.js    renders the Services page from menu-data.js
+index.html              site app shell + router
+chrome.jsx              shared Header / Footer / Photo
+Home.jsx                home screen
+Services.jsx            in-app services screen
+Booking.jsx             booking flow
+Confirmation.jsx        booking confirmation
+services-accordion.html standalone accordion services page
+_ds_bundle.js           design-system component bundle
+styles.css + tokens/    design tokens (color, type, spacing, effects, base, fonts)
+assets/                 logo lockups, monograms, favicon
+menu-data.js            service menu — single source of truth (real prices)
 ```
 
-## Editing the menu
-All services and prices live in `menu-data.js` (`window.CNHS_MENU`). Edit there; the
-Services page re-renders automatically.
+## Notes
+- Booking actions point to the studio phone — the design's `/booking` URL is not
+  live yet. Swap in the real booking URL when available.
+- Editing the menu: all services/prices live in `menu-data.js` (`window.CNHS_MENU`).
 
 ## Credits
-Brand, tokens and assets from the Chic Nail & Head Spa design system.
-Icons: [Phosphor](https://phosphoricons.com) (light weight). Type: Cormorant Garamond + Jost.
+Brand, tokens, components and assets from the Chic Nail & Head Spa design system.
+Icons: [Phosphor](https://phosphoricons.com) · Type: Cormorant Garamond + Jost.

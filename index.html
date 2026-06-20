@@ -1,179 +1,55 @@
+<!-- @dsCard group="Website" viewport="1280x760" name="Marketing & booking site" subtitle="Home → Services → Booking → Confirmation — interactive" -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chic Nail &amp; Head Spa — Luxury nail care & Japanese head spa · Plain City, OH</title>
-<meta name="description" content="A boutique nail salon and Japanese-style head spa in Plain City, Ohio. Luxury nail artistry, restorative scalp rituals — warm water, slow hands, a quiet room.">
-<link rel="icon" href="assets/favicon.png">
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="site.css">
+<title>Chic Nail &amp; Head Spa</title>
+<link rel="icon" href="./assets/favicon.png">
+<link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
-<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
-<meta property="og:title" content="Chic Nail & Head Spa">
-<meta property="og:description" content="Luxury nail care & Japanese head spa — warm water, slow hands, a quiet room. Plain City, OH.">
-<meta property="og:type" content="website">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+  html, body { margin: 0; background: var(--surface-page); }
+  #root { min-height: 100vh; }
+</style>
 </head>
 <body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="./_ds_bundle.js"></script>
+<script src="./menu-data.js"></script>
+<script type="text/babel" src="chrome.jsx"></script>
+<script type="text/babel" src="Home.jsx"></script>
+<script type="text/babel" src="Services.jsx"></script>
+<script type="text/babel" src="Booking.jsx"></script>
+<script type="text/babel" src="Confirmation.jsx"></script>
+<script type="text/babel">
+  const { Header, Footer } = window;
+  function App() {
+    const [route, setRoute] = React.useState('home');
+    const [booking, setBooking] = React.useState(null);
+    const nav = (r) => { setRoute(r); window.scrollTo({ top: 0 }); };
+    const book = (b) => { setBooking(b); nav('confirmation'); };
 
-<!-- ── Header ─────────────────────────────────────────────────────── -->
-<header class="hdr">
-  <div class="wrap hdr__inner">
-    <a href="index.html" aria-label="Chic Nail & Head Spa — home">
-      <img class="hdr__logo hdr__logo--over" src="assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa">
-      <img class="hdr__logo hdr__logo--solid" src="assets/logo-lockup.png" alt="Chic Nail & Head Spa">
-    </a>
-    <button class="hdr__toggle" aria-label="Menu" aria-expanded="false"><i class="ph-light ph-list"></i></button>
-    <nav class="hdr__nav" aria-label="Primary">
-      <a href="#services" data-scroll>Services</a>
-      <a href="#gallery" data-scroll>Gallery</a>
-      <a href="#visit" data-scroll>Visit</a>
-      <a href="tel:+16143899999" class="btn btn--primary btn--sm"><i class="ph-light ph-calendar-blank"></i> Book now</a>
-    </nav>
-  </div>
-</header>
+    let screen;
+    if (route === 'services') screen = <window.Services onNav={nav} />;
+    else if (route === 'booking') screen = <window.Booking onBook={book} />;
+    else if (route === 'confirmation') screen = <window.Confirmation booking={booking} onNav={nav} />;
+    else screen = <window.Home onNav={nav} />;
 
-<main>
-  <!-- ── Hero (video) ─────────────────────────────────────────────── -->
-  <section class="hero">
-    <video class="hero__video" autoplay muted loop playsinline poster="https://chicnailheadspa.com/assets/images/gallery/salon-3.png">
-      <source src="https://chicnailheadspa.com/assets/images/hero-video.mp4" type="video/mp4">
-    </video>
-    <div class="hero__scrim"></div>
-    <div class="hero__content wrap">
-      <div class="hero__copy">
-        <h1 class="hero__title serif">A moment of care that is entirely <em>yours</em>.</h1>
-        <p class="hero__sub">Luxury nail artistry and a restorative head spa — warm water, slow hands, and a quiet room in the heart of Plain City.</p>
-        <div class="hero__actions">
-          <a href="tel:+16143899999" class="btn btn--primary btn--lg"><i class="ph-light ph-calendar-blank"></i> Book now</a>
-          <a href="#services" class="btn--link" data-scroll>View services</a>
-        </div>
-      </div>
-    </div>
-    <a href="#services" class="hero__scroll" data-scroll aria-label="Scroll to services">
-      <span>Scroll</span><i class="ph-light ph-caret-down"></i>
-    </a>
-  </section>
-
-  <!-- ── Trust strip ──────────────────────────────────────────────── -->
-  <section class="trust">
-    <div class="wrap trust__grid">
-      <div class="trust__item"><span class="trust__ic"><i class="ph-light ph-sparkle"></i></span><span>Luxury nail services</span></div>
-      <div class="trust__item"><span class="trust__ic"><i class="ph-light ph-drop"></i></span><span>Restorative head spa</span></div>
-      <div class="trust__item"><span class="trust__ic"><i class="ph-light ph-calendar-check"></i></span><span>Easy booking</span></div>
-      <div class="trust__item"><span class="trust__ic"><i class="ph-light ph-hand-heart"></i></span><span>Walk-ins welcome</span></div>
-    </div>
-  </section>
-
-  <!-- ── Services preview ─────────────────────────────────────────── -->
-  <section class="section" id="services">
-    <div class="wrap">
-      <div class="svc-head reveal">
-        <span class="overline">Our Services</span>
-        <h2 class="serif">Treatments &amp; <em class="ital">specialties</em></h2>
-        <p>Every service includes a complimentary consultation. Prices are starting rates — ask us for a personalized quote.</p>
-      </div>
-      <div id="svc-tabs" class="tabs" role="tablist" aria-label="Service categories"></div>
-      <div id="svc-grid" class="svc-grid"></div>
-      <div class="center" style="margin-top:32px">
-        <a href="services.html" class="btn btn--secondary btn--md">View full services &amp; pricing &nbsp;<i class="ph-light ph-arrow-right"></i></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Reserve band ─────────────────────────────────────────────── -->
-  <section class="reserve section" id="book">
-    <img class="reserve__img" src="https://chicnailheadspa.com/assets/images/gallery/salon-1.png" alt="" aria-hidden="true" loading="lazy">
-    <div class="reserve__scrim"></div>
-    <div class="reserve__content wrap reveal">
-      <span class="overline overline--gilt">Reserve Your Time</span>
-      <h2 class="serif">Ready to be <em class="ital--gilt">pampered</em>?</h2>
-      <p>Choose your service, pick a time, and arrive ready to unwind. Our team is happy to help you find the right treatment.</p>
-      <div style="display:flex; justify-content:center">
-        <a href="tel:+16143899999" class="btn btn--primary btn--lg"><i class="ph-light ph-phone"></i> Book by phone</a>
-      </div>
-      <p class="reserve__note">Or call us — we’re happy to help · <a href="tel:+16143899999">(614) 389-9999</a></p>
-    </div>
-  </section>
-
-  <!-- ── Gallery (seasonal) ───────────────────────────────────────── -->
-  <section class="gallery section" id="gallery">
-    <div class="wrap">
-      <div class="gallery__head reveal">
-        <div>
-          <div class="overline gallery__eyebrow" id="gallery-eyebrow">The Gallery</div>
-          <h2 class="serif" id="gallery-title">Our work</h2>
-          <p class="gallery__caption" id="gallery-caption"></p>
-        </div>
-        <a href="https://www.instagram.com/chicnailandheadspa/" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">View full gallery &nbsp;<i class="ph-light ph-arrow-right"></i></a>
-      </div>
-      <div class="gallery__grid" id="gallery-grid"></div>
-    </div>
-  </section>
-
-  <!-- ── Testimonials ─────────────────────────────────────────────── -->
-  <section class="testi section">
-    <div class="wrap">
-      <div class="center" style="margin-bottom:28px"><span class="overline">From Our Clients</span></div>
-      <div class="testi__inner reveal">
-        <i class="ph-light ph-quotes testi__quotes"></i>
-        <p class="testi__q" id="testi-q"></p>
-        <div class="testi__by"><span class="testi__stars">★★★★★</span><span class="testi__who" id="testi-who"></span></div>
-        <div class="testi__dots" id="testi-dots"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Visit / map ──────────────────────────────────────────────── -->
-  <section class="visit section" id="visit">
-    <div class="wrap visit__grid">
-      <div class="reveal">
-        <span class="overline">Visit Us</span>
-        <h2 class="serif">Find us in <em class="ital">Plain City</em></h2>
-        <div class="visit__row"><i class="ph-light ph-map-pin"></i><span>12076 Sycamore Trace<br>Plain City, OH 43064</span></div>
-        <div class="visit__row"><i class="ph-light ph-phone"></i><a href="tel:+16143899999">(614) 389-9999</a></div>
-        <div class="visit__hours">
-          <div class="visit__hours-row"><span>Mon – Fri</span><span>9:00 AM – 7:00 PM</span></div>
-          <div class="visit__hours-row"><span>Saturday</span><span>9:00 AM – 6:00 PM</span></div>
-          <div class="visit__hours-row"><span>Sunday</span><span>10:00 AM – 5:00 PM</span></div>
-        </div>
-      </div>
-      <div class="visit__map reveal">
-        <iframe title="Chic Nail & Head Spa on Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.5392476754278!2d-83.2028395!3d40.18666340000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8838eb3894a54019%3A0x8281989e1af8745c!2sChic%20Nail%20and%20Head%20Spa!5e1!3m2!1sen!2s!4v1780990941973!5m2!1sen!2s"></iframe>
-      </div>
-    </div>
-  </section>
-</main>
-
-<!-- ── Footer ───────────────────────────────────────────────────── -->
-<footer class="ftr">
-  <div class="wrap ftr__grid">
-    <div>
-      <img class="ftr__logo" src="assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa">
-    </div>
-    <div class="ftr__col">
-      <div class="ftr__col-h">Explore</div>
-      <a href="#services" data-scroll>Services</a>
-      <a href="#gallery" data-scroll>Gallery</a>
-      <a href="#visit" data-scroll>Visit</a>
-      <a href="services.html">Full menu</a>
-    </div>
-    <div class="ftr__col">
-      <div class="ftr__col-h">Get in touch</div>
-      <span>(614) 389-9999</span>
-      <span>Chicnailheadspa@gmail.com</span>
-      <div class="ftr__social">
-        <a href="https://www.facebook.com/chicnailandheadspa" target="_blank" rel="noopener" aria-label="Facebook"><i class="ph-fill ph-facebook-logo"></i></a>
-        <a href="https://www.instagram.com/chicnailandheadspa/" target="_blank" rel="noopener" aria-label="Instagram"><i class="ph-fill ph-instagram-logo"></i></a>
-        <a href="https://share.google/pF2zbYmZ7iCQ1ilxV" target="_blank" rel="noopener" aria-label="Google reviews"><i class="ph-fill ph-google-logo"></i></a>
-      </div>
-    </div>
-  </div>
-  <div class="ftr__bottom">© 2026 Chic Nail &amp; Head Spa · Plain City, Ohio</div>
-</footer>
-
-<script src="menu-data.js"></script>
-<script src="home.js"></script>
+    const current = route === 'services' ? 'services' : route === 'home' ? 'home' : '';
+    return (
+      <>
+        <Header onNav={nav} current={current} />
+        {screen}
+        <Footer onNav={nav} />
+      </>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
 </body>
 </html>
