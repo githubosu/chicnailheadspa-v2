@@ -116,4 +116,14 @@ window.CNHS_MENU = {
     { cat: 'extras', name: 'Matte Top Coat',    price: '$3' },
   ],
 
+  /* Featured trio for the homepage hero/menu preview (Home.jsx). */
+  featured: [
+    { name: 'Signature Head Spa', dur: '60 min', price: '$95', tag: 'Most loved', tagV: 'gilt',
+      blurb: 'Scrub, mask, warm steam & a long, drifting massage.' },
+    { name: 'Chic Ritual',        dur: '50 min', price: '$65', tag: 'Popular', tagV: 'accent',
+      blurb: 'Sugar scrub, hydrating mask & rich cream for soft, glowing skin.' },
+    { name: 'Chic Gel',           dur: '45 min', price: '$46', tag: 'Glossy', tagV: 'reserve',
+      blurb: 'Long-wear gel color with a glossy finish, up to three weeks.' },
+  ],
+
 };
