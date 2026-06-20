@@ -52,7 +52,7 @@ function Header({ onNav, current = 'home' }) {
         </button>
         <nav style={{ display: 'flex', alignItems: 'center', gap: 34 }}>
           {links.map(([key, label]) => (
-            <button key={key} onClick={() => { if (key === 'services') { window.location.href = 'services-accordion.html'; } else { onNav('home'); } }}
+            <button key={key} onClick={() => onNav(key)}
               style={{
                 background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)',
                 fontSize: 14, fontWeight: 500, letterSpacing: '.02em',

@@ -1,17 +1,20 @@
-<!-- @dsCard group="Website" viewport="1280x760" name="Marketing & booking site" subtitle="Home → Services → Booking → Confirmation — interactive" -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chic Nail &amp; Head Spa</title>
+<title>Chic Nail &amp; Head Spa — Luxury nail care & Japanese head spa · Plain City, OH</title>
+<meta name="description" content="A boutique nail salon and Japanese-style head spa in Plain City, Ohio. Luxury nail artistry and a restorative head spa — warm water, slow hands, a quiet room.">
 <link rel="icon" href="./assets/favicon.png">
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
 <style>
   html, body { margin: 0; background: var(--surface-page); }
   #root { min-height: 100vh; }
+  @keyframes evoFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes evoBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 </style>
 </head>
 <body>
@@ -21,35 +24,9 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="./_ds_bundle.js"></script>
 <script src="./menu-data.js"></script>
-<script type="text/babel" src="chrome.jsx"></script>
-<script type="text/babel" src="Home.jsx"></script>
-<script type="text/babel" src="Services.jsx"></script>
-<script type="text/babel" src="Booking.jsx"></script>
-<script type="text/babel" src="Confirmation.jsx"></script>
+<script type="text/babel" src="EvolvedHome.jsx"></script>
 <script type="text/babel">
-  const { Header, Footer } = window;
-  function App() {
-    const [route, setRoute] = React.useState('home');
-    const [booking, setBooking] = React.useState(null);
-    const nav = (r) => { setRoute(r); window.scrollTo({ top: 0 }); };
-    const book = (b) => { setBooking(b); nav('confirmation'); };
-
-    let screen;
-    if (route === 'services') screen = <window.Services onNav={nav} />;
-    else if (route === 'booking') screen = <window.Booking onBook={book} />;
-    else if (route === 'confirmation') screen = <window.Confirmation booking={booking} onNav={nav} />;
-    else screen = <window.Home onNav={nav} />;
-
-    const current = route === 'services' ? 'services' : route === 'home' ? 'home' : '';
-    return (
-      <>
-        <Header onNav={nav} current={current} />
-        {screen}
-        <Footer onNav={nav} />
-      </>
-    );
-  }
-  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  ReactDOM.createRoot(document.getElementById('root')).render(<window.EvoHome />);
 </script>
 </body>
 </html>
