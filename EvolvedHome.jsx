@@ -180,7 +180,14 @@ function EvoServices() {
           <p style={{ fontSize: 16, color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto' }}>Every service includes a complimentary consultation. Prices are starting rates — ask us for a personalized quote.</p>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0 32px', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          <style>{`#evo-services .cnhs-tabs-scroll::-webkit-scrollbar{display:none}`}</style>
+          <style>{`
+            #evo-services .cnhs-tabs-scroll::-webkit-scrollbar{display:none}
+            #evo-services .cnhs-tabs{border-bottom:none;gap:6px;}
+            #evo-services .cnhs-tab{border-radius:var(--radius-pill);padding:9px 20px;}
+            #evo-services .cnhs-tab.is-active{background:var(--accent);color:var(--cream-100);}
+            #evo-services .cnhs-tab.is-active::after{display:none;}
+            #evo-services .cnhs-tab:hover:not(.is-active){background:var(--surface-soft);}
+          `}</style>
           <Tabs items={cats} value={cat} onChange={setCat} style={{ flexShrink: 0, width: 'max-content' }} />
         </div>
         {comingSoon ? (
