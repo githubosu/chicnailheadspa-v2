@@ -37,13 +37,13 @@ window.CNHS_MENU = {
     // ── Pedicure ──────────────────────────────────────────────────────────
     { cat: 'pedi', name: 'Chic Classic',   price: '$48', blurb: 'Warm soak, tidy trim, light exfoliation & lotion.' },
     { cat: 'pedi', name: 'Chic Relax',     price: '$60', blurb: 'The Classic with callus care, a longer massage & a hot-towel wrap.' },
-    { cat: 'pedi', name: 'Chic Ritual',    price: '$65', blurb: 'Sugar scrub, hydrating mask & rich cream for soft, glowing skin.', tag: 'Popular', tagV: 'accent' },
+    { cat: 'pedi', name: 'Chic Ritual',    price: '$65', dur: '50 min', blurb: 'Sugar scrub, hydrating mask & rich cream for soft, glowing skin.', tag: 'Popular', tagV: 'accent' },
     { cat: 'pedi', name: 'Chic Luxe',      price: '$80', blurb: 'The Ritual sealed with a warm paraffin dip — moisture that lingers.' },
     { cat: 'pedi', name: 'Chic Signature', price: '$90', blurb: 'Herbal neck wrap & hot-stone massage — our most indulgent hour.', tag: 'VIP', tagV: 'reserve' },
 
     // ── Manicure ──────────────────────────────────────────────────────────
     { cat: 'mani', name: 'Chic Manicure',  price: '$30', blurb: 'Warm soak, careful shaping, cuticle care & a soothing hand massage before color.' },
-    { cat: 'mani', name: 'Chic Gel',       price: '$46', blurb: 'Long-wear gel color with a glossy finish, up to three weeks.', tag: 'Most loved', tagV: 'gilt' },
+    { cat: 'mani', name: 'Chic Gel',       price: '$46', dur: '45 min', blurb: 'Long-wear gel color with a glossy finish, up to three weeks.', tag: 'Most loved', tagV: 'gilt' },
     { cat: 'mani', name: 'Polish Change',  price: '$20', blurb: 'A fresh coat in the shade of your choosing — hands or toes.' },
     { cat: 'mani', name: 'Gel Change',     price: '$40', blurb: 'Old gel gently soaked away, replaced with a glassy new color.' },
 
@@ -104,7 +104,7 @@ window.CNHS_MENU = {
     // ── Extras ───────────────────────────────────────────────────────────
     { cat: 'extras', name: 'Paraffin',          price: '$14' },
     { cat: 'extras', name: 'Nail Art',          price: '$7+ /nail'},
-    { cat: 'extras', name: 'Cat Eye',           price: '$17+' },
+    { cat: 'extras', name: 'Cat Eye',           price: '$7+' },
     { cat: 'extras', name: 'Chrome',            price: '$15' },
     { cat: 'extras', name: 'French',            price: '$7' },
     { cat: 'extras', name: 'Design French',     price: '$10+' },
@@ -116,14 +116,16 @@ window.CNHS_MENU = {
     { cat: 'extras', name: 'Matte Top Coat',    price: '$3' },
   ],
 
-  /* Featured trio for the homepage hero/menu preview (Home.jsx). */
-  featured: [
-    { name: 'Signature Head Spa', dur: '60 min', price: '$95', tag: 'Most loved', tagV: 'gilt',
-      blurb: 'Scrub, mask, warm steam & a long, drifting massage.' },
-    { name: 'Chic Ritual',        dur: '50 min', price: '$65', tag: 'Popular', tagV: 'accent',
-      blurb: 'Sugar scrub, hydrating mask & rich cream for soft, glowing skin.' },
-    { name: 'Chic Gel',           dur: '45 min', price: '$46', tag: 'Glossy', tagV: 'reserve',
-      blurb: 'Long-wear gel color with a glossy finish, up to three weeks.' },
-  ],
-
 };
+
+/* Featured trio for the homepage hero/menu preview (Home.jsx).
+   Derived from full[] so prices never need updating in two places.
+   Chic Gel uses a display-only tag override ('Glossy') that differs from its menu tag. */
+window.CNHS_MENU.featured = (function () {
+  const find = (name) => ({ ...window.CNHS_MENU.full.find((s) => s.name === name) });
+  return [
+    find('Signature Head Spa'),
+    find('Chic Ritual'),
+    { ...find('Chic Gel'), tag: 'Glossy', tagV: 'reserve' },
+  ];
+}());
