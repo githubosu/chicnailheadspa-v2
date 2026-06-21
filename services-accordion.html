@@ -96,7 +96,6 @@ function AccordionRow({ cat, isOpen, onToggle }) {
             {cat.label}
           </span>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: cat.comingSoon ? 'var(--honey-500)' : 'var(--text-muted)', letterSpacing: '.06em' }}>{cat.sub}</span>
-          {!cat.comingSoon && <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'var(--text-muted)' }}>{items.length} services</span>}
         </div>
         {/* Expand / collapse icon — hidden for coming soon */}
         {!cat.comingSoon && (
