@@ -444,13 +444,13 @@ function EvoFooter() {
         <div style={{ gridColumn: m ? '1 / -1' : 'auto', textAlign: m ? 'center' : 'left', marginBottom: m ? 8 : 0 }}>
           <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: 116, marginLeft: m ? 0 : -6 }} />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'flex-start' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: m ? 'center' : 'flex-start' }}>
           <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 4 }}>Explore</div>
           {[['Services', 'services'], ['Gallery', 'gallery'], ['Visit', 'visit'], ['Book Now', 'book']].map(([t, id]) => (
-            <button key={t} onClick={() => { const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; }} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--cream-200)', transition: 'color var(--dur) var(--ease-standard)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--honey-300)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--cream-200)'}>{t}</button>
+            <button key={t} onClick={() => { const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; }} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: m ? 'center' : 'left', fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--cream-200)', transition: 'color var(--dur) var(--ease-standard)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--honey-300)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--cream-200)'}>{t}</button>
           ))}
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: m ? 'center' : 'flex-start' }}>
           <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 4 }}>Get in touch</div>
           <span style={{ fontSize: 14, color: 'var(--cream-200)' }}>{c.phone}</span>
           <span style={{ fontSize: 14, color: 'var(--cream-200)' }}>{c.email}</span>
