@@ -104,7 +104,7 @@ window.CNHS_MENU = {
     // ── Extras ───────────────────────────────────────────────────────────
     { cat: 'extras', name: 'Paraffin',          price: '$14' },
     { cat: 'extras', name: 'Nail Art',          price: '$7+ /nail'},
-    { cat: 'extras', name: 'Cat Eye',           price: '$17+' },
+    { cat: 'extras', name: 'Cat Eye',           price: '$7+' },
     { cat: 'extras', name: 'Chrome',            price: '$15' },
     { cat: 'extras', name: 'French',            price: '$7' },
     { cat: 'extras', name: 'Design French',     price: '$10+' },
