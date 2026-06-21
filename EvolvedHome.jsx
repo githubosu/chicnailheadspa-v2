@@ -191,7 +191,7 @@ function EvoServices() {
           #evo-services .cnhs-tab.is-active::after{display:none;}
           #evo-services .cnhs-tab:hover:not(.is-active){background:var(--surface-soft);}
         `}</style>
-        <div ref={tabScrollRef} style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px', display: 'flex', justifyContent: 'safe center' }}>
+        <div ref={tabScrollRef} style={{ overflowX: 'auto', overflowY: 'hidden', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px', display: 'flex', justifyContent: 'safe center' }}>
           <Tabs items={cats} value={cat} onChange={setCat} style={{ flexShrink: 0 }} />
         </div>
         {comingSoon ? (
