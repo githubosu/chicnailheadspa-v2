@@ -23,17 +23,36 @@
 <script type="text/babel">
 const BOOK_URL = 'tel:+16143899999';
 
-const CATS = [
-  { key: 'pedi',    label: 'Pedicure',   sub: 'From $48' },
-  { key: 'mani',    label: 'Manicure',   sub: 'From $20' },
-  { key: 'acrylic', label: 'Acrylic',    sub: 'From $56' },
-  { key: 'gelx',    label: 'Gel-X',      sub: 'From $60' },
-  { key: 'dip',     label: 'Dip Powder', sub: 'From $56' },
-  { key: 'headspa', label: 'Head Spa',   sub: 'Coming soon', comingSoon: true },
-  { key: 'wax',     label: 'Waxing',     sub: 'From $9'  },
-  { key: 'kids',    label: 'Kids',       sub: 'From $12', note: 'Ages 12 & under.' },
-  { key: 'extras',  label: 'Extras',     sub: 'From $3',  note: 'Add to any service.' },
-];
+/* Category metadata that isn't in menu-data (notes + coming-soon state). */
+const CAT_META = {
+  headspa: { comingSoon: true, sub: 'Coming soon' },
+  kids:    { note: 'Ages 10 & under.' },
+  extras:  { note: 'Add to any service.' },
+};
+/* Lowest dollar amount in a category, e.g. '$66+' -> 66. */
+function catFrom(cat) {
+  const nums = window.CNHS_MENU.full
+    .filter((s) => s.cat === cat)
+    .map((s) => { const x = String(s.price).match(/\$(\d+)/); return x ? parseInt(x[1], 10) : Infinity; })
+    .filter((n) => isFinite(n));
+  return nums.length ? Math.min.apply(null, nums) : null;
+}
+/* Build the accordion categories straight from menu-data — single source of truth. */
+function buildCats() {
+  return window.CNHS_MENU.cats
+    .filter((c) => c.value !== 'all')
+    .map((c) => {
+      const meta = CAT_META[c.value] || {};
+      const min = catFrom(c.value);
+      return {
+        key: c.value,
+        label: c.label,
+        comingSoon: !!meta.comingSoon,
+        note: meta.note,
+        sub: meta.sub || (min != null ? 'From $' + min : ''),
+      };
+    });
+}
 
 function useMobile(bp) {
   const q = '(max-width:' + (bp || 760) + 'px)';
@@ -139,6 +158,8 @@ function ServicesAccordion() {
   const c = ready ? window.CNHS_MENU.contact : {};
 
   if (!ready) return null;
+
+  const CATS = buildCats();
 
   return (
     <div style={{ background: 'var(--surface-page)', minHeight: '100vh' }}>
