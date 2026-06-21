@@ -1,6 +1,7 @@
 # Node / build
 node_modules/
 dist/
+dist-ssr/
 
 # OS / editor cruft
 .DS_Store
