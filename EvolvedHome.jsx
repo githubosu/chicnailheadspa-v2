@@ -184,17 +184,15 @@ function EvoServices() {
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(32px, 6vw, 50px)', color: 'var(--text-strong)', margin: '12px 0 10px' }}>Treatments &amp; <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>specialties</em></h2>
           <p style={{ fontSize: 16, color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto' }}>Every service includes a complimentary consultation. Prices are starting rates — ask us for a personalized quote.</p>
         </div>
-        <div ref={tabScrollRef} style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px' }}>
-          <div style={{ display: 'inline-flex', justifyContent: 'center', minWidth: '100%' }}>
-            <style>{`
-              #evo-services .cnhs-tabs{border-bottom:none;gap:6px;}
-              #evo-services .cnhs-tab{border-radius:var(--radius-pill);padding:9px 20px;}
-              #evo-services .cnhs-tab.is-active{background:var(--accent);color:var(--cream-100);}
-              #evo-services .cnhs-tab.is-active::after{display:none;}
-              #evo-services .cnhs-tab:hover:not(.is-active){background:var(--surface-soft);}
-            `}</style>
-            <Tabs items={cats} value={cat} onChange={setCat} />
-          </div>
+        <style>{`
+          #evo-services .cnhs-tabs{border-bottom:none;gap:6px;}
+          #evo-services .cnhs-tab{border-radius:var(--radius-pill);padding:9px 20px;}
+          #evo-services .cnhs-tab.is-active{background:var(--accent);color:var(--cream-100);}
+          #evo-services .cnhs-tab.is-active::after{display:none;}
+          #evo-services .cnhs-tab:hover:not(.is-active){background:var(--surface-soft);}
+        `}</style>
+        <div ref={tabScrollRef} style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px', display: 'flex', justifyContent: 'safe center' }}>
+          <Tabs items={cats} value={cat} onChange={setCat} style={{ flexShrink: 0 }} />
         </div>
         {comingSoon ? (
           <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center', background: 'var(--surface-soft)', border: '1px solid var(--gilt-soft)', borderRadius: 'var(--radius-xl)', padding: '52px 32px' }}>
