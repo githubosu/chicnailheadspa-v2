@@ -2,6 +2,8 @@
    testimonials, visit/hours/map) but elevates it with our editorial system.
    MOBILE-FIRST: fluid type via clamp(), auto-fit card grids, and a viewport
    hook that collapses the two-column bands + nav at <760px. */
+import { useMobile as useIsMobile } from './src/shared/useMobile.js';
+
 const EVO_DS = window.ChicNailHeadSpaDesignSystem_843afb;
 
 /* Real assets from the live site (chicnailheadspa.com). Referenced by URL
@@ -9,23 +11,11 @@ const EVO_DS = window.ChicNailHeadSpaDesignSystem_843afb;
    studio's own server. Drop local copies into assets/site/ to self-host. */
 const EVO_CDN = 'https://chicnailheadspa.com/assets/images/';
 const EVO_HERO_VIDEO = EVO_CDN + 'hero-video.mp4';
-const EVO_GALLERY = [1,2,3,4,5,6,7,8,9].map((n) => EVO_CDN + 'gallery/nail-' + n + '.png');
-const EVO_SALON = [1,2,3,4].map((n) => EVO_CDN + 'gallery/salon-' + n + '.png');
+// Self-hosted, resized WebP (see scripts/optimize-images.mjs) — no CDN dependency.
+const EVO_GALLERY = [1,2,3,4,5,6,7,8,9].map((n) => './assets/img/nail-' + n + '.webp');
+const EVO_SALON = [1,2,3,4].map((n) => './assets/img/salon-' + n + '.webp');
 
-/* Viewport hook — single breakpoint at 760px (tablet/phone). */
-function useIsMobile(bp) {
-  const q = '(max-width: ' + (bp || 760) + 'px)';
-  const get = () => (typeof window !== 'undefined' && window.matchMedia ? window.matchMedia(q).matches : false);
-  const [m, setM] = React.useState(get);
-  React.useEffect(() => {
-    const mq = window.matchMedia(q);
-    const on = () => setM(mq.matches);
-    on();
-    mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
-    return () => { mq.removeEventListener ? mq.removeEventListener('change', on) : mq.removeListener(on); };
-  }, [q]);
-  return m;
-}
+/* Viewport hook — shared single implementation (see src/shared/useMobile.js). */
 
 /* Responsive spacing helpers (mobile-first: small by default, grows fluidly). */
 const sectionPad = '(--section-y)';
