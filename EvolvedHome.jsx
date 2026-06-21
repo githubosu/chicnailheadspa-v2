@@ -440,15 +440,9 @@ function EvoFooter() {
   const c = window.CNHS_MENU.contact;
   return (
     <footer style={{ background: 'var(--espresso-950)', color: 'var(--cream-50)' }}>
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: (m ? '48px ' : '64px ') + padX(m) + (m ? ' 32px' : ' 36px'), display: 'grid', gridTemplateColumns: m ? '1fr 1fr' : '1.4fr 1fr 1fr', gap: m ? 28 : 40, alignItems: 'start' }}>
+      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: (m ? '48px ' : '64px ') + padX(m) + (m ? ' 32px' : ' 36px'), display: 'grid', gridTemplateColumns: m ? '1fr' : '1.4fr 1fr', gap: m ? 28 : 40, alignItems: 'start' }}>
         <div style={{ gridColumn: m ? '1 / -1' : 'auto', textAlign: m ? 'center' : 'left', marginBottom: m ? 8 : 0 }}>
           <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: 116, marginLeft: m ? 0 : -6 }} />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: m ? 'center' : 'flex-start' }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 4 }}>Explore</div>
-          {[['Services', 'services'], ['Gallery', 'gallery'], ['Visit', 'visit'], ['Book Now', 'book']].map(([t, id]) => (
-            <button key={t} onClick={() => { const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; }} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: m ? 'center' : 'left', fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--cream-200)', transition: 'color var(--dur) var(--ease-standard)' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--honey-300)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--cream-200)'}>{t}</button>
-          ))}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: m ? 'center' : 'flex-start' }}>
           <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 4 }}>Get in touch</div>
