@@ -49,7 +49,6 @@ function Confirmation({ booking, onNav }) {
         </CCard>
 
         <div style={{ display: 'flex', gap: 14, justifyContent: 'center', marginTop: 36 }}>
-          <CButton variant="secondary" iconLeft={<i className="ph-light ph-calendar-plus" />}>Add to calendar</CButton>
           <CButton variant="ghost" onClick={() => onNav('home')}>Back to home</CButton>
         </div>
       </div>

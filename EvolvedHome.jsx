@@ -66,7 +66,7 @@ function EvoHeader() {
             {links.map(([id, label]) => (
               <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: linkColor, padding: '6px 0', transition: 'color var(--dur) var(--ease-standard)' }}>{label}</button>
             ))}
-            <Button variant="primary" size="sm" onClick={() => go('book')}>Book now</Button>
+            <Button variant="primary" size="sm">Book now</Button>
           </nav>
         )}
       </div>
@@ -75,7 +75,7 @@ function EvoHeader() {
           {links.map(([id, label]) => (
             <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'var(--font-sans)', fontSize: 17, fontWeight: 500, color: 'var(--text-strong)', padding: '14px 4px', borderBottom: '1px solid var(--border-subtle)' }}>{label}</button>
           ))}
-          <div style={{ marginTop: 12 }}><Button variant="primary" size="lg" block onClick={() => go('book')}>Book now</Button></div>
+          <div style={{ marginTop: 12 }}><Button variant="primary" size="lg" block>Book now</Button></div>
         </div>
       )}
     </header>
@@ -102,7 +102,7 @@ function EvoHero() {
             Luxury nail artistry and a restorative head spa — warm water, slow hands, and a quiet room in the heart of Plain City.
           </p>
           <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
-            <Button variant="primary" size="lg" onClick={() => go('book')}>Book now</Button>
+            <Button variant="primary" size="lg">Book now</Button>
             <button onClick={() => go('services')} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--cream-100)', fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 500, textDecoration: 'underline', textDecorationThickness: '1px', textUnderlineOffset: '5px', textDecorationColor: 'var(--honey-400)' }}>
               View services
             </button>
@@ -265,7 +265,7 @@ function EvoReserve() {
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant="primary" size="lg" block={m}>Book online now</Button>
         </div>
-        <p style={{ fontSize: 14, color: 'var(--taupe-400)', margin: '22px 0 0' }}>Or call us — we&rsquo;re happy to help · <a href={`tel:${c.phone.replace(/[^0-9]/g, '')}`} style={{ color: 'var(--honey-300)', textDecoration: 'none' }}>{c.phone}</a></p>
+        <p style={{ fontSize: 14, color: 'var(--taupe-400)', margin: '22px 0 0' }}>Or call us — we&rsquo;re happy to help · <span style={{ color: 'var(--honey-300)' }}>{c.phone}</span></p>
       </div>
     </section>
   );
@@ -429,7 +429,7 @@ function EvoVisit() {
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 22 }}>
             <i className="ph-light ph-phone" style={{ fontSize: 22, color: 'var(--gilt)' }} />
-            <a href={`tel:${c.phone.replace(/[^0-9]/g, '')}`} style={{ fontSize: 16, color: 'var(--text-secondary)', textDecoration: 'none' }}>{c.phone}</a>
+            <span style={{ fontSize: 16, color: 'var(--text-secondary)' }}>{c.phone}</span>
           </div>
           <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 18 }}>
             {hours.map(([d, h]) => (

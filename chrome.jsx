@@ -102,7 +102,6 @@ function Footer({ onNav }) {
         }}>
           <span>© 2026 Chic Nail &amp; Head Spa</span>
           <span style={{ display: 'flex', gap: 22 }}>
-            <a href="#" onClick={(e)=>{e.preventDefault();onNav&&onNav('booking');}} style={{ color: 'var(--cream-200)' }}>Book</a>
             <a href="#" style={{ color: 'var(--cream-200)' }}>Privacy</a>
             <a href="#" style={{ color: 'var(--cream-200)' }}>Terms</a>
           </span>
