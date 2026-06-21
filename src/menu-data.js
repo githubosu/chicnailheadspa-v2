@@ -1,7 +1,7 @@
 /* Chic Nail & Head Spa — single source of truth for the service menu.
    SOURCE: chic-menu-foldout.html (the studio's printed fold-out menu).
    All prices match the fold-out exactly. */
-window.CNHS_MENU = {
+export const CNHS_MENU = {
   contact: {
     addr1: '12076 Sycamore Trace',
     addr2: 'Plain City, OH 43064',
@@ -121,11 +121,14 @@ window.CNHS_MENU = {
 /* Featured trio for the homepage hero/menu preview (Home.jsx).
    Derived from full[] so prices never need updating in two places.
    Chic Gel uses a display-only tag override ('Glossy') that differs from its menu tag. */
-window.CNHS_MENU.featured = (function () {
-  const find = (name) => ({ ...window.CNHS_MENU.full.find((s) => s.name === name) });
+CNHS_MENU.featured = (function () {
+  const find = (name) => ({ ...CNHS_MENU.full.find((s) => s.name === name) });
   return [
     find('Signature Head Spa'),
     find('Chic Ritual'),
     { ...find('Chic Gel'), tag: 'Glossy', tagV: 'reserve' },
   ];
 }());
+
+// Back-compat for code that reads the global (components reference window.CNHS_MENU).
+window.CNHS_MENU = CNHS_MENU;

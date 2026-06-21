@@ -1,7 +1,9 @@
 import './react-global.js';  // window.React / window.ReactDOM (shared instance)
-import './menu-data.js';     // window.CNHS_MENU
+import { CNHS_MENU } from './menu-data.js';
 import React from 'react';
 import ServicesAccordion from './ServicesAccordion.jsx';
+
+window.CNHS_MENU = CNHS_MENU;
 
 window.ReactDOM
   .createRoot(document.getElementById('root'))
