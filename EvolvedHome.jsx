@@ -173,7 +173,10 @@ function EvoServices() {
   }, [cat]);
   const order = ['pedi', 'mani', 'acrylic', 'gelx', 'dip', 'headspa'];
   const labelMap = { pedi: 'Pedicure', mani: 'Manicure', acrylic: 'Acrylic', gelx: 'Gel-X', dip: 'Dip Powder', headspa: 'Head Spa' };
-  const cats = order.map((v) => (v === 'headspa' ? { value: v, label: labelMap[v], count: 'Soon' } : { value: v, label: labelMap[v] }));
+  const cats = order.map((v) => ({
+    value: v, label: labelMap[v],
+    count: v === 'headspa' ? 'Soon' : window.CNHS_MENU.full.filter((s) => s.cat === v).length,
+  }));
   const comingSoon = cat === 'headspa';
   const list = window.CNHS_MENU.full.filter((m2) => m2.cat === cat);
   return (
@@ -190,8 +193,9 @@ function EvoServices() {
           #evo-services .cnhs-tab.is-active{background:var(--accent);color:var(--cream-100);}
           #evo-services .cnhs-tab.is-active::after{display:none;}
           #evo-services .cnhs-tab:hover:not(.is-active){background:var(--surface-soft);}
+          #evo-services .tab-scroll{mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);}
         `}</style>
-        <div ref={tabScrollRef} style={{ overflowX: 'auto', overflowY: 'hidden', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px', display: 'flex', justifyContent: 'safe center' }}>
+        <div ref={tabScrollRef} className="tab-scroll" style={{ overflowX: 'auto', overflowY: 'hidden', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px', display: 'flex', justifyContent: 'safe center' }}>
           <Tabs items={cats} value={cat} onChange={setCat} style={{ flexShrink: 0 }} />
         </div>
         {comingSoon ? (
