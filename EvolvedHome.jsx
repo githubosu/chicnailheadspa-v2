@@ -205,6 +205,12 @@ function EvoServices() {
           </div>
         ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, maxWidth: 920, margin: '0 auto' }}>
+          {cat === 'pedi' && (
+            <p style={{ gridColumn: '1 / -1', fontFamily: 'var(--font-sans)', fontStyle: 'italic', fontSize: 13, color: 'var(--text-muted)', margin: '0 0 4px', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <i className="ph-light ph-star" style={{ color: 'var(--gilt)', flexShrink: 0 }} />
+              Gel color available on all pedicures · +$20
+            </p>
+          )}
           {list.map((s) => (
             <Card key={s.name} padding="sm" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ flex: 1, minWidth: 0 }}>
