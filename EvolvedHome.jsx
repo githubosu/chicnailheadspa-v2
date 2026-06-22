@@ -375,35 +375,23 @@ function EvoTestimonials() {
     ['Calm, careful, and genuinely luxurious. Worth every minute.', 'Alyssa T.'],
     ['I booked a head spa on a whim and now it\u2019s my monthly ritual.', 'Dana K.'],
   ];
-  const [i, setI] = React.useState(0);
-  const [paused, setPaused] = React.useState(false);
-  React.useEffect(() => {
-    if (paused) return;
-    const t = setInterval(() => setI((n) => (n + 1) % quotes.length), 5000);
-    return () => clearInterval(t);
-  }, [paused, quotes.length]);
-  const [q, who] = quotes[i];
   return (
     <section style={{ background: 'var(--surface-soft)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m) }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={evoOverline()}>From Our Clients</div>
         </div>
-        <div
-          onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
-          style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center', minHeight: m ? 240 : 220, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <i className="ph-light ph-quotes" style={{ fontSize: 40, color: 'var(--gilt)' }} />
-          <p key={i} style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 3.4vw, 34px)', lineHeight: 1.3, color: 'var(--text-strong)', margin: '16px 0 22px', letterSpacing: '-0.01em', animation: 'evoFade 600ms var(--ease-out, ease-out) both' }}>{q}</p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
-            <span style={{ color: 'var(--honey-500)', letterSpacing: '2px' }}>{'\u2605\u2605\u2605\u2605\u2605'}</span>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>{who}</span>
-          </div>
-          <div style={{ display: 'flex', gap: 9 }}>
-            {quotes.map((_, n) => (
-              <button key={n} onClick={() => setI(n)} aria-label={'Testimonial ' + (n + 1)}
-                style={{ width: n === i ? 26 : 9, height: 9, borderRadius: 'var(--radius-pill)', border: 'none', cursor: 'pointer', background: n === i ? 'var(--accent)' : 'var(--taupe-400)', padding: 0, transition: 'width var(--dur) var(--ease-standard), background var(--dur) var(--ease-standard)' }} />
-            ))}
-          </div>
+        <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: m ? 16 : 24, maxWidth: 1040, margin: '0 auto' }}>
+          {quotes.slice(0, 3).map(([q, who]) => (
+            <figure key={who} style={{ margin: 0, background: 'var(--surface-card)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-sm)', padding: m ? '28px 24px' : '32px 28px', display: 'flex', flexDirection: 'column' }}>
+              <i className="ph-light ph-quotes" style={{ fontSize: 32, color: 'var(--gilt)' }} />
+              <blockquote style={{ flex: 1, margin: '14px 0 20px', fontFamily: 'var(--font-display)', fontSize: 21, lineHeight: 1.4, color: 'var(--text-strong)', letterSpacing: '-0.01em' }}>{q}</blockquote>
+              <figcaption style={{ display: 'flex', alignItems: 'center', gap: 10, borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}>
+                <span style={{ color: 'var(--honey-500)', letterSpacing: '2px', fontSize: 13 }}>{'\u2605\u2605\u2605\u2605\u2605'}</span>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12.5, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>{who}</span>
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </div>
     </section>
