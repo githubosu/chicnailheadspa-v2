@@ -2,6 +2,7 @@
    testimonials, visit/hours/map) but elevates it with our editorial system.
    MOBILE-FIRST: fluid type via clamp(), auto-fit card grids, and a viewport
    hook that collapses the two-column bands + nav at <760px. */
+history.scrollRestoration = 'manual';
 const EVO_DS = window.ChicNailHeadSpaDesignSystem_843afb;
 
 /* Real assets from the live site (chicnailheadspa.com). Referenced by URL
@@ -166,11 +167,7 @@ function EvoServices() {
   const { Card, Badge, Button, Tabs } = EVO_DS;
   const m = useIsMobile();
   const order = ['pedi', 'mani', 'acrylic', 'gelx', 'dip', 'headspa'];
-  const [cat, setCat] = React.useState(() => {
-    const saved = localStorage.getItem('cnhs-svc-tab');
-    return order.includes(saved) ? saved : 'pedi';
-  });
-  const handleCat = (v) => { setCat(v); localStorage.setItem('cnhs-svc-tab', v); };
+  const [cat, setCat] = React.useState('pedi');
   const tabScrollRef = React.useRef(null);
   React.useEffect(() => {
     const el = tabScrollRef.current && tabScrollRef.current.querySelector('[aria-selected="true"]');
@@ -197,7 +194,7 @@ function EvoServices() {
           #evo-services .tab-scroll{mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);}
         `}</style>
         <div ref={tabScrollRef} className="tab-scroll" style={{ overflowX: 'auto', overflowY: 'hidden', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px', display: 'flex', justifyContent: 'safe center' }}>
-          <Tabs items={cats} value={cat} onChange={handleCat} style={{ flexShrink: 0 }} />
+          <Tabs items={cats} value={cat} onChange={setCat} style={{ flexShrink: 0 }} />
         </div>
         {comingSoon ? (
           <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center', background: 'var(--surface-soft)', border: '1px solid var(--gilt-soft)', borderRadius: 'var(--radius-xl)', padding: '52px 32px' }}>
@@ -400,9 +397,9 @@ function EvoTestimonials() {
         </div>
         <div
           onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
-          style={{ maxWidth: 760, margin: '0 auto', textAlign: 'center', minHeight: m ? 240 : 220, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <i className="ph-light ph-quotes" style={{ fontSize: 40, color: 'var(--gilt)' }} />
-          <p key={i} style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px, 3.4vw, 34px)', lineHeight: 1.3, color: 'var(--text-strong)', margin: '16px 0 22px', letterSpacing: '-0.01em', animation: 'evoFade 600ms var(--ease-out, ease-out) both' }}>{q}</p>
+          style={{ maxWidth: 620, margin: '0 auto', textAlign: 'center', minHeight: m ? 180 : 160, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <i className="ph-light ph-quotes" style={{ fontSize: 28, color: 'var(--gilt)' }} />
+          <p key={i} style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(18px, 2.4vw, 26px)', lineHeight: 1.4, color: 'var(--text-strong)', margin: '12px 0 18px', letterSpacing: '-0.01em', animation: 'evoFade 600ms var(--ease-out, ease-out) both' }}>{q}</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
             <span style={{ color: 'var(--honey-500)', letterSpacing: '2px' }}>{'\u2605\u2605\u2605\u2605\u2605'}</span>
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>{who}</span>
@@ -494,13 +491,15 @@ function EvoHome() {
     const t = setInterval(() => { if (window.ChicNailHeadSpaDesignSystem_843afb && window.ChicNailHeadSpaDesignSystem_843afb.Button && window.CNHS_MENU) { setReady(true); clearInterval(t); } }, 50);
     return () => clearInterval(t);
   }, [ready]);
-  // On load, honor an #evo-<id> hash from a cross-page link (smooth-scroll to it).
+  // On load: scroll to top, or honor an #evo-<id> hash from a cross-page link.
   React.useEffect(() => {
     if (!ready) return;
     const id = (window.location.hash || '').replace(/^#/, '');
-    if (!id) return;
-    const t = setTimeout(() => { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }, 120);
-    return () => clearTimeout(t);
+    if (id) {
+      const t = setTimeout(() => { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }, 120);
+      return () => clearTimeout(t);
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [ready]);
   if (!ready) return null;
   return (
