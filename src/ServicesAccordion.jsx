@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMobile } from './shared/useMobile.js';
+import { byCat } from './categories.js';
 
 const BOOK_URL = 'tel:+16143899999';
 
@@ -145,6 +146,23 @@ export default function ServicesAccordion() {
         <p style={{ fontFamily: 'var(--font-sans)', fontStyle: 'italic', fontSize: 12.5, color: 'var(--text-muted)', margin: '28px 0 0', lineHeight: 1.6 }}>
           All prices are starting rates. Call {c.phone} for a personalized quote.
         </p>
+
+        {/* Browse by category — internal links to the per-category pages */}
+        <div style={{ marginTop: 36, paddingTop: 24, borderTop: '1px solid var(--border-subtle)' }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '.22em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 14 }}>Browse by category</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+            {CATS.map((cat) => {
+              const meta = byCat(cat.key);
+              if (!meta) return null;
+              return (
+                <a key={cat.key} href={`${meta.slug}.html`}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--text-secondary)', textDecoration: 'none', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-pill)', padding: '7px 16px' }}>
+                  {cat.label}
+                </a>
+              );
+            })}
+          </div>
+        </div>
       </main>
 
       {/* Footer */}

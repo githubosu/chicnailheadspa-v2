@@ -66,7 +66,24 @@ export function localBusinessLd(menu) {
   };
 }
 
-// Ready-to-inject <script> string (split tag so it can't break out of HTML).
-export function jsonLdScript(menu) {
-  return '<script type="application/ld+json">' + JSON.stringify(localBusinessLd(menu)) + '<\/script>';
+// BreadcrumbList from a trail of { name, url } items.
+export function breadcrumbLd(trail) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: trail.map((t, i) => ({
+      '@type': 'ListItem', position: i + 1, name: t.name, item: t.url,
+    })),
+  };
 }
+
+const tag = (obj) => '<script type="application/ld+json">' + JSON.stringify(obj) + '<\/script>';
+
+// Ready-to-inject <script> string(s).
+export function jsonLdScript(menu) {
+  return tag(localBusinessLd(menu));
+}
+export function breadcrumbScript(trail) {
+  return tag(breadcrumbLd(trail));
+}
+export { BASE };

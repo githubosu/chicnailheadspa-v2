@@ -1,5 +1,13 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
+import { readdirSync } from 'node:fs';
+
+// Every root-level .html is a build entry (index, services, + the category pages).
+const htmlInputs = Object.fromEntries(
+  readdirSync(__dirname)
+    .filter((f) => f.endsWith('.html'))
+    .map((f) => [f.replace(/\.html$/, ''), resolve(__dirname, f)]),
+);
 
 // GitHub Pages serves this project at /chicnailheadspa-v2/.
 export default defineConfig({
@@ -14,10 +22,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        services: resolve(__dirname, 'services-accordion.html'),
-      },
+      input: htmlInputs,
     },
   },
 });
