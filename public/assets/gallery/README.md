@@ -4,19 +4,16 @@ The homepage gallery (`EvolvedHome.jsx` → `EvoGallery`) auto-selects a theme f
 **today's date** and shows **9 photos** from the matching folder below.
 
 ## How to add photos
-Drop **9 images** named `nail-1.jpg` … `nail-9.jpg` into the theme folder, e.g.:
+1. Drop **up to 9 images** named `nail-1` … `nail-9` (`.jpg`, `.jpeg`, or `.png`)
+   into the theme folder, e.g. `assets/gallery/summer/nail-1.jpg … nail-9.jpg`.
+2. Run **`npm run optimize:images`** — it converts each into a resized
+   `nail-N.webp` (the file the gallery actually loads) right beside the source.
+3. Commit the new `.webp` files and push; the deploy serves them.
 
-```
-assets/gallery/summer/nail-1.jpg
-assets/gallery/summer/nail-2.jpg
-...
-assets/gallery/summer/nail-9.jpg
-```
-
-- Square images look best (the tiles are 1:1). ~1000×1000px is plenty.
-- Filenames must be exactly `nail-1.jpg` … `nail-9.jpg` (lowercase, `.jpg`).
-- If a themed image is missing, that tile **falls back** to the studio's live-site
-  gallery automatically — so partial sets are fine.
+Notes:
+- Square images look best (tiles are 1:1); ~1000×1000px is plenty.
+- Any missing tile **falls back** to the generic optimized set automatically, so
+  partial sets are fine.
 
 ## Themes & the date windows that trigger them
 Holidays take priority within their window; otherwise the season is used.

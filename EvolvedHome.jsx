@@ -314,10 +314,11 @@ function evoThemeForDate(d) {
 }
 
 /* Returns the 9 local paths for a theme's gallery folder.
-   Folder convention: assets/gallery/<themeKey>/nail-1.jpg … nail-9.jpg
-   Falls back to live-site images via onError on each img tag. */
+   Convention: drop nail-1..9.(jpg|png) into assets/gallery/<themeKey>/ then run
+   `npm run optimize:images` — it writes nail-1..9.webp, which is what loads here.
+   Any missing image falls back to the generic optimized set via onError. */
 function evoGalleryImages(key) {
-  return Array.from({ length: 9 }, (_, i) => './assets/gallery/' + key + '/nail-' + (i + 1) + '.jpg');
+  return Array.from({ length: 9 }, (_, i) => './assets/gallery/' + key + '/nail-' + (i + 1) + '.webp');
 }
 
 /* ── Gallery (date-aware: seasonal & holiday themes) ────────────────────── */
