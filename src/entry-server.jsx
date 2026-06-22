@@ -6,6 +6,7 @@ import '../EvolvedHome.jsx';      // defines window.EvoHome
 import ServicesAccordion from './ServicesAccordion.jsx';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { jsonLdScript } from './seo.js';
 
 window.CNHS_MENU = CNHS_MENU; // ensure our menu wins over the bundle's demo
 
@@ -14,4 +15,7 @@ export function renderHome() {
 }
 export function renderServices() {
   return renderToString(React.createElement(ServicesAccordion));
+}
+export function renderJsonLd() {
+  return jsonLdScript(CNHS_MENU);
 }

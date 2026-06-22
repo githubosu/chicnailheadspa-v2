@@ -25,37 +25,7 @@
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 
-<!-- Local-business structured data (helps Google show hours/address/phone) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BeautySalon",
-  "name": "Chic Nail & Head Spa",
-  "image": "https://githubosu.github.io/chicnailheadspa-v2/assets/logo-lockup.png",
-  "url": "https://githubosu.github.io/chicnailheadspa-v2/",
-  "telephone": "+1-614-389-9999",
-  "email": "Chicnailheadspa@gmail.com",
-  "priceRange": "$$",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "12076 Sycamore Trace",
-    "addressLocality": "Plain City",
-    "addressRegion": "OH",
-    "postalCode": "43064",
-    "addressCountry": "US"
-  },
-  "geo": { "@type": "GeoCoordinates", "latitude": 40.186663, "longitude": -83.202840 },
-  "openingHoursSpecification": [
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "19:00" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "18:00" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "10:00", "closes": "17:00" }
-  ],
-  "sameAs": [
-    "https://www.facebook.com/chicnailandheadspa",
-    "https://www.instagram.com/chicnailandheadspa/"
-  ]
-}
-</script>
+<!-- LocalBusiness JSON-LD is injected at build time from menu-data (see scripts/prerender.mjs) -->
 
 <style>
   html, body { margin: 0; background: var(--surface-page); }
