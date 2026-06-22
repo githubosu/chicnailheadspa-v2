@@ -3,7 +3,7 @@
    MOBILE-FIRST: fluid type via clamp(), auto-fit card grids, and a viewport
    hook that collapses the two-column bands + nav at <760px. */
 import { useMobile as useIsMobile } from './src/shared/useMobile.js';
-history.scrollRestoration = 'manual';
+if (typeof history !== 'undefined') history.scrollRestoration = 'manual';
 const EVO_DS = window.ChicNailHeadSpaDesignSystem_843afb;
 
 /* Real assets from the live site (chicnailheadspa.com). Referenced by URL
