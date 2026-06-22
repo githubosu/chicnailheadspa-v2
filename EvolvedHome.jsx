@@ -3,7 +3,7 @@
    MOBILE-FIRST: fluid type via clamp(), auto-fit card grids, and a viewport
    hook that collapses the two-column bands + nav at <760px. */
 import { useMobile as useIsMobile } from './src/shared/useMobile.js';
-
+history.scrollRestoration = 'manual';
 const EVO_DS = window.ChicNailHeadSpaDesignSystem_843afb;
 
 /* Real assets from the live site (chicnailheadspa.com). Referenced by URL
@@ -156,11 +156,7 @@ function EvoServices() {
   const { Card, Badge, Button, Tabs } = EVO_DS;
   const m = useIsMobile();
   const order = ['pedi', 'mani', 'acrylic', 'gelx', 'dip', 'headspa'];
-  const [cat, setCat] = React.useState(() => {
-    const saved = localStorage.getItem('cnhs-svc-tab');
-    return order.includes(saved) ? saved : 'pedi';
-  });
-  const handleCat = (v) => { setCat(v); localStorage.setItem('cnhs-svc-tab', v); };
+  const [cat, setCat] = React.useState('pedi');
   const tabScrollRef = React.useRef(null);
   React.useEffect(() => {
     const el = tabScrollRef.current && tabScrollRef.current.querySelector('[aria-selected="true"]');
@@ -187,7 +183,7 @@ function EvoServices() {
           #evo-services .tab-scroll{mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);}
         `}</style>
         <div ref={tabScrollRef} className="tab-scroll" style={{ overflowX: 'auto', overflowY: 'hidden', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px', display: 'flex', justifyContent: 'safe center' }}>
-          <Tabs items={cats} value={cat} onChange={handleCat} style={{ flexShrink: 0 }} />
+          <Tabs items={cats} value={cat} onChange={setCat} style={{ flexShrink: 0 }} />
         </div>
         {comingSoon ? (
           <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center', background: 'var(--surface-soft)', border: '1px solid var(--gilt-soft)', borderRadius: 'var(--radius-xl)', padding: '52px 32px' }}>
@@ -473,13 +469,15 @@ function EvoHome() {
     const t = setInterval(() => { if (window.ChicNailHeadSpaDesignSystem_843afb && window.ChicNailHeadSpaDesignSystem_843afb.Button && window.CNHS_MENU) { setReady(true); clearInterval(t); } }, 50);
     return () => clearInterval(t);
   }, [ready]);
-  // On load, honor an #evo-<id> hash from a cross-page link (smooth-scroll to it).
+  // On load: scroll to top, or honor an #evo-<id> hash from a cross-page link.
   React.useEffect(() => {
     if (!ready) return;
     const id = (window.location.hash || '').replace(/^#/, '');
-    if (!id) return;
-    const t = setTimeout(() => { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }, 120);
-    return () => clearTimeout(t);
+    if (id) {
+      const t = setTimeout(() => { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); }, 120);
+      return () => clearTimeout(t);
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [ready]);
   if (!ready) return null;
   return (
