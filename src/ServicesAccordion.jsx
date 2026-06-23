@@ -108,86 +108,22 @@ function AccordionRow({ cat, isOpen, onToggle }) {
   );
 }
 
-function AccordionHeader() {
-  const m = useMobile();
-  const [open, setOpen] = React.useState(false);
-  const navLinks = [['index.html', 'Home'], ['index.html#evo-gallery', 'Gallery'], ['index.html#evo-visit', 'Visit']];
-  const padX = m ? '20px' : 'var(--gutter)';
-  return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(254,247,237,0.86)', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', borderBottom: '1px solid var(--border-subtle)' }}>
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 ' + padX, height: m ? 68 : 86, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="index.html" aria-label="Chic Nail & Head Spa — home" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <img src="./assets/logo-lockup.png" alt="Chic Nail & Head Spa" style={{ height: m ? 48 : 68 }} />
-        </a>
-        {m ? (
-          <button aria-label="Menu" onClick={() => setOpen((o) => !o)} style={{ width: 42, height: 42, borderRadius: '50%', border: 'none', cursor: 'pointer', background: 'none', color: 'var(--text-secondary)', fontSize: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-            <i className={open ? 'ph-light ph-x' : 'ph-light ph-list'} />
-          </button>
-        ) : (
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-            {navLinks.map(([href, label]) => (
-              <a key={href} href={href} style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', textDecoration: 'none', padding: '6px 0' }}>{label}</a>
-            ))}
-            <a href={BOOK_URL} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'var(--accent)', color: 'var(--cream-50)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 13, letterSpacing: '.01em', padding: '8px 16px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>Book now</a>
-          </nav>
-        )}
-      </div>
-      {m && open && (
-        <div style={{ padding: '8px 20px 20px', display: 'flex', flexDirection: 'column', gap: 4, borderTop: '1px solid var(--border-subtle)', background: 'rgba(254,247,237,0.96)' }}>
-          {navLinks.map(([href, label]) => (
-            <a key={href} href={href} style={{ display: 'block', textDecoration: 'none', fontFamily: 'var(--font-sans)', fontSize: 17, fontWeight: 500, color: 'var(--text-strong)', padding: '14px 4px', borderBottom: '1px solid var(--border-subtle)' }}>{label}</a>
-          ))}
-          <div style={{ marginTop: 12 }}>
-            <a href={BOOK_URL} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--accent)', color: 'var(--cream-50)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 16, padding: '14px 0', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>Book now</a>
-          </div>
-        </div>
-      )}
-    </header>
-  );
-}
-
-function AccordionFooter() {
-  const m = useMobile();
-  const c = window.CNHS_MENU.contact;
-  const padX = m ? '20px' : 'var(--gutter)';
-  return (
-    <footer style={{ background: 'var(--espresso-950)', color: 'var(--cream-50)' }}>
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: (m ? '48px ' : '64px ') + padX + (m ? ' 32px' : ' 36px'), display: 'grid', gridTemplateColumns: m ? '1fr' : '1.4fr 1fr', gap: m ? 28 : 40, alignItems: 'start' }}>
-        <div style={{ gridColumn: m ? '1 / -1' : 'auto', textAlign: m ? 'center' : 'left', marginBottom: m ? 8 : 0 }}>
-          <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: 116, marginLeft: m ? 0 : -6 }} />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 18, alignItems: m ? 'center' : 'flex-start' }}>
-          <a href={BOOK_URL} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'var(--accent)', color: 'var(--cream-50)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 14, letterSpacing: '.01em', padding: '12px 28px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>Book now</a>
-          <div style={{ display: 'flex', gap: 12 }}>
-            {[['facebook', 'ph-facebook-logo', 'Facebook'], ['instagram', 'ph-instagram-logo', 'Instagram'], ['google', 'ph-google-logo', 'Google reviews']].map(([key, icon, label]) => (
-              <a key={key} href={c.social[key]} target="_blank" rel="noopener noreferrer" aria-label={label} title={label}
-                style={{ width: 42, height: 42, borderRadius: '50%', border: '1px solid rgba(185,142,79,0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--honey-300)', fontSize: 20, textDecoration: 'none' }}>
-                <i className={'ph-fill ' + icon} />
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div style={{ borderTop: '1px solid rgba(185,142,79,0.22)', padding: '20px ' + padX, textAlign: 'center', fontSize: 12, color: 'var(--taupe-400)' }}>© 2026 Chic Nail &amp; Head Spa · Plain City, Ohio</div>
-    </footer>
-  );
-}
-
 export default function ServicesAccordion() {
   const [open, setOpen] = React.useState('pedi');
   const m = useMobile();
   const toggle = (key) => setOpen((o) => o === key ? null : key);
   const c = window.CNHS_MENU.contact;
   const CATS = buildCats();
+  const EvoHeader = window.EvoHeader, EvoFooter = window.EvoFooter;
 
   return (
     <div style={{ background: 'var(--surface-page)', minHeight: '100vh' }}>
-      <AccordionHeader />
+      <EvoHeader />
 
-      {/* Hero (polish-wall photo) */}
-      <section style={{ position: 'relative', minHeight: m ? 320 : 420, overflow: 'hidden', display: 'flex', alignItems: 'flex-end', background: 'var(--espresso-900)' }}>
+      {/* Hero (polish-wall photo) — sits under the transparent shared header */}
+      <section style={{ position: 'relative', minHeight: m ? 360 : 460, overflow: 'hidden', display: 'flex', alignItems: 'flex-end', background: 'var(--espresso-900)' }}>
         <img src="./assets/services-hero.webp" alt="A wall of nail polish colors at Chic Nail & Head Spa" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(42,29,21,0.42) 0%, rgba(42,29,21,0.32) 40%, rgba(42,29,21,0.82) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(42,29,21,0.62) 0%, rgba(42,29,21,0.40) 38%, rgba(42,29,21,0.85) 100%)' }} />
         <div style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', width: '100%', padding: m ? '0 20px 32px' : '0 var(--gutter) 48px' }}>
           <div style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 500, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 12 }}>The Menu</div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: m ? 46 : 68, lineHeight: 1.02, color: 'var(--cream-50)', margin: 0, letterSpacing: '-0.015em' }}>Services &amp; <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pricing</em></h1>
@@ -205,7 +141,7 @@ export default function ServicesAccordion() {
         </p>
       </main>
 
-      <AccordionFooter />
+      <EvoFooter />
     </div>
   );
 }

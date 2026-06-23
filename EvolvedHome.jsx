@@ -442,8 +442,7 @@ function EvoFooter() {
         <div style={{ gridColumn: m ? '1 / -1' : 'auto', textAlign: m ? 'center' : 'left', marginBottom: m ? 8 : 0 }}>
           <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: 116, marginLeft: m ? 0 : -6 }} />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 18, alignItems: m ? 'center' : 'flex-start' }}>
-          <Button variant="primary" size="sm" onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: m ? 'center' : 'flex-start' }}>
           <div style={{ display: 'flex', gap: 12 }}>
             {[['facebook', 'ph-facebook-logo', 'Facebook'], ['instagram', 'ph-instagram-logo', 'Instagram'], ['google', 'ph-google-logo', 'Google reviews']].map(([key, icon, label]) => (
               <a key={key} href={c.social[key]} target="_blank" rel="noopener noreferrer" aria-label={label} title={label}
@@ -454,6 +453,11 @@ function EvoFooter() {
               </a>
             ))}
           </div>
+          <Button variant="primary" size="lg" onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
+          <a href="index.html#evo-visit" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'var(--cream-200)', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'color var(--dur) var(--ease-standard)' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--honey-300)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--cream-200)'}>
+            <i className="ph-light ph-map-pin" style={{ fontSize: 18, color: 'var(--honey-300)' }} /> Visit Us
+          </a>
         </div>
       </div>
       <div style={{ borderTop: '1px solid rgba(185,142,79,0.22)', padding: '20px ' + padX(m), textAlign: 'center', fontSize: 12, color: 'var(--taupe-400)' }}>© 2026 Chic Nail &amp; Head Spa · Plain City, Ohio</div>
