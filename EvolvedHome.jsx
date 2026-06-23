@@ -377,14 +377,14 @@ function EvoTestimonials() {
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={evoOverline()}>From Our Clients</div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: m ? 16 : 24, maxWidth: 1040, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: m ? 12 : 16, maxWidth: 720, margin: '0 auto' }}>
           {quotes.slice(0, 3).map(([q, who]) => (
-            <figure key={who} style={{ margin: 0, background: 'var(--surface-card)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-sm)', padding: m ? '28px 24px' : '32px 28px', display: 'flex', flexDirection: 'column' }}>
-              <i className="ph-light ph-quotes" style={{ fontSize: 32, color: 'var(--gilt)' }} />
-              <blockquote style={{ flex: 1, margin: '14px 0 20px', fontFamily: 'var(--font-display)', fontSize: 21, lineHeight: 1.4, color: 'var(--text-strong)', letterSpacing: '-0.01em' }}>{q}</blockquote>
-              <figcaption style={{ display: 'flex', alignItems: 'center', gap: 10, borderTop: '1px solid var(--border-subtle)', paddingTop: 16 }}>
-                <span style={{ color: 'var(--honey-500)', letterSpacing: '2px', fontSize: 13 }}>{'\u2605\u2605\u2605\u2605\u2605'}</span>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12.5, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>{who}</span>
+            <figure key={who} style={{ margin: 0, background: 'var(--surface-card)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)', padding: '16px 16px', display: 'flex', flexDirection: 'column' }}>
+              <i className="ph-light ph-quotes" style={{ fontSize: 18, color: 'var(--gilt)' }} />
+              <blockquote style={{ flex: 1, margin: '8px 0 12px', fontFamily: 'var(--font-display)', fontSize: 15, lineHeight: 1.35, color: 'var(--text-strong)', letterSpacing: '-0.01em' }}>{q}</blockquote>
+              <figcaption style={{ display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border-subtle)', paddingTop: 10 }}>
+                <span style={{ color: 'var(--honey-500)', letterSpacing: '1.5px', fontSize: 11 }}>{'\u2605\u2605\u2605\u2605\u2605'}</span>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>{who}</span>
               </figcaption>
             </figure>
           ))}
