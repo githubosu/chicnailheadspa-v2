@@ -432,24 +432,20 @@ function EvoFooter() {
           </div>
         </div>
 
-        {/* Brand row: logo · social · Book now */}
-        <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : '1.4fr 1fr', gap: m ? 28 : 40, alignItems: 'center', padding: (m ? '36px ' : '44px ') + '0' }}>
-          <div style={{ gridColumn: m ? '1 / -1' : 'auto', textAlign: m ? 'center' : 'left' }}>
-            <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: m ? 88 : 104, marginLeft: m ? 0 : -6 }} />
+        {/* Brand: logo, then centered social icons, then a large Book now */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 22, padding: (m ? '36px ' : '48px ') + '0' }}>
+          <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: m ? 92 : 112 }} />
+          <div style={{ display: 'flex', gap: 14, justifyContent: 'center' }}>
+            {[['facebook', 'ph-facebook-logo', 'Facebook'], ['instagram', 'ph-instagram-logo', 'Instagram'], ['google', 'ph-google-logo', 'Google reviews']].map(([key, icon, label]) => (
+              <a key={key} href={c.social[key]} target="_blank" rel="noopener noreferrer" aria-label={label} title={label}
+                style={{ width: 46, height: 46, borderRadius: '50%', border: '1px solid rgba(185,142,79,0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--honey-300)', fontSize: 22, textDecoration: 'none', transition: 'background var(--dur) var(--ease-standard), color var(--dur) var(--ease-standard)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--honey-500)'; e.currentTarget.style.color = 'var(--espresso-950)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--honey-300)'; }}>
+                <i className={'ph-fill ' + icon} />
+              </a>
+            ))}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 18, alignItems: m ? 'center' : 'flex-start' }}>
-            <div style={{ display: 'flex', gap: 12 }}>
-              {[['facebook', 'ph-facebook-logo', 'Facebook'], ['instagram', 'ph-instagram-logo', 'Instagram'], ['google', 'ph-google-logo', 'Google reviews']].map(([key, icon, label]) => (
-                <a key={key} href={c.social[key]} target="_blank" rel="noopener noreferrer" aria-label={label} title={label}
-                  style={{ width: 42, height: 42, borderRadius: '50%', border: '1px solid rgba(185,142,79,0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--honey-300)', fontSize: 20, textDecoration: 'none', transition: 'background var(--dur) var(--ease-standard), color var(--dur) var(--ease-standard)' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--honey-500)'; e.currentTarget.style.color = 'var(--espresso-950)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--honey-300)'; }}>
-                  <i className={'ph-fill ' + icon} />
-                </a>
-              ))}
-            </div>
-            <Button variant="primary" size="lg" onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
-          </div>
+          <Button variant="primary" size="lg" style={{ fontSize: 17, padding: '16px 48px' }} onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
         </div>
       </div>
       <div style={{ borderTop: '1px solid rgba(185,142,79,0.22)', padding: '20px ' + padX(m), textAlign: 'center', fontSize: 12, color: 'var(--taupe-400)' }}>© 2026 Chic Nail &amp; Head Spa · Plain City, Ohio</div>
