@@ -56,7 +56,7 @@ function EvoHeader() {
             {links.map(([id, label]) => (
               <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: linkColor, padding: '6px 0', transition: 'color var(--dur) var(--ease-standard)' }}>{label}</button>
             ))}
-            <Button variant="primary" size="sm">Book now</Button>
+            <Button variant="primary" size="sm" onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
           </nav>
         )}
       </div>
@@ -65,7 +65,7 @@ function EvoHeader() {
           {links.map(([id, label]) => (
             <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'var(--font-sans)', fontSize: 17, fontWeight: 500, color: 'var(--text-strong)', padding: '14px 4px', borderBottom: '1px solid var(--border-subtle)' }}>{label}</button>
           ))}
-          <div style={{ marginTop: 12 }}><Button variant="primary" size="lg" block>Book now</Button></div>
+          <div style={{ marginTop: 12 }}><Button variant="primary" size="lg" block onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button></div>
         </div>
       )}
     </header>
@@ -92,7 +92,7 @@ function EvoHero() {
             Luxury nail artistry and a restorative head spa — warm water, slow hands, and a quiet room in the heart of Plain City.
           </p>
           <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
-            <Button variant="primary" size="lg">Book now</Button>
+            <Button variant="primary" size="lg" onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
             <button onClick={() => go('services')} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--cream-100)', fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 500, textDecoration: 'underline', textDecorationThickness: '1px', textUnderlineOffset: '5px', textDecorationColor: 'var(--honey-400)' }}>
               View services
             </button>
@@ -433,6 +433,7 @@ function EvoVisit() {
 
 /* ── Footer (stacks on mobile) ──────────────────────────────────────────── */
 function EvoFooter() {
+  const { Button } = EVO_DS;
   const m = useIsMobile();
   const c = window.CNHS_MENU.contact;
   return (
@@ -441,11 +442,9 @@ function EvoFooter() {
         <div style={{ gridColumn: m ? '1 / -1' : 'auto', textAlign: m ? 'center' : 'left', marginBottom: m ? 8 : 0 }}>
           <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: 116, marginLeft: m ? 0 : -6 }} />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: m ? 'center' : 'flex-start' }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 4 }}>Get in touch</div>
-          <span style={{ fontSize: 14, color: 'var(--cream-200)' }}>{c.phone}</span>
-          <span style={{ fontSize: 14, color: 'var(--cream-200)' }}>{c.email}</span>
-          <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 18, alignItems: m ? 'center' : 'flex-start' }}>
+          <Button variant="primary" size="sm" onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
+          <div style={{ display: 'flex', gap: 12 }}>
             {[['facebook', 'ph-facebook-logo', 'Facebook'], ['instagram', 'ph-instagram-logo', 'Instagram'], ['google', 'ph-google-logo', 'Google reviews']].map(([key, icon, label]) => (
               <a key={key} href={c.social[key]} target="_blank" rel="noopener noreferrer" aria-label={label} title={label}
                 style={{ width: 42, height: 42, borderRadius: '50%', border: '1px solid rgba(185,142,79,0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--honey-300)', fontSize: 20, textDecoration: 'none', transition: 'background var(--dur) var(--ease-standard), color var(--dur) var(--ease-standard)' }}

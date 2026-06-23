@@ -1,6 +1,5 @@
 import React from 'react';
 import { useMobile } from './shared/useMobile.js';
-import { byCat } from './categories.js';
 
 const BOOK_URL = 'tel:+16143899999';
 
@@ -129,10 +128,7 @@ function AccordionHeader() {
             {navLinks.map(([href, label]) => (
               <a key={href} href={href} style={{ fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', textDecoration: 'none', padding: '6px 0' }}>{label}</a>
             ))}
-            <a href={BOOK_URL} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent)', color: 'var(--cream-50)', fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 13, padding: '10px 22px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>
-              <i className="ph-light ph-calendar-plus" style={{ fontSize: 15 }} />
-              Book now
-            </a>
+            <a href={BOOK_URL} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'var(--accent)', color: 'var(--cream-50)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 13, letterSpacing: '.01em', padding: '8px 16px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>Book now</a>
           </nav>
         )}
       </div>
@@ -142,10 +138,7 @@ function AccordionHeader() {
             <a key={href} href={href} style={{ display: 'block', textDecoration: 'none', fontFamily: 'var(--font-sans)', fontSize: 17, fontWeight: 500, color: 'var(--text-strong)', padding: '14px 4px', borderBottom: '1px solid var(--border-subtle)' }}>{label}</a>
           ))}
           <div style={{ marginTop: 12 }}>
-            <a href={BOOK_URL} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'var(--accent)', color: 'var(--cream-50)', fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 16, padding: '14px 0', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>
-              <i className="ph-light ph-calendar-plus" style={{ fontSize: 18 }} />
-              Book now
-            </a>
+            <a href={BOOK_URL} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--accent)', color: 'var(--cream-50)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 16, padding: '14px 0', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>Book now</a>
           </div>
         </div>
       )}
@@ -163,11 +156,9 @@ function AccordionFooter() {
         <div style={{ gridColumn: m ? '1 / -1' : 'auto', textAlign: m ? 'center' : 'left', marginBottom: m ? 8 : 0 }}>
           <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: 116, marginLeft: m ? 0 : -6 }} />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: m ? 'center' : 'flex-start' }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 4 }}>Get in touch</div>
-          <span style={{ fontSize: 14, color: 'var(--cream-200)' }}>{c.phone}</span>
-          <span style={{ fontSize: 14, color: 'var(--cream-200)' }}>{c.email}</span>
-          <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 18, alignItems: m ? 'center' : 'flex-start' }}>
+          <a href={BOOK_URL} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'var(--accent)', color: 'var(--cream-50)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 14, letterSpacing: '.01em', padding: '12px 28px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>Book now</a>
+          <div style={{ display: 'flex', gap: 12 }}>
             {[['facebook', 'ph-facebook-logo', 'Facebook'], ['instagram', 'ph-instagram-logo', 'Instagram'], ['google', 'ph-google-logo', 'Google reviews']].map(([key, icon, label]) => (
               <a key={key} href={c.social[key]} target="_blank" rel="noopener noreferrer" aria-label={label} title={label}
                 style={{ width: 42, height: 42, borderRadius: '50%', border: '1px solid rgba(185,142,79,0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--honey-300)', fontSize: 20, textDecoration: 'none' }}>
@@ -193,14 +184,16 @@ export default function ServicesAccordion() {
     <div style={{ background: 'var(--surface-page)', minHeight: '100vh' }}>
       <AccordionHeader />
 
-      {/* Page title */}
-      <div style={{ background: 'var(--surface-card)', borderBottom: '1px solid var(--border-subtle)', padding: m ? '36px 20px 28px' : '52px 80px 40px', textAlign: 'center' }}>
-        <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 12 }}>Chic Nail &amp; Head Spa</div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontWeight: 400, fontSize: m ? 44 : 64, lineHeight: 1, color: 'var(--text-strong)', margin: '0 0 16px' }}>Services &amp; Pricing</h1>
-        <p style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, fontSize: m ? 14 : 15, color: 'var(--text-muted)', margin: '0 auto', maxWidth: 400, lineHeight: 1.6 }}>
-          All prices are starting rates. Ask us for a personalized quote.
-        </p>
-      </div>
+      {/* Hero (polish-wall photo) */}
+      <section style={{ position: 'relative', minHeight: m ? 320 : 420, overflow: 'hidden', display: 'flex', alignItems: 'flex-end', background: 'var(--espresso-900)' }}>
+        <img src="./assets/services-hero.webp" alt="A wall of nail polish colors at Chic Nail & Head Spa" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(42,29,21,0.42) 0%, rgba(42,29,21,0.32) 40%, rgba(42,29,21,0.82) 100%)' }} />
+        <div style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', width: '100%', padding: m ? '0 20px 32px' : '0 var(--gutter) 48px' }}>
+          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 500, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 12 }}>The Menu</div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: m ? 46 : 68, lineHeight: 1.02, color: 'var(--cream-50)', margin: 0, letterSpacing: '-0.015em' }}>Services &amp; <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pricing</em></h1>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: m ? 14 : 16, color: 'var(--cream-100)', margin: '12px 0 0', maxWidth: 460, lineHeight: 1.6 }}>All prices are starting rates. Ask us for a personalized quote.</p>
+        </div>
+      </section>
 
       {/* Accordion */}
       <main style={{ maxWidth: 720, margin: '0 auto', padding: m ? '12px 20px 80px' : '12px 0 100px' }}>
@@ -210,23 +203,6 @@ export default function ServicesAccordion() {
         <p style={{ fontFamily: 'var(--font-sans)', fontStyle: 'italic', fontSize: 12.5, color: 'var(--text-muted)', margin: '28px 0 0', lineHeight: 1.6 }}>
           All prices are starting rates. Call {c.phone} for a personalized quote.
         </p>
-
-        {/* Browse by category — internal links to the per-category pages */}
-        <div style={{ marginTop: 36, paddingTop: 24, borderTop: '1px solid var(--border-subtle)' }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 500, letterSpacing: '.22em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 14 }}>Browse by category</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-            {CATS.map((cat) => {
-              const meta = byCat(cat.key);
-              if (!meta) return null;
-              return (
-                <a key={cat.key} href={`${meta.slug}.html`}
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--text-secondary)', textDecoration: 'none', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-pill)', padding: '7px 16px' }}>
-                  {cat.label}
-                </a>
-              );
-            })}
-          </div>
-        </div>
       </main>
 
       <AccordionFooter />
