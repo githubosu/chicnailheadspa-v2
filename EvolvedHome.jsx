@@ -79,7 +79,7 @@ function EvoHero() {
   const go = (id) => { const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; };
   return (
     <section style={{ position: 'relative', minHeight: m ? 540 : 660, background: 'var(--espresso-900)', overflow: 'hidden', display: 'flex', alignItems: 'center', padding: m ? '96px 0 64px' : '0' }}>
-      <video autoPlay muted loop playsInline poster={EVO_SALON[2]} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}>
+      <video autoPlay muted loop playsInline preload="auto" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', background: 'var(--espresso-900)' }}>
         <source src={EVO_HERO_VIDEO} type="video/mp4" />
       </video>
       <div style={{ position: 'absolute', inset: 0, background: m ? 'linear-gradient(180deg, rgba(42,29,21,0.72) 0%, rgba(42,29,21,0.82) 100%)' : 'linear-gradient(100deg, rgba(42,29,21,0.86) 0%, rgba(42,29,21,0.55) 55%, rgba(42,29,21,0.32) 100%)' }} />
@@ -112,6 +112,7 @@ function EvoHero() {
 /* ── Trust strip (auto-fit, wraps to 2×2 then 1 col) ────────────────────── */
 function EvoTrust() {
   const m = useIsMobile();
+  if (m) return null; // hidden on mobile phones
   const go = (id) => { const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; };
   const items = [
     ['ph-sparkle', 'Luxury nail services', null],
@@ -151,17 +152,51 @@ function EvoTrust() {
   );
 }
 
+/* ── Sliding-underline tab bar (mocha indicator glides to the active tab) ── */
+function EvoServiceTabs({ items, value, onChange }) {
+  const rowRef = React.useRef(null);
+  const [ind, setInd] = React.useState({ left: 0, width: 0 });
+  const measure = React.useCallback(() => {
+    const row = rowRef.current; if (!row) return;
+    const active = row.querySelector('[data-active="true"]');
+    if (active) setInd({ left: active.offsetLeft, width: active.offsetWidth });
+  }, []);
+  React.useEffect(() => {
+    measure();
+    const active = rowRef.current && rowRef.current.querySelector('[data-active="true"]');
+    if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }, [value, measure]);
+  React.useEffect(() => {
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [measure]);
+  return (
+    <div className="evo-tabscroll" style={{ overflowX: 'auto', overflowY: 'hidden', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px' }}>
+      <style>{`.evo-tabscroll::-webkit-scrollbar{display:none}`}</style>
+      <div ref={rowRef} style={{ position: 'relative', display: 'inline-flex', minWidth: '100%', justifyContent: 'center', gap: 'clamp(18px, 4vw, 40px)', borderBottom: '1px solid var(--border-default)' }}>
+        {items.map((it) => {
+          const active = it.value === value;
+          return (
+            <button key={it.value} data-active={active} aria-selected={active} role="tab" onClick={() => onChange(it.value)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px 14px', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: active ? 600 : 500, letterSpacing: '.01em', color: active ? 'var(--accent)' : 'var(--text-secondary)', whiteSpace: 'nowrap', transition: 'color var(--dur) var(--ease-standard)', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              {it.label}
+              {it.count && <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--honey-600)', background: 'var(--gilt-soft)', borderRadius: 'var(--radius-pill)', padding: '3px 7px' }}>{it.count}</span>}
+            </button>
+          );
+        })}
+        <span aria-hidden="true" style={{ position: 'absolute', bottom: -1, left: ind.left, width: ind.width, height: 2, background: 'var(--accent)', borderRadius: 2, transition: 'left 280ms var(--ease-out), width 280ms var(--ease-out)' }} />
+      </div>
+    </div>
+  );
+}
+
 /* ── Services with prices ───────────────────────────────────────────────── */
 function EvoServices() {
-  const { Card, Badge, Button, Tabs } = EVO_DS;
+  const { Card, Badge, Button } = EVO_DS;
   const m = useIsMobile();
   const order = ['pedi', 'mani', 'acrylic', 'gelx', 'dip', 'headspa'];
   const [cat, setCat] = React.useState('pedi');
-  const tabScrollRef = React.useRef(null);
-  React.useEffect(() => {
-    const el = tabScrollRef.current && tabScrollRef.current.querySelector('[aria-selected="true"]');
-    if (el) el.scrollIntoView({ block: 'nearest', inline: 'center' });
-  }, [cat]);
   const labelMap = { pedi: 'Pedicure', mani: 'Manicure', acrylic: 'Acrylic', gelx: 'Gel-X', dip: 'Dip Powder', headspa: 'Head Spa' };
   const cats = order.map((v) => (v === 'headspa' ? { value: v, label: labelMap[v], count: 'Soon' } : { value: v, label: labelMap[v] }));
   const comingSoon = cat === 'headspa';
@@ -174,17 +209,7 @@ function EvoServices() {
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(32px, 6vw, 50px)', color: 'var(--text-strong)', margin: '12px 0 10px' }}>Treatments &amp; <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>specialties</em></h2>
           <p style={{ fontSize: 16, color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto' }}>Every service includes a complimentary consultation. Prices are starting rates — ask us for a personalized quote.</p>
         </div>
-        <style>{`
-          #evo-services .cnhs-tabs{border-bottom:none;gap:6px;}
-          #evo-services .cnhs-tab{border-radius:var(--radius-pill);padding:9px 20px;}
-          #evo-services .cnhs-tab.is-active{background:var(--accent);color:var(--cream-100);}
-          #evo-services .cnhs-tab.is-active::after{display:none;}
-          #evo-services .cnhs-tab:hover:not(.is-active){background:var(--surface-soft);}
-          #evo-services .tab-scroll{mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);}
-        `}</style>
-        <div ref={tabScrollRef} className="tab-scroll" style={{ overflowX: 'auto', overflowY: 'hidden', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px', display: 'flex', justifyContent: 'safe center' }}>
-          <Tabs items={cats} value={cat} onChange={setCat} style={{ flexShrink: 0 }} />
-        </div>
+        <EvoServiceTabs items={cats} value={cat} onChange={setCat} />
         {comingSoon ? (
           <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center', background: 'var(--surface-soft)', border: '1px solid var(--gilt-soft)', borderRadius: 'var(--radius-xl)', padding: '52px 32px' }}>
             <i className="ph-light ph-drop" style={{ fontSize: 40, color: 'var(--gilt)' }} />
