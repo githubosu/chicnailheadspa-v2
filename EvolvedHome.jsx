@@ -395,45 +395,53 @@ function EvoTestimonials() {
 }
 
 /* ── Visit / hours / book (stacks on mobile) ────────────────────────────── */
-/* ── Footer (stacks on mobile; now hosts the Visit Us block) ────────────── */
-function EvoFooter() {
-  const { Button } = EVO_DS;
+/* ── Visit / hours / map (stacks on mobile) ─────────────────────────────── */
+function EvoVisit() {
   const m = useIsMobile();
   const c = window.CNHS_MENU.contact;
   const hours = [['Mon – Fri', '9:00 AM – 7:00 PM'], ['Saturday', '9:00 AM – 6:00 PM'], ['Sunday', '10:00 AM – 5:00 PM']];
   const MAP = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.5392476754278!2d-83.2028395!3d40.18666340000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8838eb3894a54019%3A0x8281989e1af8745c!2sChic%20Nail%20and%20Head%20Spa!5e1!3m2!1sen!2s!4v1780990941973!5m2!1sen!2s';
-  const mapH = m ? 240 : 320;
+  const mapH = m ? 280 : 400;
   return (
-    <footer style={{ background: 'var(--espresso-950)', color: 'var(--cream-50)' }}>
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: (m ? '48px ' : '64px ') + padX(m) + ' 0' }}>
-        {/* Visit Us — moved here from the page body */}
-        <div id="evo-visit" style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : '0.85fr 1.15fr', gap: m ? 24 : 48, alignItems: 'stretch', paddingBottom: m ? 36 : 52, borderBottom: '1px solid rgba(185,142,79,0.22)' }}>
-          <div>
-            <div style={evoOverline('var(--honey-300)')}>Visit Us</div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(28px, 5vw, 40px)', color: 'var(--cream-50)', margin: '12px 0 22px', lineHeight: 1.08 }}>Find us in <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>Plain City</em></h2>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 14 }}>
-              <i className="ph-light ph-map-pin" style={{ fontSize: 22, color: 'var(--honey-300)', marginTop: 2 }} />
-              <span style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--cream-200)' }}>{c.addr1}<br />{c.addr2}</span>
-            </div>
-            <a href="tel:+16143899999" style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 20, textDecoration: 'none' }}>
-              <i className="ph-light ph-phone" style={{ fontSize: 22, color: 'var(--honey-300)' }} />
-              <span style={{ fontSize: 15, color: 'var(--cream-200)' }}>{c.phone}</span>
-            </a>
-            <div style={{ borderTop: '1px solid rgba(185,142,79,0.22)', paddingTop: 16, maxWidth: 340 }}>
-              {hours.map(([d, h]) => (
-                <div key={d} style={{ display: 'flex', justifyContent: 'space-between', padding: '7px 0', fontSize: 14 }}>
-                  <span style={{ color: 'var(--taupe-400)' }}>{d}</span><span style={{ fontWeight: 500, color: 'var(--cream-100)' }}>{h}</span>
-                </div>
-              ))}
-            </div>
+    <section id="evo-visit" style={{ background: 'var(--surface-card)', borderTop: '1px solid var(--border-subtle)' }}>
+      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m), display: 'grid', gridTemplateColumns: m ? '1fr' : '0.8fr 1.2fr', gap: m ? 28 : 48, alignItems: 'stretch' }}>
+        <div>
+          <div style={evoOverline()}>Visit Us</div>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(30px, 5vw, 44px)', color: 'var(--text-strong)', margin: '12px 0 22px', lineHeight: 1.08 }}>Find us in <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>Plain City</em></h2>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16 }}>
+            <i className="ph-light ph-map-pin" style={{ fontSize: 22, color: 'var(--gilt)', marginTop: 2 }} />
+            <span style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--text-secondary)' }}>{c.addr1}<br />{c.addr2}</span>
           </div>
-          <div style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', minHeight: mapH, boxShadow: 'var(--shadow-md)', border: '1px solid rgba(185,142,79,0.22)' }}>
-            <iframe title="Chic Nail & Head Spa on Google Maps" src={MAP} width="100%" height="100%" style={{ border: 0, display: 'block', minHeight: mapH }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 22 }}>
+            <i className="ph-light ph-phone" style={{ fontSize: 22, color: 'var(--gilt)' }} />
+            <span style={{ fontSize: 16, color: 'var(--text-secondary)' }}>{c.phone}</span>
+          </div>
+          <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: 18 }}>
+            {hours.map(([d, h]) => (
+              <div key={d} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', fontSize: 15, color: 'var(--text-body)' }}>
+                <span style={{ color: 'var(--text-muted)' }}>{d}</span><span style={{ fontWeight: 500 }}>{h}</span>
+              </div>
+            ))}
           </div>
         </div>
+        <div style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', minHeight: mapH, boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-subtle)' }}>
+          <iframe title="Chic Nail & Head Spa on Google Maps" src={MAP} width="100%" height="100%" style={{ border: 0, display: 'block', minHeight: mapH }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+  );
+}
 
+/* ── Footer (stacks on mobile) ──────────────────────────────────────────── */
+function EvoFooter() {
+  const { Button } = EVO_DS;
+  const m = useIsMobile();
+  const c = window.CNHS_MENU.contact;
+  return (
+    <footer style={{ background: 'var(--espresso-950)', color: 'var(--cream-50)' }}>
+      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: (m ? '48px ' : '64px ') + padX(m) + (m ? ' 32px' : ' 36px') }}>
         {/* Brand: logo, then centered social icons, then a large Book now */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 22, padding: (m ? '36px ' : '48px ') + '0' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 22 }}>
           <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: m ? 92 : 112 }} />
           <div style={{ display: 'flex', gap: 14, justifyContent: 'center' }}>
             {[['facebook', 'ph-facebook-logo', 'Facebook'], ['instagram', 'ph-instagram-logo', 'Instagram'], ['google', 'ph-google-logo', 'Google reviews']].map(([key, icon, label]) => (
@@ -480,6 +488,7 @@ function EvoHome() {
       <EvoReserve />
       <EvoGallery />
       <EvoTestimonials />
+      <EvoVisit />
       <EvoFooter />
     </div>
   );
