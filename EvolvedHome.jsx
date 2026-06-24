@@ -216,7 +216,7 @@ function EvoServices() {
         </div>
         )}
         <div style={{ textAlign: 'center', marginTop: 32 }}>
-          <Button variant="secondary" block={m} onClick={() => window.open('services-accordion.html', '_blank')} iconRight={<i className="ph-light ph-arrow-right" />}>View full services &amp; pricing</Button>
+          <Button variant="secondary" block={m} onClick={() => { window.location.href = 'services-accordion.html'; }} iconRight={<i className="ph-light ph-arrow-right" />}>View full services &amp; pricing</Button>
         </div>
       </div>
     </section>
