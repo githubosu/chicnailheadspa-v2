@@ -230,11 +230,15 @@ function EvoServices() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
                   <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 17, margin: 0, color: 'var(--text-strong)' }}>{s.name}</h3>
-                  {s.tag && <Badge variant={s.tagV}>{s.tag}</Badge>}
-                  {s.tag2 && <Badge variant={s.tag2V}>{s.tag2}</Badge>}
                 </div>
                 {s.blurb && <p style={{ fontSize: 12, lineHeight: 1.5, color: 'var(--text-secondary)', margin: 0 }}>{s.blurb}</p>}
-                {s.dur && <div style={{ marginTop: 8 }}><Badge variant="neutral" icon={<i className="ph-light ph-clock" />}>{s.dur}</Badge></div>}
+                {(s.tag || s.tag2 || s.dur) && (
+                  <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    {s.tag && <Badge variant={s.tagV}>{s.tag}</Badge>}
+                    {s.tag2 && <Badge variant={s.tag2V}>{s.tag2}</Badge>}
+                    {s.dur && <Badge variant="neutral" icon={<i className="ph-light ph-clock" />}>{s.dur}</Badge>}
+                  </div>
+                )}
               </div>
               <span style={{ fontFamily: 'var(--font-display)', fontSize: 21, color: 'var(--accent)', whiteSpace: 'nowrap' }}>{s.price}</span>
             </Card>
