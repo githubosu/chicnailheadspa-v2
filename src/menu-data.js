@@ -36,7 +36,7 @@ export const CNHS_MENU = {
   /* Full menu — sourced directly from the printed menu. */
   full: [
     // ── Pedicure ──────────────────────────────────────────────────────────
-    { cat: 'pedi', name: 'Chic Ritual',      price: '$68', dur: '60 min', tag: 'Popular', tagV: 'accent',
+    { cat: 'pedi', name: 'Chic Ritual',      price: '$68', dur: '60 min', tag: 'Popular', tagV: 'accent', tag2: 'Organic', tag2V: 'gilt',
       blurb: 'Warm soak, trim toe, cuticle work, extended massage, callus care, hydrating mask & rich cream wrap with hot-towel + an organic sea-salt scrub treatment for a deep and detoxifying cleanse.' },
     { cat: 'pedi', name: 'The Essential',    price: '$48', dur: '35 min',
       blurb: 'Warm soak, trim toe, cuticle work, light exfoliation, lotion and polish of your choice.' },
@@ -44,7 +44,7 @@ export const CNHS_MENU = {
       blurb: 'Essential + callus care, sugar scrub, lotion massage, hydrating mask & rich cream wrap with hot-towel.' },
     { cat: 'pedi', name: 'The Paraffin Luxe', price: '$82', dur: '75 min', tag: 'Organic', tagV: 'gilt',
       blurb: 'The Ritual sealed with a warm organic shea-paraffin dip for deep nourishment.' },
-    { cat: 'pedi', name: 'Chic Signature',   price: '$90', dur: '85 min', tag: 'VIP', tagV: 'reserve',
+    { cat: 'pedi', name: 'Chic Signature',   price: '$90', dur: '85 min', tag: 'VIP', tagV: 'reserve', tag2: 'Organic', tag2V: 'gilt',
       blurb: 'Organic herbal neck wrap & hot-stone massage — our most indulgent hour.' },
 
     // ── Manicure ──────────────────────────────────────────────────────────

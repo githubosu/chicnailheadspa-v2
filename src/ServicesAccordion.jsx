@@ -11,27 +11,18 @@ const CAT_META = {
   extras:  { note: 'Add to any service.' },
   art:     { note: 'Add to any service.' },
 };
-/* Lowest dollar amount in a category, e.g. '$66+' -> 66. */
-function catFrom(cat) {
-  const nums = window.CNHS_MENU.full
-    .filter((s) => s.cat === cat)
-    .map((s) => { const x = String(s.price).match(/\$(\d+)/); return x ? parseInt(x[1], 10) : Infinity; })
-    .filter((n) => isFinite(n));
-  return nums.length ? Math.min.apply(null, nums) : null;
-}
 /* Build the accordion categories straight from menu-data — single source of truth. */
 function buildCats() {
   return window.CNHS_MENU.cats
     .filter((c) => c.value !== 'all')
     .map((c) => {
       const meta = CAT_META[c.value] || {};
-      const min = catFrom(c.value);
       return {
         key: c.value,
         label: c.label,
         comingSoon: !!meta.comingSoon,
         note: meta.note,
-        sub: meta.sub || (min != null ? 'From $' + min : ''),
+        sub: meta.sub || '',
       };
     });
 }
@@ -86,6 +77,7 @@ function AccordionRow({ cat, isOpen, onToggle }) {
                     <span style={{ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 14.5, color: 'var(--text-strong)' }}>{item.name}</span>
                     {item.dur && <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11.5, color: 'var(--text-muted)' }}>{item.dur}</span>}
                     {item.tag && <Tag variant={item.tagV}>{item.tag}</Tag>}
+                    {item.tag2 && <Tag variant={item.tag2V}>{item.tag2}</Tag>}
                   </div>
                   {item.blurb && <p style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, fontSize: 13, lineHeight: 1.55, color: 'var(--text-muted)', margin: '4px 0 0' }}>{item.blurb}</p>}
                 </div>

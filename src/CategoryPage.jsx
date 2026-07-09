@@ -62,6 +62,7 @@ export default function CategoryPage({ cat }) {
                     <span style={{ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 16, color: 'var(--text-strong)' }}>{item.name}</span>
                     {item.dur && <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: 'var(--text-muted)' }}>{item.dur}</span>}
                     {item.tag && <Tag variant={item.tagV}>{item.tag}</Tag>}
+                    {item.tag2 && <Tag variant={item.tag2V}>{item.tag2}</Tag>}
                   </div>
                   {item.blurb && <p style={{ fontFamily: 'var(--font-sans)', fontWeight: 300, fontSize: 13.5, lineHeight: 1.55, color: 'var(--text-muted)', margin: '5px 0 0', maxWidth: 560 }}>{item.blurb}</p>}
                 </div>

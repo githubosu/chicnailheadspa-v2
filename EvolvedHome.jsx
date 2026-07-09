@@ -222,7 +222,7 @@ function EvoServices() {
           {cat === 'pedi' && (
             <p style={{ gridColumn: '1 / -1', fontFamily: 'var(--font-sans)', fontStyle: 'italic', fontSize: 13, color: 'var(--text-muted)', margin: '0 0 4px', display: 'flex', alignItems: 'center', gap: 6 }}>
               <i className="ph-light ph-star" style={{ color: 'var(--gilt)', flexShrink: 0 }} />
-              Gel color available on all pedicures · +$20
+              Gel color available on all pedicures +$20 or Gel French +$25 · Gel removal and regular polish included
             </p>
           )}
           {list.map((s) => (
@@ -231,6 +231,7 @@ function EvoServices() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
                   <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 17, margin: 0, color: 'var(--text-strong)' }}>{s.name}</h3>
                   {s.tag && <Badge variant={s.tagV}>{s.tag}</Badge>}
+                  {s.tag2 && <Badge variant={s.tag2V}>{s.tag2}</Badge>}
                 </div>
                 {s.blurb && <p style={{ fontSize: 12, lineHeight: 1.5, color: 'var(--text-secondary)', margin: 0 }}>{s.blurb}</p>}
                 {s.dur && <div style={{ marginTop: 8 }}><Badge variant="neutral" icon={<i className="ph-light ph-clock" />}>{s.dur}</Badge></div>}
