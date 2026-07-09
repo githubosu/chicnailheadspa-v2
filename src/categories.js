@@ -26,8 +26,11 @@ export const CATEGORIES = [
     intro: 'Gentle manicures and pedicures for little ones (ages 10 & under).',
     seoTitle: 'Kids Manicures & Pedicures in Plain City, OH', seoDesc: 'Kids manicures and pedicures (ages 10 & under) at Chic Nail & Head Spa, Plain City OH. Gentle, fun and quick. Book a kids service.' },
   { cat: 'extras',  slug: 'extras',     eyebrow: 'Finishing',         comingSoon: false,
-    intro: 'Nail art, chrome, paraffin and the finishing touches that make a set yours.',
-    seoTitle: 'Nail Art & Add-Ons in Plain City, OH', seoDesc: 'Nail art, chrome, cat-eye, French, paraffin and add-ons at Chic Nail & Head Spa, Plain City OH. Make any service your own.' },
+    intro: 'Polish changes, cuticle care and the finishing touches that make a set yours.',
+    seoTitle: 'Nail Add-Ons in Plain City, OH', seoDesc: 'Polish changes, gel French, cuticle care, nail repair and add-ons at Chic Nail & Head Spa, Plain City OH. Make any service your own.' },
+  { cat: 'art',     slug: 'nail-art',   eyebrow: 'Artistry',          comingSoon: false,
+    intro: 'From chrome and cat-eye to fully custom hand-painted sets — nail art at every level.',
+    seoTitle: 'Nail Art in Plain City, OH', seoDesc: 'Nail art at Chic Nail & Head Spa, Plain City OH — chrome, cat eye, design French and hand-painted custom sets. Book your nail art.' },
 ];
 
 export const bySlug = (slug) => CATEGORIES.find((c) => c.slug === slug);

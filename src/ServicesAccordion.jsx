@@ -6,9 +6,10 @@ const BOOK_URL = 'tel:+16143899999';
 /* Category metadata that isn't in menu-data (notes + coming-soon state). */
 const CAT_META = {
   headspa: { comingSoon: true, sub: 'Coming soon' },
-  pedi:    { note: 'Gel color available on all pedicures · +$20.' },
+  pedi:    { note: 'Gel color available on all pedicures +$20 or Gel French +$25 · Gel removal and regular polish are included with all pedicures.' },
   kids:    { note: 'Ages 10 & under.' },
   extras:  { note: 'Add to any service.' },
+  art:     { note: 'Add to any service.' },
 };
 /* Lowest dollar amount in a category, e.g. '$66+' -> 66. */
 function catFrom(cat) {
