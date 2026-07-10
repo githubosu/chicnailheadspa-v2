@@ -1,0 +1,31 @@
+# Chic Nail & Head Spa
+
+> Boutique nail salon and Japanese-style head spa in Plain City, Ohio. Luxury nail
+> care — pedicures, manicures, gel extensions, dip powder, acrylic, nail art — plus
+> waxing and kids' services. A restorative Japanese head spa opens soon.
+
+- Address: 12076 Sycamore Trace, Plain City, OH 43064
+- Phone: (614) 389-9999
+- Email: Chicnailheadspa@gmail.com
+- Hours: Mon–Fri 10am–7pm · Sat 10am–6pm · Sun 11am–5pm
+- Book online: https://githubosu.github.io/chicnailheadspa-v2/book.html
+- Walk-ins welcome. All prices are starting rates.
+
+## Services & Pricing
+
+- [Full service menu](https://githubosu.github.io/chicnailheadspa-v2/services-accordion.html): every service with prices and descriptions
+- [Pedicures](https://githubosu.github.io/chicnailheadspa-v2/pedicure.html): Chic Ritual $68 (60 min), The Essential $48, The Renewal $58, The Paraffin Luxe $82, Chic Signature $90. Gel color +$20; gel removal and regular polish included.
+- [Manicures](https://githubosu.github.io/chicnailheadspa-v2/manicure.html): Gel Manicure $46, Manicure Regular Polish $30, Manicure Regular Polish + Removal $40
+- [Gel extensions](https://githubosu.github.io/chicnailheadspa-v2/gel-x.html): builder gel, tap gel and Gel X full sets & fills, from $60
+- [Dip powder](https://githubosu.github.io/chicnailheadspa-v2/dip-powder.html): from $56
+- [Acrylic](https://githubosu.github.io/chicnailheadspa-v2/acrylic.html): full sets, fills, ombré and pink & white, from $56
+- [Nail art](https://githubosu.github.io/chicnailheadspa-v2/nail-art.html): chrome, cat eye, design French, and custom hand-painted sets from $12
+- [Waxing](https://githubosu.github.io/chicnailheadspa-v2/waxing.html): brows to full legs
+- [Kids](https://githubosu.github.io/chicnailheadspa-v2/kids.html): ages 10 & under
+- [Extras & add-ons](https://githubosu.github.io/chicnailheadspa-v2/extras.html): polish changes, cuticle care, repairs, removals
+- [Head spa](https://githubosu.github.io/chicnailheadspa-v2/head-spa.html): Japanese-style scalp rituals — coming soon
+
+## Pages
+
+- [Home](https://githubosu.github.io/chicnailheadspa-v2/): overview, seasonal design gallery, hours & directions
+- [Book online](https://githubosu.github.io/chicnailheadspa-v2/book.html): reserve an appointment

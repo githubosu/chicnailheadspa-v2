@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMobile } from './shared/useMobile.js';
 
-const BOOK_URL = 'tel:+16143899999';
+const BOOK_URL = 'book.html';
 
 /* Category metadata that isn't in menu-data (notes + coming-soon state). */
 const CAT_META = {

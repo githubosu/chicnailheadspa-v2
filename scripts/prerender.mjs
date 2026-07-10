@@ -4,7 +4,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  renderHome, renderServices, renderCategory, renderJsonLd, renderBreadcrumb,
+  renderHome, renderServices, renderCategory, renderBook, renderJsonLd, renderBreadcrumb,
   CATEGORIES, BASE,
 } from '../dist-ssr/entry-server.js';
 
@@ -33,6 +33,7 @@ const LABELS = { pedi: 'Pedicure', mani: 'Manicure', acrylic: 'Acrylic', gelx: '
 
 await inject('index.html', renderHome());
 await inject('services-accordion.html', renderServices(), crumb([home, services]));
+await inject('book.html', renderBook(), crumb([home, { name: 'Book Online', url: BASE + 'book.html' }]));
 
 for (const c of CATEGORIES) {
   await inject(`${c.slug}.html`, renderCategory(c.cat), crumb([

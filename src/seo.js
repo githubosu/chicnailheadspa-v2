@@ -4,9 +4,9 @@
 const BASE = 'https://githubosu.github.io/chicnailheadspa-v2/';
 
 const HOURS = [
-  { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '19:00' },
-  { days: ['Saturday'], opens: '09:00', closes: '18:00' },
-  { days: ['Sunday'], opens: '10:00', closes: '17:00' },
+  { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '19:00' },
+  { days: ['Saturday'], opens: '10:00', closes: '18:00' },
+  { days: ['Sunday'], opens: '11:00', closes: '17:00' },
 ];
 
 const priceNum = (p) => { const m = String(p).match(/\$(\d+)/); return m ? Number(m[1]) : undefined; };
@@ -38,7 +38,7 @@ export function localBusinessLd(menu) {
     slogan: c.tagline,
     url: BASE,
     logo: BASE + 'assets/logo-lockup.png',
-    image: [BASE + 'assets/logo-lockup.png'],
+    image: [BASE + 'assets/og-image.jpg', BASE + 'assets/logo-lockup.png'],
     telephone: '+1-614-389-9999',
     email: c.email,
     priceRange: '$$',

@@ -9,8 +9,9 @@ const EVO_DS = window.ChicNailHeadSpaDesignSystem_843afb;
 /* Real assets from the live site (chicnailheadspa.com). Referenced by URL
    because the build sandbox can't download cross-origin; they load from the
    studio's own server. Drop local copies into assets/site/ to self-host. */
-const EVO_CDN = 'https://chicnailheadspa.com/assets/images/';
-const EVO_HERO_VIDEO = EVO_CDN + 'hero-video.mp4';
+// Self-hosted, compressed hero video (720p, ~2.6 MB) + instant-paint poster.
+const EVO_HERO_VIDEO = './assets/hero-video.mp4';
+const EVO_HERO_POSTER = './assets/hero-poster.webp';
 // Self-hosted, resized WebP (see scripts/optimize-images.mjs) — no CDN dependency.
 const EVO_GALLERY = [1,2,3,4,5,6,7,8,9].map((n) => './assets/img/nail-' + n + '.webp');
 const EVO_SALON = [1,2,3,4].map((n) => './assets/img/salon-' + n + '.webp');
@@ -56,7 +57,7 @@ function EvoHeader() {
             {links.map(([id, label]) => (
               <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: linkColor, padding: '6px 0', transition: 'color var(--dur) var(--ease-standard)' }}>{label}</button>
             ))}
-            <Button variant="primary" size="sm" onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
+            <Button variant="primary" size="sm" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
           </nav>
         )}
       </div>
@@ -65,7 +66,7 @@ function EvoHeader() {
           {links.map(([id, label]) => (
             <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'var(--font-sans)', fontSize: 17, fontWeight: 500, color: 'var(--text-strong)', padding: '14px 4px', borderBottom: '1px solid var(--border-subtle)' }}>{label}</button>
           ))}
-          <div style={{ marginTop: 12 }}><Button variant="primary" size="lg" block onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button></div>
+          <div style={{ marginTop: 12 }}><Button variant="primary" size="lg" block onClick={() => { window.location.href = 'book.html'; }}>Book now</Button></div>
         </div>
       )}
     </header>
@@ -79,7 +80,7 @@ function EvoHero() {
   const go = (id) => { const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; };
   return (
     <section style={{ position: 'relative', minHeight: m ? 540 : 660, background: 'var(--espresso-900)', overflow: 'hidden', display: 'flex', alignItems: 'center', padding: m ? '96px 0 64px' : '0' }}>
-      <video autoPlay muted loop playsInline preload="auto" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', background: 'var(--espresso-900)' }}>
+      <video autoPlay muted loop playsInline preload="metadata" poster={EVO_HERO_POSTER} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', background: 'var(--espresso-900)' }}>
         <source src={EVO_HERO_VIDEO} type="video/mp4" />
       </video>
       <div style={{ position: 'absolute', inset: 0, background: m ? 'linear-gradient(180deg, rgba(42,29,21,0.72) 0%, rgba(42,29,21,0.82) 100%)' : 'linear-gradient(100deg, rgba(42,29,21,0.86) 0%, rgba(42,29,21,0.55) 55%, rgba(42,29,21,0.32) 100%)' }} />
@@ -92,7 +93,7 @@ function EvoHero() {
             Luxury nail artistry and a restorative head spa — warm water, slow hands, and a quiet room in the heart of Plain City.
           </p>
           <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
-            <Button variant="primary" size="lg" onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
+            <Button variant="primary" size="lg" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
             <button onClick={() => go('services')} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--cream-100)', fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 500, textDecoration: 'underline', textDecorationThickness: '1px', textUnderlineOffset: '5px', textDecorationColor: 'var(--honey-400)' }}>
               View services
             </button>
@@ -288,7 +289,7 @@ function EvoReserve() {
         <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(34px, 6vw, 56px)', margin: '14px 0 16px', lineHeight: 1.04, color: 'var(--cream-50)' }}>Ready to be <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pampered</em>?</h2>
         <p style={{ fontSize: 'clamp(16px, 2.5vw, 19px)', lineHeight: 1.6, color: 'var(--taupe-400)', maxWidth: 520, margin: '0 auto 30px' }}>Book your appointment online in seconds. Choose your service, select a time, and arrive ready to unwind.</p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="primary" size="lg" block={m}>Book online now</Button>
+          <Button variant="primary" size="lg" block={m} onClick={() => { window.location.href = 'book.html'; }}>Book online now</Button>
         </div>
         <p style={{ fontSize: 14, color: 'var(--taupe-400)', margin: '22px 0 0' }}>Or call us — we&rsquo;re happy to help · <span style={{ color: 'var(--honey-300)' }}>{c.phone}</span></p>
       </div>
@@ -502,7 +503,7 @@ function EvoTestimonials() {
 function EvoVisit() {
   const m = useIsMobile();
   const c = window.CNHS_MENU.contact;
-  const hours = [['Mon – Fri', '9:00 AM – 7:00 PM'], ['Saturday', '9:00 AM – 6:00 PM'], ['Sunday', '10:00 AM – 5:00 PM']];
+  const hours = [['Mon – Fri', '10:00 AM – 7:00 PM'], ['Saturday', '10:00 AM – 6:00 PM'], ['Sunday', '11:00 AM – 5:00 PM']];
   const MAP = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.5392476754278!2d-83.2028395!3d40.18666340000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8838eb3894a54019%3A0x8281989e1af8745c!2sChic%20Nail%20and%20Head%20Spa!5e1!3m2!1sen!2s!4v1780990941973!5m2!1sen!2s';
   const mapH = m ? 280 : 400;
   return (
@@ -556,7 +557,7 @@ function EvoFooter() {
               </a>
             ))}
           </div>
-          <Button variant="primary" size="lg" style={{ fontSize: 17, padding: '16px 48px' }} onClick={() => { window.location.href = 'tel:+16143899999'; }}>Book now</Button>
+          <Button variant="primary" size="lg" style={{ fontSize: 17, padding: '16px 48px' }} onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
         </div>
       </div>
       <div style={{ borderTop: '1px solid rgba(185,142,79,0.22)', padding: '20px ' + padX(m), textAlign: 'center', fontSize: 12, color: 'var(--taupe-400)' }}>© 2026 Chic Nail &amp; Head Spa · Plain City, Ohio</div>

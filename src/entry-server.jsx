@@ -5,6 +5,7 @@ import { CNHS_MENU } from './menu-data.js';
 import '../EvolvedHome.jsx';      // defines window.EvoHome
 import ServicesAccordion from './ServicesAccordion.jsx';
 import CategoryPage from './CategoryPage.jsx';
+import BookPage from './BookPage.jsx';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { jsonLdScript, breadcrumbScript, BASE } from './seo.js';
@@ -22,6 +23,9 @@ export function renderServices() {
 }
 export function renderCategory(cat) {
   return renderToString(React.createElement(CategoryPage, { cat }));
+}
+export function renderBook() {
+  return renderToString(React.createElement(BookPage));
 }
 export function renderJsonLd() {
   return jsonLdScript(CNHS_MENU);

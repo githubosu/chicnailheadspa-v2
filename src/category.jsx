@@ -9,4 +9,7 @@ window.CNHS_MENU = CNHS_MENU; // ensure our menu wins over the bundle's demo
 
 const root = document.getElementById('root');
 const cat = root.dataset.cat;
-window.ReactDOM.createRoot(root).render(React.createElement(CategoryPage, { cat }));
+// Prerendered pages hydrate (reuses server DOM, no image re-fetch); empty dev shells mount fresh.
+const app = React.createElement(CategoryPage, { cat });
+if (root.hasChildNodes()) window.ReactDOM.hydrateRoot(root, app);
+else window.ReactDOM.createRoot(root).render(app);

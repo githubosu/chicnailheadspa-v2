@@ -23,10 +23,13 @@ function page(c) {
 <meta name="description" content="${esc(c.seoDesc)}">
 <link rel="canonical" href="${url}">
 <link rel="icon" href="./assets/favicon.png">
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(c.seoTitle)} — Chic Nail & Head Spa">
 <meta property="og:description" content="${esc(c.seoDesc)}">
 <meta property="og:url" content="${url}">
+<meta property="og:image" content="${BASE}assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="./styles.css">

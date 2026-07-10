@@ -73,8 +73,8 @@ export default function CategoryPage({ cat }) {
               Prices are starting rates. Call {window.CNHS_MENU.contact.phone} for a personalized quote.
             </p>
             <div style={{ marginTop: 28, display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-              <a href={BOOK_TEL} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent)', color: 'var(--on-accent)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 15, padding: '13px 28px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>
-                <i className="ph-light ph-phone" /> Book {label.toLowerCase()}
+              <a href="book.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent)', color: 'var(--on-accent)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 15, padding: '13px 28px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>
+                <i className="ph-light ph-calendar-check" /> Book {label.toLowerCase()}
               </a>
               <a href="services-accordion.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: 'var(--accent)', textDecoration: 'none' }}>
                 All services <i className="ph-light ph-arrow-right" />
