@@ -1,6 +1,6 @@
 // Inject prerendered body HTML + structured data into the built pages so crawlers
 // (and first paint) get real content. Runs after `vite build` + the SSR build.
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile, readdir, unlink } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -40,3 +40,15 @@ for (const c of CATEGORIES) {
     home, services, { name: LABELS[c.cat] || c.slug, url: `${BASE}${c.slug}.html` },
   ]));
 }
+
+// Gallery folders hold .jpg/.png sources the pages never load (only the .webp
+// derivatives are requested) — drop them from the deploy artifact.
+const galleryDir = resolve(dist, 'assets/gallery');
+let dropped = 0;
+for (const theme of await readdir(galleryDir, { withFileTypes: true })) {
+  if (!theme.isDirectory()) continue;
+  for (const f of await readdir(resolve(galleryDir, theme.name))) {
+    if (/\.(jpe?g|png)$/i.test(f)) { await unlink(resolve(galleryDir, theme.name, f)); dropped++; }
+  }
+}
+if (dropped) console.log(`dropped ${dropped} gallery source image(s) from dist`);
