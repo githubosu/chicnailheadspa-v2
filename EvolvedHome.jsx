@@ -347,14 +347,81 @@ function evoGalleryImages(key) {
   return Array.from({ length: 9 }, (_, i) => './assets/gallery/' + key + '/nail-' + (i + 1) + '.webp');
 }
 
+/* ── Gallery lightbox (click to enlarge, arrows/swipe to move) ──────────── */
+function EvoLightbox({ images, index, tags, icon, onClose, onMove }) {
+  const m = useIsMobile();
+  const touchX = React.useRef(null);
+  const n = images.length;
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowLeft') onMove(-1);
+      else if (e.key === 'ArrowRight') onMove(1);
+    };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prevOverflow; };
+  }, [onClose, onMove]);
+
+  const navBtn = (side, dir, glyph) => (
+    <button
+      onClick={(e) => { e.stopPropagation(); onMove(dir); }}
+      aria-label={dir < 0 ? 'Previous photo' : 'Next photo'}
+      style={{ position: 'absolute', [side]: m ? 8 : 24, top: '50%', transform: 'translateY(-50%)', width: m ? 40 : 48, height: m ? 40 : 48, borderRadius: '50%', border: '1px solid rgba(254,247,237,0.35)', background: 'rgba(42,29,21,0.45)', color: 'var(--cream-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 2 }}>
+      <i className={'ph-light ' + glyph} style={{ fontSize: m ? 20 : 24 }} />
+    </button>
+  );
+
+  return (
+    <div
+      onClick={onClose}
+      onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
+      onTouchEnd={(e) => {
+        if (touchX.current == null) return;
+        const dx = e.changedTouches[0].clientX - touchX.current;
+        touchX.current = null;
+        if (Math.abs(dx) > 40) onMove(dx > 0 ? -1 : 1);
+      }}
+      role="dialog" aria-modal="true" aria-label="Gallery photo viewer"
+      style={{ position: 'fixed', inset: 0, zIndex: 100, background: 'rgba(42,29,21,0.94)', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'evoFade 180ms var(--ease-standard) both' }}>
+      <button
+        onClick={onClose} aria-label="Close photo viewer"
+        style={{ position: 'absolute', top: m ? 14 : 24, right: m ? 14 : 24, width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(254,247,237,0.35)', background: 'rgba(42,29,21,0.45)', color: 'var(--cream-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 2 }}>
+        <i className="ph-light ph-x" style={{ fontSize: 20 }} />
+      </button>
+      {navBtn('left', -1, 'ph-caret-left')}
+      {navBtn('right', 1, 'ph-caret-right')}
+      <figure onClick={(e) => e.stopPropagation()} style={{ margin: 0, maxWidth: m ? '94vw' : '86vw', maxHeight: '88vh', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+        <img
+          key={index}
+          src={images[index]}
+          alt={tags[index % tags.length] + ' nail art, enlarged'}
+          onError={(e) => { e.currentTarget.src = EVO_GALLERY[index % EVO_GALLERY.length]; e.currentTarget.onerror = null; }}
+          style={{ maxWidth: '100%', maxHeight: m ? '74vh' : '78vh', objectFit: 'contain', borderRadius: 'var(--radius-lg)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)', animation: 'evoFade 220ms var(--ease-standard) both' }}
+        />
+        <figcaption style={{ fontFamily: 'var(--font-sans)', fontSize: 13, letterSpacing: '.05em', color: 'var(--cream-100)', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <i className={'ph-fill ' + icon} style={{ color: 'var(--honey-300)', fontSize: 14 }} />
+          {tags[index % tags.length]}
+          <span style={{ opacity: 0.6 }}>·&nbsp; {index + 1} / {n}</span>
+        </figcaption>
+      </figure>
+    </div>
+  );
+}
+
 /* ── Gallery (date-aware: seasonal & holiday themes) ────────────────────── */
 function EvoGallery() {
   const { Button, Badge } = EVO_DS;
   const m = useIsMobile();
   const autoKey = React.useMemo(() => evoThemeForDate(new Date()), []);
   const [key, setKey] = React.useState(autoKey);
+  const [lightbox, setLightbox] = React.useState(null); // open image index, or null
   const t = EVO_THEMES[key];
   const images = evoGalleryImages(key);
+  const closeLightbox = React.useCallback(() => setLightbox(null), []);
+  const moveLightbox = React.useCallback((dir) => setLightbox((i) => (i + dir + 9) % 9), []);
   // chips: a curated rail — current theme first, then the rest
   const chipKeys = [autoKey, ...Object.keys(EVO_THEMES).filter((k) => k !== autoKey)];
   return (
@@ -371,7 +438,10 @@ function EvoGallery() {
         {/* chips hidden — theme auto-selects from date, no UI needed */}
         <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: m ? 10 : 16 }}>
           {images.map((src, i) => (
-            <div key={src} style={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--mocha-200)', boxShadow: 'var(--shadow-sm)' }}>
+            <div key={src} role="button" tabIndex={0} aria-label={'Enlarge ' + t.tags[i % t.tags.length] + ' nail art photo'}
+              onClick={() => setLightbox(i)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLightbox(i); } }}
+              style={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--mocha-200)', boxShadow: 'var(--shadow-sm)', cursor: 'pointer' }}>
               <img
                 src={src}
                 alt={t.tags[i % t.tags.length] + ' nail art'}
@@ -388,6 +458,9 @@ function EvoGallery() {
         </div>
         {m && <div style={{ marginTop: 20 }}><Button variant="secondary" block iconRight={<i className="ph-light ph-arrow-right" />}>View full gallery</Button></div>}
       </div>
+      {lightbox != null && (
+        <EvoLightbox images={images} index={lightbox} tags={t.tags} icon={t.icon} onClose={closeLightbox} onMove={moveLightbox} />
+      )}
     </section>
   );
 }
