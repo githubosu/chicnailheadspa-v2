@@ -3,19 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Services &amp; Pricing — Chic Nail &amp; Head Spa · Plain City, OH</title>
-<meta name="description" content="Full service menu and pricing at Chic Nail & Head Spa, Plain City OH — pedicures, manicures, acrylic, gel-X, dip powder, waxing, kids and add-ons. Starting rates; ask for a personalized quote.">
-<link rel="canonical" href="https://githubosu.github.io/chicnailheadspa-v2/services-accordion.html">
+<title>Pedicures in Plain City, OH — Chic Nail &amp; Head Spa</title>
+<meta name="description" content="Chic pedicures in Plain City, OH — from a tidy classic to a hot-stone signature ritual. Gel color available. Book your pedicure today.">
+<link rel="canonical" href="https://githubosu.github.io/chicnailheadspa-v2/pedicure.html">
 <link rel="icon" href="./assets/favicon.png">
 <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
-
 <meta property="og:type" content="website">
+<meta property="og:title" content="Pedicures in Plain City, OH — Chic Nail & Head Spa">
+<meta property="og:description" content="Chic pedicures in Plain City, OH — from a tidy classic to a hot-stone signature ritual. Gel color available. Book your pedicure today.">
+<meta property="og:url" content="https://githubosu.github.io/chicnailheadspa-v2/pedicure.html">
 <meta property="og:image" content="https://githubosu.github.io/chicnailheadspa-v2/assets/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta property="og:title" content="Services & Pricing — Chic Nail & Head Spa">
-<meta property="og:description" content="Pedicures, manicures, acrylic, gel-X, dip, waxing, kids & add-ons. Plain City, OH.">
-<meta property="og:url" content="https://githubosu.github.io/chicnailheadspa-v2/services-accordion.html">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -24,10 +22,12 @@
 <style>
   html, body { margin: 0; background: var(--surface-page); }
   #root { min-height: 100vh; }
+  @keyframes evoFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes evoBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="module" src="/src/services.jsx"></script>
+<div id="root" data-cat="pedi"></div>
+<script type="module" src="/src/category.jsx"></script>
 </body>
 </html>

@@ -2,31 +2,29 @@
    testimonials, visit/hours/map) but elevates it with our editorial system.
    MOBILE-FIRST: fluid type via clamp(), auto-fit card grids, and a viewport
    hook that collapses the two-column bands + nav at <760px. */
-history.scrollRestoration = 'manual';
+import { useMobile as useIsMobile } from './src/shared/useMobile.js';
+if (typeof history !== 'undefined') history.scrollRestoration = 'manual';
 const EVO_DS = window.ChicNailHeadSpaDesignSystem_843afb;
 
 /* Real assets from the live site (chicnailheadspa.com). Referenced by URL
    because the build sandbox can't download cross-origin; they load from the
    studio's own server. Drop local copies into assets/site/ to self-host. */
-const EVO_CDN = 'https://chicnailheadspa.com/assets/images/';
-const EVO_HERO_VIDEO = EVO_CDN + 'hero-video.mp4';
-const EVO_GALLERY = [1,2,3,4,5,6,7,8,9].map((n) => EVO_CDN + 'gallery/nail-' + n + '.png');
-const EVO_SALON = [1,2,3,4].map((n) => EVO_CDN + 'gallery/salon-' + n + '.png');
+// Self-hosted, compressed hero video (720p, ~2.6 MB) + instant-paint poster.
+const EVO_HERO_VIDEO = './assets/hero-video.mp4';
+const EVO_HERO_POSTER = './assets/hero-poster.webp';
+// Self-hosted, resized WebP (see scripts/optimize-images.mjs) — no CDN dependency.
+const EVO_GALLERY = [1,2,3,4,5,6,7,8,9].map((n) => './assets/img/nail-' + n + '.webp');
+const EVO_SALON = [1,2,3,4].map((n) => './assets/img/salon-' + n + '.webp');
 
-/* Viewport hook — single breakpoint at 760px (tablet/phone). */
-function useIsMobile(bp) {
-  const q = '(max-width: ' + (bp || 760) + 'px)';
-  const get = () => (typeof window !== 'undefined' && window.matchMedia ? window.matchMedia(q).matches : false);
-  const [m, setM] = React.useState(get);
-  React.useEffect(() => {
-    const mq = window.matchMedia(q);
-    const on = () => setM(mq.matches);
-    on();
-    mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
-    return () => { mq.removeEventListener ? mq.removeEventListener('change', on) : mq.removeListener(on); };
-  }, [q]);
-  return m;
-}
+/* Viewport hook — shared single implementation (see src/shared/useMobile.js). */
+
+/* Responsive spacing helpers (mobile-first: small by default, grows fluidly). */
+const sectionPad = '(--section-y)';
+const padY = (m) => (m ? '56px clamp(20px, 5vw, 32px)' : 'var(--section-y) clamp(24px, 5vw, var(--gutter))');
+const padX = (m) => (m ? 'clamp(20px, 5vw, 32px)' : 'var(--gutter)');
+const wrap = (m) => ({ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 ' + padX(m) });
+
+const evoOverline = (color) => ({ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 13, letterSpacing: '.26em', textTransform: 'uppercase', color: color || 'var(--accent)' });
 
 /* Scroll-reveal hook: adds evo-reveal class when element enters viewport. */
 function useScrollReveal() {
@@ -46,14 +44,6 @@ function useScrollReveal() {
   }, []);
   return ref;
 }
-
-/* Responsive spacing helpers (mobile-first: small by default, grows fluidly). */
-const sectionPad = '(--section-y)';
-const padY = (m) => (m ? '56px clamp(20px, 5vw, 32px)' : 'var(--section-y) clamp(24px, 5vw, var(--gutter))');
-const padX = (m) => (m ? 'clamp(20px, 5vw, 32px)' : 'var(--gutter)');
-const wrap = (m) => ({ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 ' + padX(m) });
-
-const evoOverline = (color) => ({ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 13, letterSpacing: '.26em', textTransform: 'uppercase', color: color || 'var(--accent)' });
 
 /* ── Header (collapses to a sheet menu on mobile) ───────────────────────── */
 function EvoHeader() {
@@ -86,7 +76,7 @@ function EvoHeader() {
             {links.map(([id, label]) => (
               <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: linkColor, padding: '6px 0', transition: 'color var(--dur) var(--ease-standard)' }}>{label}</button>
             ))}
-            <Button variant="primary" size="sm">Book now</Button>
+            <Button variant="primary" size="sm" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
           </nav>
         )}
       </div>
@@ -95,7 +85,7 @@ function EvoHeader() {
           {links.map(([id, label]) => (
             <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'var(--font-sans)', fontSize: 17, fontWeight: 500, color: 'var(--text-strong)', padding: '14px 4px', borderBottom: '1px solid var(--border-subtle)' }}>{label}</button>
           ))}
-          <div style={{ marginTop: 12 }}><Button variant="primary" size="lg" block>Book now</Button></div>
+          <div style={{ marginTop: 12 }}><Button variant="primary" size="lg" block onClick={() => { window.location.href = 'book.html'; }}>Book now</Button></div>
         </div>
       )}
     </header>
@@ -109,7 +99,7 @@ function EvoHero() {
   const go = (id) => { const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; };
   return (
     <section style={{ position: 'relative', minHeight: m ? 540 : 660, background: 'var(--espresso-900)', overflow: 'hidden', display: 'flex', alignItems: 'center', padding: m ? '96px 0 64px' : '0' }}>
-      <video autoPlay muted loop playsInline poster={EVO_SALON[2]} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}>
+      <video autoPlay muted loop playsInline preload="metadata" poster={EVO_HERO_POSTER} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', background: 'var(--espresso-900)' }}>
         <source src={EVO_HERO_VIDEO} type="video/mp4" />
       </video>
       <div style={{ position: 'absolute', inset: 0, background: m ? 'linear-gradient(180deg, rgba(42,29,21,0.72) 0%, rgba(42,29,21,0.82) 100%)' : 'linear-gradient(100deg, rgba(42,29,21,0.86) 0%, rgba(42,29,21,0.55) 55%, rgba(42,29,21,0.32) 100%)' }} />
@@ -122,7 +112,7 @@ function EvoHero() {
             Luxury nail artistry and a restorative head spa — warm water, slow hands, and a quiet room in the heart of Plain City.
           </p>
           <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
-            <Button variant="primary" size="lg">Book now</Button>
+            <Button variant="primary" size="lg" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
             <button onClick={() => go('services')} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--cream-100)', fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 500, textDecoration: 'underline', textDecorationThickness: '1px', textUnderlineOffset: '5px', textDecorationColor: 'var(--honey-400)' }}>
               View services
             </button>
@@ -142,6 +132,7 @@ function EvoHero() {
 /* ── Trust strip (auto-fit, wraps to 2×2 then 1 col) ────────────────────── */
 function EvoTrust() {
   const m = useIsMobile();
+  if (m) return null; // hidden on mobile phones
   const go = (id) => { const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; };
   const items = [
     ['ph-sparkle', 'Luxury nail services', null],
@@ -181,22 +172,56 @@ function EvoTrust() {
   );
 }
 
+/* ── Sliding-underline tab bar (mocha indicator glides to the active tab) ── */
+function EvoServiceTabs({ items, value, onChange }) {
+  const rowRef = React.useRef(null);
+  const [ind, setInd] = React.useState({ left: 0, width: 0 });
+  const measure = React.useCallback(() => {
+    const row = rowRef.current; if (!row) return;
+    const active = row.querySelector('[data-active="true"]');
+    if (active) setInd({ left: active.offsetLeft, width: active.offsetWidth });
+  }, []);
+  React.useEffect(() => {
+    measure();
+    const active = rowRef.current && rowRef.current.querySelector('[data-active="true"]');
+    if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }, [value, measure]);
+  React.useEffect(() => {
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [measure]);
+  return (
+    <div className="evo-tabscroll" style={{ overflowX: 'auto', overflowY: 'hidden', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px' }}>
+      <style>{`.evo-tabscroll::-webkit-scrollbar{display:none}`}</style>
+      <div ref={rowRef} style={{ position: 'relative', display: 'inline-flex', minWidth: '100%', justifyContent: 'center', gap: 'clamp(18px, 4vw, 40px)', borderBottom: '1px solid var(--border-default)' }}>
+        {items.map((it) => {
+          const active = it.value === value;
+          return (
+            <button key={it.value} data-active={active} aria-selected={active} role="tab" onClick={() => onChange(it.value)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0 2px 14px', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: active ? 600 : 500, letterSpacing: '.01em', color: active ? 'var(--accent)' : 'var(--text-secondary)', whiteSpace: 'nowrap', transition: 'color var(--dur) var(--ease-standard)', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              {it.label}
+              {it.count && <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--honey-600)', background: 'var(--gilt-soft)', borderRadius: 'var(--radius-pill)', padding: '3px 7px' }}>{it.count}</span>}
+            </button>
+          );
+        })}
+        <span aria-hidden="true" style={{ position: 'absolute', bottom: -1, left: ind.left, width: ind.width, height: 2, background: 'var(--accent)', borderRadius: 2, transition: 'left 280ms var(--ease-out), width 280ms var(--ease-out)' }} />
+      </div>
+    </div>
+  );
+}
+
 /* ── Services with prices ───────────────────────────────────────────────── */
 function EvoServices() {
-  const { Card, Badge, Button, Tabs } = EVO_DS;
+  const { Card, Badge, Button } = EVO_DS;
   const m = useIsMobile();
   const order = ['pedi', 'mani', 'acrylic', 'gelx', 'dip', 'headspa'];
   const [cat, setCat] = React.useState('pedi');
-  const tabScrollRef = React.useRef(null);
-  const gridRef = useScrollReveal();
-  React.useEffect(() => {
-    const el = tabScrollRef.current && tabScrollRef.current.querySelector('[aria-selected="true"]');
-    if (el) el.scrollIntoView({ block: 'nearest', inline: 'center' });
-  }, [cat]);
   const labelMap = { pedi: 'Pedicure', mani: 'Manicure', acrylic: 'Acrylic', gelx: 'Gel-X', dip: 'Dip Powder', headspa: 'Head Spa' };
   const cats = order.map((v) => (v === 'headspa' ? { value: v, label: labelMap[v], count: 'Soon' } : { value: v, label: labelMap[v] }));
   const comingSoon = cat === 'headspa';
   const list = window.CNHS_MENU.full.filter((m2) => m2.cat === cat);
+  const gridRef = useScrollReveal();
   return (
     <section id="evo-services" style={{ background: 'var(--surface-page)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m) }}>
@@ -205,17 +230,7 @@ function EvoServices() {
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(32px, 6vw, 50px)', color: 'var(--text-strong)', margin: '12px 0 10px' }}>Treatments &amp; <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>specialties</em></h2>
           <p style={{ fontSize: 16, color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto' }}>Every service includes a complimentary consultation. Prices are starting rates — ask us for a personalized quote.</p>
         </div>
-        <style>{`
-          #evo-services .cnhs-tabs{border-bottom:none;gap:6px;}
-          #evo-services .cnhs-tab{border-radius:var(--radius-pill);padding:9px 20px;}
-          #evo-services .cnhs-tab.is-active{background:var(--accent);color:var(--cream-100);}
-          #evo-services .cnhs-tab.is-active::after{display:none;}
-          #evo-services .cnhs-tab:hover:not(.is-active){background:var(--surface-soft);}
-          #evo-services .tab-scroll{mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);}
-        `}</style>
-        <div ref={tabScrollRef} className="tab-scroll" style={{ overflowX: 'auto', overflowY: 'hidden', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none', margin: '24px 0 32px', display: 'flex', justifyContent: 'safe center' }}>
-          <Tabs items={cats} value={cat} onChange={setCat} style={{ flexShrink: 0 }} />
-        </div>
+        <EvoServiceTabs items={cats} value={cat} onChange={setCat} />
         {comingSoon ? (
           <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center', background: 'var(--surface-soft)', border: '1px solid var(--gilt-soft)', borderRadius: 'var(--radius-xl)', padding: '52px 32px' }}>
             <i className="ph-light ph-drop" style={{ fontSize: 40, color: 'var(--gilt)' }} />
@@ -228,7 +243,7 @@ function EvoServices() {
           {cat === 'pedi' && (
             <p style={{ gridColumn: '1 / -1', fontFamily: 'var(--font-sans)', fontStyle: 'italic', fontSize: 13, color: 'var(--text-muted)', margin: '0 0 4px', display: 'flex', alignItems: 'center', gap: 6 }}>
               <i className="ph-light ph-star" style={{ color: 'var(--gilt)', flexShrink: 0 }} />
-              Gel color available on all pedicures · +$20
+              Gel color available on all pedicures +$20 or Gel French +$25 · Gel removal and regular polish included
             </p>
           )}
           {list.map((s) => (
@@ -236,10 +251,15 @@ function EvoServices() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
                   <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 17, margin: 0, color: 'var(--text-strong)' }}>{s.name}</h3>
-                  {s.tag && <Badge variant={s.tagV}>{s.tag}</Badge>}
                 </div>
                 {s.blurb && <p style={{ fontSize: 12, lineHeight: 1.5, color: 'var(--text-secondary)', margin: 0 }}>{s.blurb}</p>}
-                {s.dur && <div style={{ marginTop: 8 }}><Badge variant="neutral" icon={<i className="ph-light ph-clock" />}>{s.dur}</Badge></div>}
+                {(s.tag || s.tag2 || s.dur) && (
+                  <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    {s.tag && <Badge variant={s.tagV}>{s.tag}</Badge>}
+                    {s.tag2 && <Badge variant={s.tag2V}>{s.tag2}</Badge>}
+                    {s.dur && <Badge variant="neutral" icon={<i className="ph-light ph-clock" />}>{s.dur}</Badge>}
+                  </div>
+                )}
               </div>
               <span style={{ fontFamily: 'var(--font-display)', fontSize: 21, color: 'var(--accent)', whiteSpace: 'nowrap' }}>{s.price}</span>
             </Card>
@@ -247,7 +267,7 @@ function EvoServices() {
         </div>
         )}
         <div style={{ textAlign: 'center', marginTop: 32 }}>
-          <Button variant="secondary" block={m} onClick={() => window.open('services-accordion.html', '_blank')} iconRight={<i className="ph-light ph-arrow-right" />}>View full services &amp; pricing</Button>
+          <Button variant="secondary" block={m} onClick={() => { window.location.href = 'services-accordion.html'; }} iconRight={<i className="ph-light ph-arrow-right" />}>View full services &amp; pricing</Button>
         </div>
       </div>
     </section>
@@ -261,7 +281,6 @@ function EvoReserve() {
   const c = window.CNHS_MENU.contact;
   const secRef = React.useRef(null);
   const imgRef = React.useRef(null);
-  const contentRef = useScrollReveal();
   React.useEffect(() => {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let raf = null;
@@ -285,12 +304,12 @@ function EvoReserve() {
     <section ref={secRef} id="evo-book" style={{ position: 'relative', overflow: 'hidden', background: 'var(--espresso-900)', color: 'var(--cream-50)' }}>
       <img ref={imgRef} src={EVO_SALON[0]} alt="" aria-hidden="true" loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.18)', willChange: 'transform' }} />
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(42,29,21,0.78) 0%, rgba(42,29,21,0.88) 100%)' }} />
-      <div ref={contentRef} style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m), textAlign: 'center' }}>
+      <div style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m), textAlign: 'center' }}>
         <div style={evoOverline('var(--honey-300)')}>Reserve Your Time</div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(34px, 6vw, 56px)', margin: '14px 0 16px', lineHeight: 1.04, color: 'var(--cream-50)' }}>Ready to be <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pampered</em>?</h2>
         <p style={{ fontSize: 'clamp(16px, 2.5vw, 19px)', lineHeight: 1.6, color: 'var(--taupe-400)', maxWidth: 520, margin: '0 auto 30px' }}>Book your appointment online in seconds. Choose your service, select a time, and arrive ready to unwind.</p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="primary" size="lg" block={m}>Book online now</Button>
+          <Button variant="primary" size="lg" block={m} onClick={() => { window.location.href = 'book.html'; }}>Book online now</Button>
         </div>
         <p style={{ fontSize: 14, color: 'var(--taupe-400)', margin: '22px 0 0' }}>Or call us — we&rsquo;re happy to help · <span style={{ color: 'var(--honey-300)' }}>{c.phone}</span></p>
       </div>
@@ -309,7 +328,7 @@ const EVO_THEMES = {
   stpatricks:  { label: "St. Patrick's", icon: 'ph-clover',         accent: 'luck',        title: ['A touch of', 'luck'],                    caption: "St. Patrick's · emerald, shamrocks & gold", tags: ['Shamrock art', 'Emerald gel', 'Gold accents', 'Clover tips', 'Green ombré', 'Rainbow detail', 'Matte green', 'Lucky charm', 'Glitter gold'] },
   spring:      { label: 'Spring',        icon: 'ph-flower',         accent: 'bloom',       title: ['In full', 'bloom'],                      caption: 'Spring · florals, pastels & soft French', tags: ['Cherry blossom', 'Pastel French', 'Daisy art', 'Lavender gel', 'Soft ombré', 'Floral detail', 'Mint chrome', 'Tulip accents', 'Petal tips'] },
   easter:      { label: 'Easter',        icon: 'ph-egg',            accent: 'pastels',     title: ['Soft', 'pastels'],                       caption: 'Easter · pastels, florals & egg-art accents', tags: ['Pastel swirl', 'Floral French', 'Egg art', 'Lilac gel', 'Mint ombré', 'Daisy tips', 'Speckled detail', 'Soft chrome', 'Spring petals'] },
-  fourth:      { label: 'July 4th',      icon: 'ph-firework',       accent: 'fireworks',   title: ['Light up the', 'fireworks'],             caption: 'July 4th · fireworks, stars & red-white-blue', tags: ['Fireworks', 'Stars & stripes', 'Red glitter', 'Navy chrome', 'Sparkler tips', 'Flag accents', 'Blue ombré', 'Silver foil', 'Liberty art'] },
+  fourth:      { label: 'July 4th',      icon: 'ph-confetti',       accent: 'fireworks',   title: ['Light up the', 'fireworks'],             caption: 'July 4th · fireworks, stars & red-white-blue', tags: ['Fireworks', 'Stars & stripes', 'Red glitter', 'Navy chrome', 'Sparkler tips', 'Flag accents', 'Blue ombré', 'Silver foil', 'Liberty art'] },
   summer:      { label: 'Summer',        icon: 'ph-sun-horizon',    accent: 'sunshine',    title: ['Made for', 'sunshine'],                  caption: 'Summer · brights, citrus & ocean tones', tags: ['Citrus art', 'Aqua chrome', 'Sunset ombré', 'Palm detail', 'Coral tips', 'Neon French', 'Seashell accents', 'Tropical floral', 'Gold shimmer'] },
   halloween:   { label: 'Halloween',     icon: 'ph-ghost',          accent: 'mischief',    title: ['A little', 'mischief'],                  caption: 'Halloween · spider webs, matte black & spice', tags: ['Spider web', 'Matte black', 'Ghost art', 'Pumpkin spice', 'Bat tips', 'Blood-red gel', 'Witchy chrome', 'Cobweb French', 'Candy corn'] },
   thanksgiving:{ label: 'Thanksgiving',  icon: 'ph-leaf',           accent: 'gratitude',   title: ['Warm with', 'gratitude'],                caption: 'Thanksgiving · burnt orange, gold & maple leaves', tags: ['Maple leaf', 'Burnt orange', 'Gold accents', 'Cinnamon gel', 'Plaid detail', 'Amber ombré', 'Wheat art', 'Copper chrome', 'Spice tips'] },
@@ -342,10 +361,75 @@ function evoThemeForDate(d) {
 }
 
 /* Returns the 9 local paths for a theme's gallery folder.
-   Folder convention: assets/gallery/<themeKey>/nail-1.jpg … nail-9.jpg
-   Falls back to live-site images via onError on each img tag. */
+   Convention: drop nail-1..9.(jpg|png) into assets/gallery/<themeKey>/ then run
+   `npm run optimize:images` — it writes nail-1..9.webp, which is what loads here.
+   Any missing image falls back to the generic optimized set via onError. */
 function evoGalleryImages(key) {
-  return Array.from({ length: 9 }, (_, i) => './assets/gallery/' + key + '/nail-' + (i + 1) + '.jpg');
+  return Array.from({ length: 9 }, (_, i) => './assets/gallery/' + key + '/nail-' + (i + 1) + '.webp');
+}
+
+/* ── Gallery lightbox (click to enlarge, arrows/swipe to move) ──────────── */
+function EvoLightbox({ images, index, tags, icon, onClose, onMove }) {
+  const m = useIsMobile();
+  const touchX = React.useRef(null);
+  const n = images.length;
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowLeft') onMove(-1);
+      else if (e.key === 'ArrowRight') onMove(1);
+    };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = prevOverflow; };
+  }, [onClose, onMove]);
+
+  const navBtn = (side, dir, glyph) => (
+    <button
+      onClick={(e) => { e.stopPropagation(); onMove(dir); }}
+      aria-label={dir < 0 ? 'Previous photo' : 'Next photo'}
+      style={{ position: 'absolute', [side]: m ? 8 : 24, top: '50%', transform: 'translateY(-50%)', width: m ? 40 : 48, height: m ? 40 : 48, borderRadius: '50%', border: '1px solid rgba(254,247,237,0.35)', background: 'rgba(42,29,21,0.45)', color: 'var(--cream-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 2 }}>
+      <i className={'ph-light ' + glyph} style={{ fontSize: m ? 20 : 24 }} />
+    </button>
+  );
+
+  return (
+    <div
+      onClick={onClose}
+      onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }}
+      onTouchEnd={(e) => {
+        if (touchX.current == null) return;
+        const dx = e.changedTouches[0].clientX - touchX.current;
+        touchX.current = null;
+        if (Math.abs(dx) > 40) onMove(dx > 0 ? -1 : 1);
+      }}
+      role="dialog" aria-modal="true" aria-label="Gallery photo viewer"
+      style={{ position: 'fixed', inset: 0, zIndex: 100, background: 'rgba(42,29,21,0.94)', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'evoFade 180ms var(--ease-standard) both' }}>
+      <button
+        onClick={onClose} aria-label="Close photo viewer"
+        style={{ position: 'absolute', top: m ? 14 : 24, right: m ? 14 : 24, width: 44, height: 44, borderRadius: '50%', border: '1px solid rgba(254,247,237,0.35)', background: 'rgba(42,29,21,0.45)', color: 'var(--cream-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 2 }}>
+        <i className="ph-light ph-x" style={{ fontSize: 20 }} />
+      </button>
+      {navBtn('left', -1, 'ph-caret-left')}
+      {navBtn('right', 1, 'ph-caret-right')}
+      <figure onClick={(e) => e.stopPropagation()} style={{ margin: 0, maxWidth: m ? '94vw' : '86vw', maxHeight: '88vh', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+        <img
+          key={index}
+          src={images[index]}
+          alt={tags[index % tags.length] + ' nail art, enlarged'}
+          onError={(e) => { e.currentTarget.src = EVO_GALLERY[index % EVO_GALLERY.length]; e.currentTarget.onerror = null; }}
+          style={{ maxWidth: '100%', maxHeight: m ? '74vh' : '78vh', objectFit: 'contain', borderRadius: 'var(--radius-lg)', boxShadow: '0 24px 70px rgba(0,0,0,0.5)', animation: 'evoFade 220ms var(--ease-standard) both' }}
+        />
+        <figcaption style={{ fontFamily: 'var(--font-sans)', fontSize: 13, letterSpacing: '.05em', color: 'var(--cream-100)', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <i className={'ph-fill ' + icon} style={{ color: 'var(--honey-300)', fontSize: 14 }} />
+          {tags[index % tags.length]}
+          <span style={{ opacity: 0.6 }}>·&nbsp; {index + 1} / {n}</span>
+        </figcaption>
+      </figure>
+    </div>
+  );
 }
 
 /* ── Gallery (date-aware: seasonal & holiday themes) ────────────────────── */
@@ -354,9 +438,11 @@ function EvoGallery() {
   const m = useIsMobile();
   const autoKey = React.useMemo(() => evoThemeForDate(new Date()), []);
   const [key, setKey] = React.useState(autoKey);
+  const [lightbox, setLightbox] = React.useState(null); // open image index, or null
   const t = EVO_THEMES[key];
   const images = evoGalleryImages(key);
-  const gridRef = useScrollReveal();
+  const closeLightbox = React.useCallback(() => setLightbox(null), []);
+  const moveLightbox = React.useCallback((dir) => setLightbox((i) => (i + dir + 9) % 9), []);
   // chips: a curated rail — current theme first, then the rest
   const chipKeys = [autoKey, ...Object.keys(EVO_THEMES).filter((k) => k !== autoKey)];
   return (
@@ -371,9 +457,12 @@ function EvoGallery() {
           {!m && <Button variant="ghost" iconRight={<i className="ph-light ph-arrow-right" />}>View full gallery</Button>}
         </div>
         {/* chips hidden — theme auto-selects from date, no UI needed */}
-        <div ref={gridRef} style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: m ? 10 : 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: m ? 10 : 16 }}>
           {images.map((src, i) => (
-            <div key={src} style={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--mocha-200)', boxShadow: 'var(--shadow-sm)' }}>
+            <div key={src} role="button" tabIndex={0} aria-label={'Enlarge ' + t.tags[i % t.tags.length] + ' nail art photo'}
+              onClick={() => setLightbox(i)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLightbox(i); } }}
+              style={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--mocha-200)', boxShadow: 'var(--shadow-sm)', cursor: 'pointer' }}>
               <img
                 src={src}
                 alt={t.tags[i % t.tags.length] + ' nail art'}
@@ -390,6 +479,9 @@ function EvoGallery() {
         </div>
         {m && <div style={{ marginTop: 20 }}><Button variant="secondary" block iconRight={<i className="ph-light ph-arrow-right" />}>View full gallery</Button></div>}
       </div>
+      {lightbox != null && (
+        <EvoLightbox images={images} index={lightbox} tags={t.tags} icon={t.icon} onClose={closeLightbox} onMove={moveLightbox} />
+      )}
     </section>
   );
 }
@@ -397,42 +489,29 @@ function EvoGallery() {
 /* ── Testimonials (auto-fit → 1 col on mobile) ──────────────────────────── */
 function EvoTestimonials() {
   const m = useIsMobile();
-  const containerRef = useScrollReveal();
   const quotes = [
     ['The best hour of my month. I left feeling like I\u2019d been on holiday.', 'Mei R.'],
     ['My scalp has never felt so clean — and the nail art is unreal.', 'Jordan P.'],
     ['Calm, careful, and genuinely luxurious. Worth every minute.', 'Alyssa T.'],
     ['I booked a head spa on a whim and now it\u2019s my monthly ritual.', 'Dana K.'],
   ];
-  const [i, setI] = React.useState(0);
-  const [paused, setPaused] = React.useState(false);
-  React.useEffect(() => {
-    if (paused) return;
-    const t = setInterval(() => setI((n) => (n + 1) % quotes.length), 5000);
-    return () => clearInterval(t);
-  }, [paused, quotes.length]);
-  const [q, who] = quotes[i];
   return (
-    <section ref={containerRef} style={{ background: 'var(--surface-soft)' }}>
+    <section style={{ background: 'var(--surface-soft)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m) }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={evoOverline()}>From Our Clients</div>
         </div>
-        <div
-          onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
-          style={{ maxWidth: 620, margin: '0 auto', textAlign: 'center', minHeight: m ? 180 : 160, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <i className="ph-light ph-quotes" style={{ fontSize: 28, color: 'var(--gilt)' }} />
-          <p key={i} style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(18px, 2.4vw, 26px)', lineHeight: 1.4, color: 'var(--text-strong)', margin: '12px 0 18px', letterSpacing: '-0.01em', animation: 'evoFade 600ms var(--ease-out, ease-out) both' }}>{q}</p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
-            <span style={{ color: 'var(--honey-500)', letterSpacing: '2px' }}>{'\u2605\u2605\u2605\u2605\u2605'}</span>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>{who}</span>
-          </div>
-          <div style={{ display: 'flex', gap: 9 }}>
-            {quotes.map((_, n) => (
-              <button key={n} onClick={() => setI(n)} aria-label={'Testimonial ' + (n + 1)}
-                style={{ width: n === i ? 26 : 9, height: 9, borderRadius: 'var(--radius-pill)', border: 'none', cursor: 'pointer', background: n === i ? 'var(--accent)' : 'var(--taupe-400)', padding: 0, transition: 'width var(--dur) var(--ease-standard), background var(--dur) var(--ease-standard)' }} />
-            ))}
-          </div>
+        <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: m ? 12 : 16, maxWidth: 720, margin: '0 auto' }}>
+          {quotes.slice(0, 3).map(([q, who]) => (
+            <figure key={who} style={{ margin: 0, background: 'var(--surface-card)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)', padding: '16px 16px', display: 'flex', flexDirection: 'column' }}>
+              <i className="ph-light ph-quotes" style={{ fontSize: 18, color: 'var(--gilt)' }} />
+              <blockquote style={{ flex: 1, margin: '8px 0 12px', fontFamily: 'var(--font-display)', fontSize: 15, lineHeight: 1.35, color: 'var(--text-strong)', letterSpacing: '-0.01em' }}>{q}</blockquote>
+              <figcaption style={{ display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border-subtle)', paddingTop: 10 }}>
+                <span style={{ color: 'var(--honey-500)', letterSpacing: '1.5px', fontSize: 11 }}>{'\u2605\u2605\u2605\u2605\u2605'}</span>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>{who}</span>
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </div>
     </section>
@@ -440,16 +519,16 @@ function EvoTestimonials() {
 }
 
 /* ── Visit / hours / book (stacks on mobile) ────────────────────────────── */
+/* ── Visit / hours / map (stacks on mobile) ─────────────────────────────── */
 function EvoVisit() {
   const m = useIsMobile();
   const c = window.CNHS_MENU.contact;
-  const hours = [['Mon – Fri', '9:00 AM – 7:00 PM'], ['Saturday', '9:00 AM – 6:00 PM'], ['Sunday', '10:00 AM – 5:00 PM']];
+  const hours = [['Mon – Fri', '10:00 AM – 7:00 PM'], ['Saturday', '10:00 AM – 6:00 PM'], ['Sunday', '11:00 AM – 5:00 PM']];
   const MAP = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.5392476754278!2d-83.2028395!3d40.18666340000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8838eb3894a54019%3A0x8281989e1af8745c!2sChic%20Nail%20and%20Head%20Spa!5e1!3m2!1sen!2s!4v1780990941973!5m2!1sen!2s';
   const mapH = m ? 280 : 400;
-  const contentRef = useScrollReveal();
   return (
     <section id="evo-visit" style={{ background: 'var(--surface-card)', borderTop: '1px solid var(--border-subtle)' }}>
-      <div ref={contentRef} style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m), display: 'grid', gridTemplateColumns: m ? '1fr' : '0.8fr 1.2fr', gap: m ? 28 : 48, alignItems: 'stretch' }}>
+      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m), display: 'grid', gridTemplateColumns: m ? '1fr' : '0.8fr 1.2fr', gap: m ? 28 : 48, alignItems: 'stretch' }}>
         <div>
           <div style={evoOverline()}>Visit Us</div>
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(30px, 5vw, 44px)', color: 'var(--text-strong)', margin: '12px 0 22px', lineHeight: 1.08 }}>Find us in <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>Plain City</em></h2>
@@ -479,28 +558,26 @@ function EvoVisit() {
 
 /* ── Footer (stacks on mobile) ──────────────────────────────────────────── */
 function EvoFooter() {
+  const { Button } = EVO_DS;
   const m = useIsMobile();
   const c = window.CNHS_MENU.contact;
   return (
     <footer style={{ background: 'var(--espresso-950)', color: 'var(--cream-50)' }}>
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: (m ? '48px ' : '64px ') + padX(m) + (m ? ' 32px' : ' 36px'), display: 'grid', gridTemplateColumns: m ? '1fr' : '1.4fr 1fr', gap: m ? 28 : 40, alignItems: 'start' }}>
-        <div style={{ gridColumn: m ? '1 / -1' : 'auto', textAlign: m ? 'center' : 'left', marginBottom: m ? 8 : 0 }}>
-          <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: 116, marginLeft: m ? 0 : -6 }} />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: m ? 'center' : 'flex-start' }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 11, letterSpacing: '.18em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 4 }}>Get in touch</div>
-          <span style={{ fontSize: 14, color: 'var(--cream-200)' }}>{c.phone}</span>
-          <span style={{ fontSize: 14, color: 'var(--cream-200)' }}>{c.email}</span>
-          <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
+      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: (m ? '48px ' : '64px ') + padX(m) + (m ? ' 32px' : ' 36px') }}>
+        {/* Brand: logo, then centered social icons, then a large Book now */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 22 }}>
+          <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: m ? 92 : 112 }} />
+          <div style={{ display: 'flex', gap: 14, justifyContent: 'center' }}>
             {[['facebook', 'ph-facebook-logo', 'Facebook'], ['instagram', 'ph-instagram-logo', 'Instagram'], ['google', 'ph-google-logo', 'Google reviews']].map(([key, icon, label]) => (
               <a key={key} href={c.social[key]} target="_blank" rel="noopener noreferrer" aria-label={label} title={label}
-                style={{ width: 42, height: 42, borderRadius: '50%', border: '1px solid rgba(185,142,79,0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--honey-300)', fontSize: 20, textDecoration: 'none', transition: 'background var(--dur) var(--ease-standard), color var(--dur) var(--ease-standard)' }}
+                style={{ width: 46, height: 46, borderRadius: '50%', border: '1px solid rgba(185,142,79,0.5)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--honey-300)', fontSize: 22, textDecoration: 'none', transition: 'background var(--dur) var(--ease-standard), color var(--dur) var(--ease-standard)' }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--honey-500)'; e.currentTarget.style.color = 'var(--espresso-950)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--honey-300)'; }}>
                 <i className={'ph-fill ' + icon} />
               </a>
             ))}
           </div>
+          <Button variant="primary" size="lg" style={{ fontSize: 17, padding: '16px 48px' }} onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
         </div>
       </div>
       <div style={{ borderTop: '1px solid rgba(185,142,79,0.22)', padding: '20px ' + padX(m), textAlign: 'center', fontSize: 12, color: 'var(--taupe-400)' }}>© 2026 Chic Nail &amp; Head Spa · Plain City, Ohio</div>
