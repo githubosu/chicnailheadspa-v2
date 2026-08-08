@@ -5,6 +5,10 @@ import { useHeroParallax, HERO_OVERSCAN } from './shared/useHeroParallax.js';
 
 const BOOK_URL = 'book.html';
 
+/* Headline split for the per-word reveal (see .evo-word in effects.css). The
+   final word is emitted separately because it carries its own italic styling. */
+const HERO_WORDS = ['Services', '&'];
+
 /* Category metadata that isn't in menu-data (notes + coming-soon state). */
 const CAT_META = {
   headspa: { comingSoon: true, sub: 'Coming soon' },
@@ -130,7 +134,26 @@ export default function ServicesAccordion() {
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(42,29,21,0.62) 0%, rgba(42,29,21,0.40) 38%, rgba(42,29,21,0.85) 100%)' }} />
         <div ref={hero.copyRef} style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', width: '100%', padding: m ? '0 20px 32px' : '0 var(--gutter) 48px', willChange: 'transform, opacity' }}>
           <div className="evo-hero-rise" style={{ '--evo-hero-i': 0, fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 500, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 12 }}>The Menu</div>
-          <h1 className="evo-hero-rise" style={{ '--evo-hero-i': 1, fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: m ? 46 : 68, lineHeight: 1.02, color: 'var(--cream-50)', margin: 0, letterSpacing: '-0.015em' }}>Services &amp; <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pricing</em></h1>
+          {/* Per-word masked rise, matching the homepage hero. No evo-hero-rise
+              on the h1 — the words are the entrance. Indices start at 1 so the
+              "The Menu" overline still lands first. */}
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: m ? 46 : 68, lineHeight: 1.02, color: 'var(--cream-50)', margin: 0, letterSpacing: '-0.015em' }}>
+            {HERO_WORDS.map((w, i) => (
+              // The {' '} is load-bearing: it keeps the h1's text a real phrase
+              // for screen readers, SEO and copy-paste. Spacing via margin would
+              // look identical but collapse it into one unbroken run.
+              <React.Fragment key={w + i}>
+                <span className="evo-word-mask">
+                  <span className="evo-word" style={{ '--evo-word-i': i + 1 }}>{w}</span>
+                </span>{' '}
+              </React.Fragment>
+            ))}
+            <span className="evo-word-mask">
+              <span className="evo-word" style={{ '--evo-word-i': HERO_WORDS.length + 1 }}>
+                <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pricing</em>
+              </span>
+            </span>
+          </h1>
           <p className="evo-hero-rise" style={{ '--evo-hero-i': 2, fontFamily: 'var(--font-sans)', fontSize: m ? 14 : 16, color: 'var(--cream-100)', margin: '12px 0 0', maxWidth: 460, lineHeight: 1.6 }}>All prices are starting rates. Ask us for a personalized quote.</p>
         </div>
       </section>
