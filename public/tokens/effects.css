@@ -91,6 +91,34 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Per-word headline reveal ─────────────────────────────────────────────
+   Each word rises out of its own clipping mask, so it reads as emerging from
+   behind the line rather than just fading — the editorial signature.
+
+   The mask needs padding-bottom (cancelled by an equal negative margin) or
+   overflow:hidden shears the descenders off letters like y and g.
+   Word gaps come from real space text nodes between the masks, not margin —
+   margin would look identical but collapse the h1's accessible text into one
+   unbroken run, which matters on the page's most SEO-significant element. */
+@keyframes evoWordRise {
+  from { opacity: 0; transform: translateY(105%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.evo-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+.evo-word {
+  display: inline-block;
+  animation: evoWordRise 900ms var(--ease-out) both;
+  animation-delay: calc(var(--evo-word-i, 0) * 60ms);
+}
+
 /* --evo-hero-i is the line's order in the stack (overline, h1, lede). */
 .evo-hero-rise {
   animation: evoHeroRise 900ms var(--ease-out) both;
@@ -198,10 +226,16 @@
   .evo-fade-in,
   .evo-hero-image,
   .evo-hero-rise,
-  .evo-rule-draw {
+  .evo-rule-draw,
+  .evo-word {
     opacity: 1;
     transform: none;
     animation: none;
+  }
+
+  /* No animation to clip, so drop the mask rather than risk shearing text. */
+  .evo-word-mask {
+    overflow: visible;
   }
 
   .evo-link-sweep::after {

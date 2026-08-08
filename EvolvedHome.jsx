@@ -75,6 +75,10 @@ function EvoHeader() {
   );
 }
 
+/* Headline split for the per-word reveal. The final word ("yours") is emitted
+   separately because it carries its own italic/honey styling. */
+const EVO_HERO_WORDS = ['A', 'moment', 'of', 'care', 'that', 'is', 'entirely'];
+
 /* ── Hero (video-forward) ───────────────────────────────────────────────── */
 function EvoHero() {
   const { Button } = EVO_DS;
@@ -97,13 +101,31 @@ function EvoHero() {
       <div style={{ position: 'absolute', inset: 0, background: m ? 'linear-gradient(180deg, rgba(42,29,21,0.72) 0%, rgba(42,29,21,0.82) 100%)' : 'linear-gradient(100deg, rgba(42,29,21,0.86) 0%, rgba(42,29,21,0.55) 55%, rgba(42,29,21,0.32) 100%)' }} />
       <div ref={hero.copyRef} style={{ position: 'relative', ...wrap(m), width: '100%', willChange: 'transform, opacity' }}>
         <div style={{ maxWidth: 620 }}>
-          <h1 className="evo-hero-rise" style={{ '--evo-hero-i': 0, fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(40px, 9vw, 84px)', lineHeight: 1.03, color: 'var(--cream-50)', margin: '0', letterSpacing: '-0.015em' }}>
-            A moment of care that is entirely <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>yours</em>.
+          {/* Per-word masked rise. The h1 itself carries no evo-hero-rise —
+              the words are the entrance, and stacking both would double the
+              fade. Subcopy and CTAs pick up after the last word (7 x 60ms). */}
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(40px, 9vw, 84px)', lineHeight: 1.03, color: 'var(--cream-50)', margin: '0', letterSpacing: '-0.015em' }}>
+            {EVO_HERO_WORDS.map((w, i) => (
+              // The {' '} is load-bearing: it keeps the h1's text content a real
+              // sentence for screen readers, SEO and copy-paste, and lets the
+              // line wrap normally. Spacing via margin would look right but
+              // leave the accessible text as one unbroken run.
+              <React.Fragment key={w + i}>
+                <span className="evo-word-mask">
+                  <span className="evo-word" style={{ '--evo-word-i': i }}>{w}</span>
+                </span>{' '}
+              </React.Fragment>
+            ))}
+            <span className="evo-word-mask">
+              <span className="evo-word" style={{ '--evo-word-i': EVO_HERO_WORDS.length }}>
+                <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>yours</em>.
+              </span>
+            </span>
           </h1>
-          <p className="evo-hero-rise" style={{ '--evo-hero-i': 1, fontSize: 'clamp(15px, 2.6vw, 19px)', lineHeight: 1.6, color: 'var(--taupe-400)', maxWidth: 460, margin: '20px 0 30px' }}>
+          <p className="evo-hero-rise" style={{ '--evo-hero-i': 3, fontSize: 'clamp(15px, 2.6vw, 19px)', lineHeight: 1.6, color: 'var(--taupe-400)', maxWidth: 460, margin: '20px 0 30px' }}>
             Luxury nail artistry and a restorative head spa — warm water, slow hands, and a quiet room in the heart of Plain City.
           </p>
-          <div className="evo-hero-rise" style={{ '--evo-hero-i': 2, display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="evo-hero-rise" style={{ '--evo-hero-i': 4, display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
             <Button className="evo-button-hover" variant="primary" size="lg" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
             <button onClick={() => go('services')} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--cream-100)', fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 500, textDecoration: 'underline', textDecorationThickness: '1px', textUnderlineOffset: '5px', textDecorationColor: 'var(--honey-400)' }}>
               View services
@@ -214,10 +236,11 @@ function EvoServices() {
   const comingSoon = cat === 'headspa';
   const list = window.CNHS_MENU.full.filter((m2) => m2.cat === cat);
   const gridRef = useScrollReveal(cat);
+  const headRef = useScrollReveal();
   return (
     <section id="evo-services" style={{ background: 'var(--surface-page)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m) }}>
-        <div style={{ textAlign: 'center', marginBottom: 14 }}>
+        <div ref={headRef} style={{ textAlign: 'center', marginBottom: 14 }}>
           <div style={evoOverline()}>Our Services</div>
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(32px, 6vw, 50px)', color: 'var(--text-strong)', margin: '12px 0 10px' }}>Treatments &amp; <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>specialties</em></h2>
           <p style={{ fontSize: 16, color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto' }}>Every service includes a complimentary consultation. Prices are starting rates — ask us for a personalized quote.</p>
@@ -436,13 +459,14 @@ function EvoGallery() {
   const closeLightbox = React.useCallback(() => setLightbox(null), []);
   const moveLightbox = React.useCallback((dir) => setLightbox((i) => (i + dir + 9) % 9), []);
   const gridRef = useScrollReveal();
+  const headRef = useScrollReveal();
   // chips: a curated rail — current theme first, then the rest
   const chipKeys = [autoKey, ...Object.keys(EVO_THEMES).filter((k) => k !== autoKey)];
   return (
     <section id="evo-gallery" style={{ background: 'var(--surface-card)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m) }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 18, flexWrap: 'wrap', gap: 16 }}>
-          <div style={{ flex: '1 1 auto', minWidth: 0 }}>
+          <div ref={headRef} style={{ flex: '1 1 auto', minWidth: 0 }}>
             <div style={{ ...evoOverline(), display: 'inline-flex', alignItems: 'center', gap: 8 }}><i className={'ph-fill ' + t.icon} style={{ fontSize: 15 }} /> The Gallery · {t.label}</div>
             <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(30px, 5vw, 46px)', color: 'var(--text-strong)', margin: '12px 0 0', lineHeight: 1.08 }}>{t.title[0]} <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>{t.title[1]}</em></h2>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--text-muted)', margin: '8px 0 0', letterSpacing: '.04em' }}>{t.caption}</p>
@@ -491,10 +515,11 @@ function EvoTestimonials() {
     ['I booked a head spa on a whim and now it\u2019s my monthly ritual.', 'Dana K.'],
   ];
   const gridRef = useScrollReveal();
+  const headRef = useScrollReveal();
   return (
     <section style={{ background: 'var(--surface-soft)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m) }}>
-        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+        <div ref={headRef} style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={evoOverline()}>From Our Clients</div>
         </div>
         <div ref={gridRef} style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: m ? 12 : 16, maxWidth: 720, margin: '0 auto' }}>
