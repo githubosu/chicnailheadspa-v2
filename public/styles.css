@@ -246,6 +246,40 @@
   --ease-soft:     cubic-bezier(0.33, 0, 0.2, 1); /* @kind other */
 }
 
+/* Scroll-reveal animations (fade + rise) */
+@keyframes evoReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.evo-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: evoReveal var(--dur-slow) var(--ease-out) forwards;
+}
+
+/* Staggered reveals for card grids */
+.evo-reveal[data-reveal-delay="1"] { animation-delay: 80ms; }
+.evo-reveal[data-reveal-delay="2"] { animation-delay: 160ms; }
+.evo-reveal[data-reveal-delay="3"] { animation-delay: 240ms; }
+.evo-reveal[data-reveal-delay="4"] { animation-delay: 320ms; }
+.evo-reveal[data-reveal-delay="5"] { animation-delay: 400ms; }
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .evo-reveal {
+    opacity: 1;
+    transform: translateY(0);
+    animation: none;
+  }
+}
+
 /* ── tokens/base.css ──────────────────────────────────────────────────── */
 /* ════════════════════════════════════════════════════════════════════════
    BASE  ·  Chic Nail & Head Spa
@@ -254,6 +288,8 @@
    out of the box.
    ════════════════════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
