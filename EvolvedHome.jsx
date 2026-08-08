@@ -33,8 +33,11 @@ const evoOverline = (color) => ({ fontFamily: 'var(--font-sans)', fontWeight: 50
    prerendered and no-JS visitors (and anyone with reduced motion on) always see
    the content. Children are observed individually so the reveal tracks the
    scroll instead of firing all at once while the section is still below the
-   fold; --evo-reveal-i staggers each row left-to-right. */
-function useScrollReveal() {
+   fold; --evo-reveal-i staggers each row left-to-right.
+
+   Pass `key` when the children are swapped out by a control (e.g. the services
+   tab bar) so the incoming set re-reveals instead of appearing unannounced. */
+function useScrollReveal(key) {
   const ref = React.useRef(null);
   React.useEffect(() => {
     const el = ref.current;
@@ -44,6 +47,9 @@ function useScrollReveal() {
     const targets = Array.from(el.children);
     if (!targets.length) return;
     targets.forEach((t, i) => {
+      // React reuses DOM nodes across tab switches — clear the finished state
+      // so the animation can play again for the new content.
+      t.classList.remove('evo-reveal-in');
       t.classList.add('evo-reveal');
       t.style.setProperty('--evo-reveal-i', String(i % 3));
     });
@@ -57,7 +63,7 @@ function useScrollReveal() {
     }, { threshold: 0.15, rootMargin: '0px 0px -12% 0px' });
     targets.forEach((t) => io.observe(t));
     return () => io.disconnect();
-  }, []);
+  }, [key]);
   return ref;
 }
 
@@ -237,7 +243,7 @@ function EvoServices() {
   const cats = order.map((v) => (v === 'headspa' ? { value: v, label: labelMap[v], count: 'Soon' } : { value: v, label: labelMap[v] }));
   const comingSoon = cat === 'headspa';
   const list = window.CNHS_MENU.full.filter((m2) => m2.cat === cat);
-  const gridRef = useScrollReveal();
+  const gridRef = useScrollReveal(cat);
   return (
     <section id="evo-services" style={{ background: 'var(--surface-page)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m) }}>

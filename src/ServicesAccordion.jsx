@@ -115,12 +115,12 @@ export default function ServicesAccordion() {
 
       {/* Hero (polish-wall photo) — sits under the transparent shared header */}
       <section style={{ position: 'relative', minHeight: m ? 360 : 460, overflow: 'hidden', display: 'flex', alignItems: 'flex-end', background: 'var(--espresso-900)' }}>
-        <img src="./assets/services-hero.webp" alt="A wall of nail polish colors at Chic Nail & Head Spa" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+        <img className="evo-hero-image" src="./assets/services-hero.webp" alt="A wall of nail polish colors at Chic Nail & Head Spa" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(42,29,21,0.62) 0%, rgba(42,29,21,0.40) 38%, rgba(42,29,21,0.85) 100%)' }} />
         <div style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', width: '100%', padding: m ? '0 20px 32px' : '0 var(--gutter) 48px' }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 500, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 12 }}>The Menu</div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: m ? 46 : 68, lineHeight: 1.02, color: 'var(--cream-50)', margin: 0, letterSpacing: '-0.015em' }}>Services &amp; <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pricing</em></h1>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: m ? 14 : 16, color: 'var(--cream-100)', margin: '12px 0 0', maxWidth: 460, lineHeight: 1.6 }}>All prices are starting rates. Ask us for a personalized quote.</p>
+          <div className="evo-hero-rise" style={{ '--evo-hero-i': 0, fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 500, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 12 }}>The Menu</div>
+          <h1 className="evo-hero-rise" style={{ '--evo-hero-i': 1, fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: m ? 46 : 68, lineHeight: 1.02, color: 'var(--cream-50)', margin: 0, letterSpacing: '-0.015em' }}>Services &amp; <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pricing</em></h1>
+          <p className="evo-hero-rise" style={{ '--evo-hero-i': 2, fontFamily: 'var(--font-sans)', fontSize: m ? 14 : 16, color: 'var(--cream-100)', margin: '12px 0 0', maxWidth: 460, lineHeight: 1.6 }}>All prices are starting rates. Ask us for a personalized quote.</p>
         </div>
       </section>
 

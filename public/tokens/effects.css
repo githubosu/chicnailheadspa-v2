@@ -64,6 +64,31 @@
   animation: evoFadeIn var(--dur-slow) var(--ease-out) both;
 }
 
+/* ── Hero ─────────────────────────────────────────────────────────────────
+   Pure CSS so it still plays on the prerendered pages with no JS involved.
+   Ken Burns is deliberately linear — over 20s an eased curve reads as a lurch
+   at the start, linear reads as an imperceptible drift. */
+@keyframes evoKenBurns {
+  from { transform: scale(1.06); }
+  to   { transform: scale(1.16); }
+}
+
+.evo-hero-image {
+  animation: evoKenBurns 20s linear both;
+  transform-origin: 50% 45%;
+}
+
+@keyframes evoHeroRise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --evo-hero-i is the line's order in the stack (overline, h1, lede). */
+.evo-hero-rise {
+  animation: evoHeroRise 900ms var(--ease-out) both;
+  animation-delay: calc(var(--evo-hero-i, 0) * 130ms);
+}
+
 /* ── Card hover lift ──────────────────────────────────────────────────────
    .cnhs-card already declares a transform+box-shadow transition and its style
    tag is injected after this sheet, so it wins the tie on `transition`; the
@@ -121,10 +146,17 @@
 @media (prefers-reduced-motion: reduce) {
   .evo-reveal,
   .evo-reveal-in,
-  .evo-fade-in {
+  .evo-fade-in,
+  .evo-hero-image,
+  .evo-hero-rise {
     opacity: 1;
     transform: none;
     animation: none;
+  }
+
+  /* Keep the hero photo's framing without the drift. */
+  .evo-hero-image {
+    transform: scale(1.06);
   }
 
   .evo-card-hover,
