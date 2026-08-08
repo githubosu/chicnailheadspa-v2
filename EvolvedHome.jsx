@@ -3,6 +3,7 @@
    MOBILE-FIRST: fluid type via clamp(), auto-fit card grids, and a viewport
    hook that collapses the two-column bands + nav at <760px. */
 import { useMobile as useIsMobile } from './src/shared/useMobile.js';
+import { useScrollReveal } from './src/shared/useScrollReveal.js';
 if (typeof history !== 'undefined') history.scrollRestoration = 'manual';
 const EVO_DS = window.ChicNailHeadSpaDesignSystem_843afb;
 
@@ -25,47 +26,6 @@ const padX = (m) => (m ? 'clamp(20px, 5vw, 32px)' : 'var(--gutter)');
 const wrap = (m) => ({ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 ' + padX(m) });
 
 const evoOverline = (color) => ({ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 13, letterSpacing: '.26em', textTransform: 'uppercase', color: color || 'var(--accent)' });
-
-/* Scroll-reveal hook — attach the ref to a grid/row; its direct children rise
-   into place as they reach the viewport.
-
-   The hidden state is applied imperatively rather than in the markup so that
-   prerendered and no-JS visitors (and anyone with reduced motion on) always see
-   the content. Children are observed individually so the reveal tracks the
-   scroll instead of firing all at once while the section is still below the
-   fold; --evo-reveal-i staggers each row left-to-right.
-
-   Pass `key` when the children are swapped out by a control (e.g. the services
-   tab bar) so the incoming set re-reveals instead of appearing unannounced. */
-function useScrollReveal(key) {
-  const ref = React.useRef(null);
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const targets = Array.from(el.children);
-    if (!targets.length) return;
-    targets.forEach((t, i) => {
-      // React reuses DOM nodes across tab switches — clear the finished state
-      // so the animation can play again for the new content.
-      t.classList.remove('evo-reveal-in');
-      t.classList.add('evo-reveal');
-      t.style.setProperty('--evo-reveal-i', String(i % 3));
-    });
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('evo-reveal-in');
-        io.unobserve(e.target);
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -12% 0px' });
-    targets.forEach((t) => io.observe(t));
-    return () => io.disconnect();
-  }, [key]);
-  return ref;
-}
 
 /* ── Header (collapses to a sheet menu on mobile) ───────────────────────── */
 function EvoHeader() {
@@ -127,13 +87,13 @@ function EvoHero() {
       <div style={{ position: 'absolute', inset: 0, background: m ? 'linear-gradient(180deg, rgba(42,29,21,0.72) 0%, rgba(42,29,21,0.82) 100%)' : 'linear-gradient(100deg, rgba(42,29,21,0.86) 0%, rgba(42,29,21,0.55) 55%, rgba(42,29,21,0.32) 100%)' }} />
       <div style={{ position: 'relative', ...wrap(m), width: '100%' }}>
         <div style={{ maxWidth: 620 }}>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(40px, 9vw, 84px)', lineHeight: 1.03, color: 'var(--cream-50)', margin: '0', letterSpacing: '-0.015em' }}>
+          <h1 className="evo-hero-rise" style={{ '--evo-hero-i': 0, fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(40px, 9vw, 84px)', lineHeight: 1.03, color: 'var(--cream-50)', margin: '0', letterSpacing: '-0.015em' }}>
             A moment of care that is entirely <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>yours</em>.
           </h1>
-          <p style={{ fontSize: 'clamp(15px, 2.6vw, 19px)', lineHeight: 1.6, color: 'var(--taupe-400)', maxWidth: 460, margin: '20px 0 30px' }}>
+          <p className="evo-hero-rise" style={{ '--evo-hero-i': 1, fontSize: 'clamp(15px, 2.6vw, 19px)', lineHeight: 1.6, color: 'var(--taupe-400)', maxWidth: 460, margin: '20px 0 30px' }}>
             Luxury nail artistry and a restorative head spa — warm water, slow hands, and a quiet room in the heart of Plain City.
           </p>
-          <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="evo-hero-rise" style={{ '--evo-hero-i': 2, display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
             <Button className="evo-button-hover" variant="primary" size="lg" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
             <button onClick={() => go('services')} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--cream-100)', fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 500, textDecoration: 'underline', textDecorationThickness: '1px', textUnderlineOffset: '5px', textDecorationColor: 'var(--honey-400)' }}>
               View services

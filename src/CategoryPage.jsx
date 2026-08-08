@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMobile } from './shared/useMobile.js';
+import { useScrollReveal } from './shared/useScrollReveal.js';
 import { byCat } from './categories.js';
 
 const BOOK_TEL = 'tel:+16143899999';
@@ -20,6 +21,9 @@ export default function CategoryPage({ cat }) {
   const EvoHeader = window.EvoHeader, EvoFooter = window.EvoFooter;
   const items = window.CNHS_MENU.full.filter((s) => s.cat === cat);
   const label = (window.CNHS_MENU.cats.find((c) => c.value === cat) || {}).label || cat;
+  // Single-column price list — one column, so rows share a delay and simply
+  // cascade with the scroll rather than staggering sideways.
+  const listRef = useScrollReveal(cat, 1);
 
   return (
     <div style={{ background: 'var(--surface-page)' }}>
@@ -28,9 +32,9 @@ export default function CategoryPage({ cat }) {
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: m ? '92px 24px 0' : '110px 48px 0' }}>
         <ol style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: 8, margin: 0, padding: 0, fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--text-muted)' }}>
-          <li><a href="index.html" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</a></li>
+          <li><a className="evo-link-sweep" href="index.html" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</a></li>
           <li aria-hidden="true">·</li>
-          <li><a href="services-accordion.html" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Services</a></li>
+          <li><a className="evo-link-sweep" href="services-accordion.html" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Services</a></li>
           <li aria-hidden="true">·</li>
           <li aria-current="page" style={{ color: 'var(--text-secondary)' }}>{label}</li>
         </ol>
@@ -38,10 +42,10 @@ export default function CategoryPage({ cat }) {
 
       {/* Hero */}
       <header style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: m ? '20px 24px 8px' : '28px 48px 8px' }}>
-        <div style={{ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 11, letterSpacing: '.28em', textTransform: 'uppercase', color: 'var(--honey-600)', marginBottom: 12 }}>{meta ? meta.eyebrow : 'Services'}</div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontStyle: 'italic', fontSize: m ? 48 : 64, lineHeight: 1, color: 'var(--text-strong)', margin: '0 0 16px' }}>{label}</h1>
-        <p style={{ fontFamily: 'var(--font-sans)', fontSize: m ? 16 : 18, lineHeight: 1.65, color: 'var(--text-secondary)', maxWidth: 560, margin: 0 }}>{meta ? meta.intro : ''}</p>
-        <div style={{ maxWidth: 560, height: 1, background: 'linear-gradient(90deg, var(--gilt) 0%, var(--gilt-soft) 60%, transparent 100%)', margin: '28px 0 0' }} />
+        <div className="evo-hero-rise" style={{ '--evo-hero-i': 0, fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 11, letterSpacing: '.28em', textTransform: 'uppercase', color: 'var(--honey-600)', marginBottom: 12 }}>{meta ? meta.eyebrow : 'Services'}</div>
+        <h1 className="evo-hero-rise" style={{ '--evo-hero-i': 1, fontFamily: 'var(--font-display)', fontWeight: 500, fontStyle: 'italic', fontSize: m ? 48 : 64, lineHeight: 1, color: 'var(--text-strong)', margin: '0 0 16px' }}>{label}</h1>
+        <p className="evo-hero-rise" style={{ '--evo-hero-i': 2, fontFamily: 'var(--font-sans)', fontSize: m ? 16 : 18, lineHeight: 1.65, color: 'var(--text-secondary)', maxWidth: 560, margin: 0 }}>{meta ? meta.intro : ''}</p>
+        <div className="evo-rule-draw" style={{ maxWidth: 560, height: 1, background: 'linear-gradient(90deg, var(--gilt) 0%, var(--gilt-soft) 60%, transparent 100%)', margin: '28px 0 0' }} />
       </header>
 
       {/* Services list */}
@@ -54,7 +58,7 @@ export default function CategoryPage({ cat }) {
             <a href={BOOK_TEL} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 14, fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 14, color: 'var(--accent)', textDecoration: 'none' }}>(614) 389-9999 <i className="ph-light ph-arrow-right" /></a>
           </div>
         ) : (
-          <div style={{ maxWidth: 720 }}>
+          <div ref={listRef} style={{ maxWidth: 720 }}>
             {items.map((item, i) => (
               <div key={item.name} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '16px 0', borderBottom: i < items.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
                 <div style={{ flex: 1 }}>
@@ -73,10 +77,10 @@ export default function CategoryPage({ cat }) {
               Prices are starting rates. Call {window.CNHS_MENU.contact.phone} for a personalized quote.
             </p>
             <div style={{ marginTop: 28, display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
-              <a href="book.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent)', color: 'var(--on-accent)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 15, padding: '13px 28px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>
+              <a className="evo-button-hover" href="book.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent)', color: 'var(--on-accent)', fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 15, padding: '13px 28px', borderRadius: 'var(--radius-pill)', textDecoration: 'none' }}>
                 <i className="ph-light ph-calendar-check" /> Book {label.toLowerCase()}
               </a>
-              <a href="services-accordion.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: 'var(--accent)', textDecoration: 'none' }}>
+              <a className="evo-link-sweep" href="services-accordion.html" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: 'var(--accent)', textDecoration: 'none' }}>
                 All services <i className="ph-light ph-arrow-right" />
               </a>
             </div>

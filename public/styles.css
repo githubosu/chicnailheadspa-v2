@@ -310,6 +310,47 @@
   animation-delay: calc(var(--evo-hero-i, 0) * 130ms);
 }
 
+/* ── Link underline sweep ─────────────────────────────────────────────────
+   Editorial signature for text links: the rule wipes in from the left rather
+   than just appearing. transform on a pseudo-element keeps it off the main
+   thread — animating `width` here would relayout on every frame. */
+.evo-link-sweep {
+  position: relative;
+  text-decoration: none;
+}
+
+.evo-link-sweep::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.evo-link-sweep:hover::after,
+.evo-link-sweep:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ── Gilt rule draw-in ────────────────────────────────────────────────────
+   The hairline under a page heading draws itself left-to-right on load. */
+@keyframes evoRuleDraw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.evo-rule-draw {
+  transform-origin: left center;
+  animation: evoRuleDraw 1100ms var(--ease-out) both;
+  animation-delay: 420ms;
+}
+
 /* ── Card hover lift ──────────────────────────────────────────────────────
    .cnhs-card already declares a transform+box-shadow transition and its style
    tag is injected after this sheet, so it wins the tie on `transition`; the
@@ -369,10 +410,15 @@
   .evo-reveal-in,
   .evo-fade-in,
   .evo-hero-image,
-  .evo-hero-rise {
+  .evo-hero-rise,
+  .evo-rule-draw {
     opacity: 1;
     transform: none;
     animation: none;
+  }
+
+  .evo-link-sweep::after {
+    transition: none;
   }
 
   /* Keep the hero photo's framing without the drift. */

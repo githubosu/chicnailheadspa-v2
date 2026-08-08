@@ -16,10 +16,10 @@ export default function BookPage() {
       {/* Dark intro band — sits under the transparent fixed header */}
       <section style={{ background: 'var(--espresso-900)', paddingTop: m ? 92 : 120 }}>
         <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: m ? '0 20px 28px' : '0 var(--gutter) 40px' }}>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 500, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 12 }}>Reserve your time</div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: m ? 40 : 58, lineHeight: 1.05, color: 'var(--cream-50)', margin: 0, letterSpacing: '-0.015em' }}>Book <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>online</em></h1>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: m ? 14 : 16, color: 'var(--cream-100)', margin: '12px 0 0', maxWidth: 520, lineHeight: 1.6 }}>
-            Choose your service, pick a time, and arrive ready to unwind. Prefer to talk? Call us at <a href={'tel:' + c.phone.replace(/[^0-9]/g, '')} style={{ color: 'var(--honey-300)', textDecoration: 'none' }}>{c.phone}</a>.
+          <div className="evo-hero-rise" style={{ '--evo-hero-i': 0, fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 500, letterSpacing: '.3em', textTransform: 'uppercase', color: 'var(--honey-300)', marginBottom: 12 }}>Reserve your time</div>
+          <h1 className="evo-hero-rise" style={{ '--evo-hero-i': 1, fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: m ? 40 : 58, lineHeight: 1.05, color: 'var(--cream-50)', margin: 0, letterSpacing: '-0.015em' }}>Book <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>online</em></h1>
+          <p className="evo-hero-rise" style={{ '--evo-hero-i': 2, fontFamily: 'var(--font-sans)', fontSize: m ? 14 : 16, color: 'var(--cream-100)', margin: '12px 0 0', maxWidth: 520, lineHeight: 1.6 }}>
+            Choose your service, pick a time, and arrive ready to unwind. Prefer to talk? Call us at <a className="evo-link-sweep" href={'tel:' + c.phone.replace(/[^0-9]/g, '')} style={{ color: 'var(--honey-300)', textDecoration: 'none' }}>{c.phone}</a>.
           </p>
         </div>
       </section>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMobile } from './shared/useMobile.js';
+import { useScrollReveal } from './shared/useScrollReveal.js';
 
 const BOOK_URL = 'book.html';
 
@@ -90,7 +91,7 @@ function AccordionRow({ cat, isOpen, onToggle }) {
               </p>
             )}
             <div style={{ marginTop: 16 }}>
-              <a href={BOOK_URL} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-sans)', fontSize: 12.5, fontWeight: 500, color: 'var(--accent)', textDecoration: 'none', letterSpacing: '.02em' }}>
+              <a className="evo-link-sweep" href={BOOK_URL} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-sans)', fontSize: 12.5, fontWeight: 500, color: 'var(--accent)', textDecoration: 'none', letterSpacing: '.02em' }}>
                 Book now <i className="ph-light ph-arrow-right" style={{ fontSize: 14 }} />
               </a>
             </div>
@@ -108,6 +109,9 @@ export default function ServicesAccordion() {
   const c = window.CNHS_MENU.contact;
   const CATS = buildCats();
   const EvoHeader = window.EvoHeader, EvoFooter = window.EvoFooter;
+  // Stacked rows — one column, so they cascade down with the scroll. No `key`:
+  // opening a row must not re-trigger the reveal on the whole list.
+  const rowsRef = useScrollReveal(undefined, 1);
 
   return (
     <div style={{ background: 'var(--surface-page)', minHeight: '100vh' }}>
@@ -125,7 +129,7 @@ export default function ServicesAccordion() {
       </section>
 
       {/* Accordion */}
-      <main style={{ maxWidth: 720, margin: '0 auto', padding: m ? '12px 20px 80px' : '12px 0 100px' }}>
+      <main ref={rowsRef} style={{ maxWidth: 720, margin: '0 auto', padding: m ? '12px 20px 80px' : '12px 0 100px' }}>
         {CATS.map((cat) => (
           <AccordionRow key={cat.key} cat={cat} isOpen={open === cat.key} onToggle={() => toggle(cat.key)} />
         ))}
