@@ -121,7 +121,7 @@ export default function ServicesAccordion() {
 
   return (
     <div style={{ background: 'var(--surface-page)', minHeight: '100vh' }}>
-      <EvoHeader />
+      <EvoHeader overHero />
 
       {/* Hero (polish-wall photo) — sits under the transparent shared header */}
       <section ref={hero.sectionRef} style={{ position: 'relative', minHeight: m ? 360 : 460, overflow: 'hidden', display: 'flex', alignItems: 'flex-end', background: 'var(--espresso-900)' }}>

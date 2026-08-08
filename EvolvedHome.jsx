@@ -28,36 +28,110 @@ const wrap = (m) => ({ maxWidth: 'var(--container-max)', margin: '0 auto', paddi
 
 const evoOverline = (color) => ({ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 13, letterSpacing: '.26em', textTransform: 'uppercase', color: color || 'var(--accent)' });
 
-/* ── Header (collapses to a sheet menu on mobile) ───────────────────────── */
-function EvoHeader() {
+/* Header shrink geometry — [at rest, fully shrunk] per breakpoint. */
+const HDR = {
+  desktop: { bar: [86, 62], logo: [68, 44] },
+  mobile:  { bar: [68, 56], logo: [48, 38] },
+};
+const HDR_RANGE = 160;   // px of scroll that takes the header from rest to shrunk
+const HDR_SNAP  = 36;    // threshold used instead of the ramp under reduced motion
+
+/* ── Header (collapses to a sheet menu on mobile) ─────────────────────────
+   `overHero` says a dark hero sits behind the header at the top of the page,
+   so it may start transparent with the reversed (cream) logo. Pages without
+   one — the category pages, whose ground is cream — must start solid, or the
+   cream logo renders invisible on cream.
+
+   Values are written to CSS custom properties every frame rather than toggled
+   with a class, so the shrink tracks scroll continuously instead of snapping
+   at a single threshold. The two logo artworks are crossfaded because an
+   image src cannot be interpolated. */
+function EvoHeader({ overHero = false }) {
   const { Button } = EVO_DS;
   const m = useIsMobile();
   const [open, setOpen] = React.useState(false);
-  const [scrolled, setScrolled] = React.useState(false);
+  const headRef = React.useRef(null);
+  const openRef = React.useRef(open);
+  openRef.current = open;
+
+  const geo = m ? HDR.mobile : HDR.desktop;
+  const restP = overHero ? 0 : 1;
+
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 36);
-    onScroll();
+    const el = headRef.current;
+    if (!el) return;
+    const g = m ? HDR.mobile : HDR.desktop;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let raf = null;
+
+    const paint = (p) => {
+      const lerp = (a, b) => (a + (b - a) * p);
+      el.style.setProperty('--hdr-p', p.toFixed(4));
+      el.style.setProperty('--hdr-inv', (1 - p).toFixed(4));
+      el.style.setProperty('--hdr-bg', 'rgba(254,247,237,' + (p * 0.86).toFixed(3) + ')');
+      el.style.setProperty('--hdr-blur', p > 0 ? 'blur(' + (p * 14).toFixed(1) + 'px)' : 'none');
+      el.style.setProperty('--hdr-border', 'rgba(240,228,210,' + p.toFixed(3) + ')');
+      el.style.setProperty('--hdr-h', lerp(g.bar[0], g.bar[1]).toFixed(1) + 'px');
+      el.style.setProperty('--hdr-logo', lerp(g.logo[0], g.logo[1]).toFixed(1) + 'px');
+      // cream 254,247,237 -> --ink-700 #6A5848. Interpolated here rather than
+      // with color-mix so it resolves the same everywhere.
+      el.style.setProperty('--hdr-link', 'rgb(' + Math.round(lerp(254, 106)) + ',' + Math.round(lerp(247, 88)) + ',' + Math.round(lerp(237, 72)) + ')');
+      el.style.setProperty('--hdr-shadow', p < 1 ? 'drop-shadow(0 2px 10px rgba(42,29,21,' + (0.55 * (1 - p)).toFixed(3) + '))' : 'none');
+    };
+
+    const update = () => {
+      raf = null;
+      // No hero to sit over, or the sheet menu is open and needs a solid ground.
+      if (!overHero || openRef.current) return paint(1);
+      const y = window.scrollY || window.pageYOffset || 0;
+      // Reduced motion keeps the old single threshold — no scroll-linked ramp.
+      paint(reduce ? (y > HDR_SNAP ? 1 : 0) : Math.min(Math.max(y / HDR_RANGE, 0), 1));
+    };
+
+    const onScroll = () => { if (raf == null) raf = requestAnimationFrame(update); };
+    update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [m, overHero, open]);
+
   const links = [['services', 'Services'], ['gallery', 'Gallery'], ['visit', 'Visit']];
   const go = (id) => { setOpen(false); const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; };
-  const solid = scrolled || open;
-  const linkColor = solid ? 'var(--text-secondary)' : 'rgba(254,247,237,0.92)';
   return (
-    <header style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 40, background: solid ? 'rgba(254,247,237,0.86)' : 'transparent', backdropFilter: solid ? 'blur(14px)' : 'none', WebkitBackdropFilter: solid ? 'blur(14px)' : 'none', borderBottom: '1px solid ' + (solid ? 'var(--border-subtle)' : 'transparent'), transition: 'background var(--dur) var(--ease-standard), border-color var(--dur) var(--ease-standard)' }}>
-      <div style={{ ...wrap(m), height: m ? 68 : 86, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a href="index.html" aria-label="Chic Nail & Head Spa — home" style={{ display: 'flex', alignItems: 'center' }}>
-          <img src={solid ? './assets/logo-lockup.png' : './assets/logo-lockup-reversed.png'} alt="Chic Nail & Head Spa" style={{ height: m ? 48 : 68, filter: solid ? 'none' : 'drop-shadow(0 2px 10px rgba(42,29,21,0.55))', transition: 'height var(--dur) var(--ease-standard)' }} />
+    <header ref={headRef} style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 40,
+      // Seeded for the prerendered/no-JS state; the effect drives them after.
+      '--hdr-p': restP, '--hdr-inv': 1 - restP,
+      '--hdr-bg': restP ? 'rgba(254,247,237,0.86)' : 'rgba(254,247,237,0)',
+      '--hdr-blur': restP ? 'blur(14px)' : 'none',
+      '--hdr-border': restP ? 'rgba(240,228,210,1)' : 'rgba(240,228,210,0)',
+      '--hdr-h': (restP ? geo.bar[1] : geo.bar[0]) + 'px',
+      '--hdr-logo': (restP ? geo.logo[1] : geo.logo[0]) + 'px',
+      '--hdr-link': restP ? 'rgb(106,88,72)' : 'rgb(254,247,237)',
+      '--hdr-shadow': restP ? 'none' : 'drop-shadow(0 2px 10px rgba(42,29,21,0.55))',
+      background: 'var(--hdr-bg)',
+      backdropFilter: 'var(--hdr-blur)', WebkitBackdropFilter: 'var(--hdr-blur)',
+      borderBottom: '1px solid var(--hdr-border)', willChange: 'background-color',
+    }}>
+      <div style={{ ...wrap(m), height: 'var(--hdr-h)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <a href="index.html" aria-label="Chic Nail & Head Spa — home" style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+          <img src="./assets/logo-lockup-reversed.png" alt="Chic Nail & Head Spa" style={{ height: 'var(--hdr-logo)', width: 'auto', display: 'block', opacity: 'var(--hdr-inv)', filter: 'var(--hdr-shadow)' }} />
+          {/* Same lockup in the dark colourway, crossfaded over the top. Hidden
+              from assistive tech so the wordmark isn't announced twice. */}
+          <img src="./assets/logo-lockup.png" alt="" aria-hidden="true" style={{ position: 'absolute', left: 0, top: 0, height: 'var(--hdr-logo)', width: 'auto', display: 'block', opacity: 'var(--hdr-p)' }} />
         </a>
         {m ? (
-          <button aria-label="Menu" onClick={() => setOpen((o) => !o)} style={{ width: 42, height: 42, borderRadius: '50%', border: 'none', cursor: 'pointer', background: 'none', color: linkColor, fontSize: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+          <button aria-label="Menu" onClick={() => setOpen((o) => !o)} style={{ width: 42, height: 42, borderRadius: '50%', border: 'none', cursor: 'pointer', background: 'none', color: 'var(--hdr-link)', fontSize: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
             <i className={open ? 'ph-light ph-x' : 'ph-light ph-list'} />
           </button>
         ) : (
           <nav style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
             {links.map(([id, label]) => (
-              <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: linkColor, padding: '6px 0', transition: 'color var(--dur) var(--ease-standard)' }}>{label}</button>
+              <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: 'var(--hdr-link)', padding: '6px 0' }}>{label}</button>
             ))}
             <Button className="evo-button-hover" variant="primary" size="sm" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
           </nav>
@@ -626,7 +700,7 @@ function EvoHome() {
   if (!ready) return null;
   return (
     <div style={{ background: 'var(--surface-page)' }}>
-      <EvoHeader />
+      <EvoHeader overHero />
       <EvoHero />
       <EvoTrust />
       <EvoServices />

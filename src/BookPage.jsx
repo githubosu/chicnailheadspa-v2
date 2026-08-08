@@ -11,7 +11,7 @@ export default function BookPage() {
 
   return (
     <div style={{ background: 'var(--surface-page)', minHeight: '100vh' }}>
-      <EvoHeader />
+      <EvoHeader overHero />
 
       {/* Dark intro band — sits under the transparent fixed header */}
       <section style={{ background: 'var(--espresso-900)', paddingTop: m ? 92 : 120 }}>
