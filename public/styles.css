@@ -246,99 +246,109 @@
   --ease-soft:     cubic-bezier(0.33, 0, 0.2, 1); /* @kind other */
 }
 
-/* Scroll-reveal animations (fade + rise) */
+/* ── Scroll reveal (fade + rise) ──────────────────────────────────────────
+   .evo-reveal is added by useScrollReveal at runtime, never in the markup, so
+   prerendered / no-JS / reduced-motion visitors keep fully visible content.
+   .evo-reveal-in lands on each child as it reaches the viewport. */
 @keyframes evoReveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .evo-reveal {
   opacity: 0;
-  transform: translateY(20px);
-  animation: evoReveal var(--dur-slow) var(--ease-out) forwards;
+  transform: translateY(28px);
+  will-change: opacity, transform;
 }
 
-/* Staggered reveals for card grids */
-.evo-reveal[data-reveal-delay="1"] { animation-delay: 80ms; }
-.evo-reveal[data-reveal-delay="2"] { animation-delay: 160ms; }
-.evo-reveal[data-reveal-delay="3"] { animation-delay: 240ms; }
-.evo-reveal[data-reveal-delay="4"] { animation-delay: 320ms; }
-.evo-reveal[data-reveal-delay="5"] { animation-delay: 400ms; }
+.evo-reveal-in {
+  animation: evoReveal 700ms var(--ease-out) both;
+  /* --evo-reveal-i is the child's column index — cascades each row L→R. */
+  animation-delay: calc(var(--evo-reveal-i, 0) * 90ms);
+}
 
 /* Page load fade-in */
 @keyframes evoFadeIn {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
 .evo-fade-in {
-  animation: evoFadeIn var(--dur-slow) var(--ease-out) forwards;
+  animation: evoFadeIn var(--dur-slow) var(--ease-out) both;
 }
 
-/* Card hover lift */
-@keyframes evoLift {
-  to {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(36, 31, 29, 0.12);
-  }
-}
-
+/* ── Card hover lift ──────────────────────────────────────────────────────
+   .cnhs-card already declares a transform+box-shadow transition and its style
+   tag is injected after this sheet, so it wins the tie on `transition`; the
+   transition here is for cards that aren't design-system cards (figures). */
 .evo-card-hover {
-  transition: transform var(--dur) var(--ease-standard), box-shadow var(--dur) var(--ease-standard);
+  transition: transform var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-standard);
 }
 
 .evo-card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(36, 31, 29, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(36, 31, 29, 0.16);
 }
 
-/* Image zoom on hover */
-@keyframes evoZoom {
-  to { transform: scale(1.06); }
+/* ── Image zoom inside a clipped frame ────────────────────────────────────
+   The frame stays put and clips; only the image scales. */
+.evo-image-frame {
+  transition: box-shadow var(--dur) var(--ease-standard);
+}
+
+.evo-image-frame:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .evo-image-hover {
-  transition: transform var(--dur-slow) var(--ease-out);
+  transition: transform 620ms var(--ease-out);
   transform-origin: center;
 }
 
-.evo-image-hover:hover {
-  transform: scale(1.06);
+.evo-image-frame:hover .evo-image-hover,
+.evo-image-frame:focus-visible .evo-image-hover {
+  transform: scale(1.08);
 }
 
-/* Button scale on hover */
+/* ── Button hover ─────────────────────────────────────────────────────────
+   Scale alone at this size reads as nothing; the shadow is what makes the
+   lift legible. (.cnhs-btn already ships :active { scale(.98) }.) */
 .evo-button-hover {
-  transition: transform var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast) var(--ease-standard);
+  transition: transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur) var(--ease-standard);
 }
 
 .evo-button-hover:hover {
-  transform: scale(1.02);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 24px rgba(36, 31, 29, 0.18);
 }
 
 .evo-button-hover:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.98);
+  box-shadow: var(--shadow-xs);
 }
 
-/* Respect prefers-reduced-motion */
+/* Respect prefers-reduced-motion — the reveal hook also bails out early, so
+   .evo-reveal is never applied at all when this is on. */
 @media (prefers-reduced-motion: reduce) {
   .evo-reveal,
-  .evo-fade-in,
-  .evo-card-hover,
-  .evo-image-hover,
-  .evo-button-hover {
+  .evo-reveal-in,
+  .evo-fade-in {
     opacity: 1;
     transform: none;
     animation: none;
   }
 
+  .evo-card-hover,
+  .evo-image-hover,
+  .evo-image-frame,
+  .evo-button-hover {
+    transition: none;
+  }
+
   .evo-card-hover:hover,
-  .evo-image-hover:hover,
+  .evo-image-frame:hover .evo-image-hover,
   .evo-button-hover:hover,
   .evo-button-hover:active {
     transform: none;

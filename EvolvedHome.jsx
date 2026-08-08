@@ -26,20 +26,36 @@ const wrap = (m) => ({ maxWidth: 'var(--container-max)', margin: '0 auto', paddi
 
 const evoOverline = (color) => ({ fontFamily: 'var(--font-sans)', fontWeight: 500, fontSize: 13, letterSpacing: '.26em', textTransform: 'uppercase', color: color || 'var(--accent)' });
 
-/* Scroll-reveal hook: adds evo-reveal class when element enters viewport. */
+/* Scroll-reveal hook — attach the ref to a grid/row; its direct children rise
+   into place as they reach the viewport.
+
+   The hidden state is applied imperatively rather than in the markup so that
+   prerendered and no-JS visitors (and anyone with reduced motion on) always see
+   the content. Children are observed individually so the reveal tracks the
+   scroll instead of firing all at once while the section is still below the
+   fold; --evo-reveal-i staggers each row left-to-right. */
 function useScrollReveal() {
   const ref = React.useRef(null);
   React.useEffect(() => {
-    if (!ref.current) return;
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const targets = Array.from(el.children);
+    if (!targets.length) return;
+    targets.forEach((t, i) => {
+      t.classList.add('evo-reveal');
+      t.style.setProperty('--evo-reveal-i', String(i % 3));
+    });
+
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('evo-reveal');
-          io.unobserve(e.target);
-        }
+        if (!e.isIntersecting) return;
+        e.target.classList.add('evo-reveal-in');
+        io.unobserve(e.target);
       });
-    }, { threshold: 0.1 });
-    io.observe(ref.current);
+    }, { threshold: 0.15, rootMargin: '0px 0px -12% 0px' });
+    targets.forEach((t) => io.observe(t));
     return () => io.disconnect();
   }, []);
   return ref;
@@ -463,12 +479,13 @@ function EvoGallery() {
             <div key={src} role="button" tabIndex={0} aria-label={'Enlarge ' + t.tags[i % t.tags.length] + ' nail art photo'}
               onClick={() => setLightbox(i)}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLightbox(i); } }}
-              className="evo-image-hover"
+              className="evo-image-frame"
               style={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--mocha-200)', boxShadow: 'var(--shadow-sm)', cursor: 'pointer' }}>
               <img
                 src={src}
                 alt={t.tags[i % t.tags.length] + ' nail art'}
                 loading="lazy"
+                className="evo-image-hover"
                 onError={(e) => { e.currentTarget.src = EVO_GALLERY[i % EVO_GALLERY.length]; e.currentTarget.onerror = null; }}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
