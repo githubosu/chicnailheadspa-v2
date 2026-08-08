@@ -4,6 +4,7 @@
    hook that collapses the two-column bands + nav at <760px. */
 import { useMobile as useIsMobile } from './src/shared/useMobile.js';
 import { useScrollReveal } from './src/shared/useScrollReveal.js';
+import { useHeroParallax } from './src/shared/useHeroParallax.js';
 if (typeof history !== 'undefined') history.scrollRestoration = 'manual';
 const EVO_DS = window.ChicNailHeadSpaDesignSystem_843afb;
 
@@ -79,13 +80,22 @@ function EvoHero() {
   const { Button } = EVO_DS;
   const m = useIsMobile();
   const go = (id) => { const el = document.getElementById('evo-' + id); if (el) window.scrollTo({ top: el.offsetTop - 64, behavior: 'smooth' }); else window.location.href = 'index.html#evo-' + id; };
+  // Taller hero than the services page (660 vs 460), so it needs more overscan
+  // to hold the same depth — the translate scales with the section's height.
+  const HERO_V_OVERSCAN = 220;
+  const hero = useHeroParallax({ overscan: HERO_V_OVERSCAN });
   return (
-    <section style={{ position: 'relative', minHeight: m ? 540 : 660, background: 'var(--espresso-900)', overflow: 'hidden', display: 'flex', alignItems: 'center', padding: m ? '96px 0 64px' : '0' }}>
-      <video autoPlay muted loop playsInline preload="metadata" poster={EVO_HERO_POSTER} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', background: 'var(--espresso-900)' }}>
-        <source src={EVO_HERO_VIDEO} type="video/mp4" />
-      </video>
+    <section ref={hero.sectionRef} style={{ position: 'relative', minHeight: m ? 540 : 660, background: 'var(--espresso-900)', overflow: 'hidden', display: 'flex', alignItems: 'center', padding: m ? '96px 0 64px' : '0' }}>
+      {/* Parallax wrapper — overscans upward so drifting the video down the
+          page never bares the section behind its top edge. */}
+      <div ref={hero.bgRef} style={{ position: 'absolute', top: -HERO_V_OVERSCAN, left: 0, right: 0, bottom: 0, willChange: 'transform' }}>
+        <video autoPlay muted loop playsInline preload="metadata" poster={EVO_HERO_POSTER} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', background: 'var(--espresso-900)' }}>
+          <source src={EVO_HERO_VIDEO} type="video/mp4" />
+        </video>
+      </div>
+      {/* Overlay stays pinned to the section — it must not drift with the video. */}
       <div style={{ position: 'absolute', inset: 0, background: m ? 'linear-gradient(180deg, rgba(42,29,21,0.72) 0%, rgba(42,29,21,0.82) 100%)' : 'linear-gradient(100deg, rgba(42,29,21,0.86) 0%, rgba(42,29,21,0.55) 55%, rgba(42,29,21,0.32) 100%)' }} />
-      <div style={{ position: 'relative', ...wrap(m), width: '100%' }}>
+      <div ref={hero.copyRef} style={{ position: 'relative', ...wrap(m), width: '100%', willChange: 'transform, opacity' }}>
         <div style={{ maxWidth: 620 }}>
           <h1 className="evo-hero-rise" style={{ '--evo-hero-i': 0, fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(40px, 9vw, 84px)', lineHeight: 1.03, color: 'var(--cream-50)', margin: '0', letterSpacing: '-0.015em' }}>
             A moment of care that is entirely <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>yours</em>.

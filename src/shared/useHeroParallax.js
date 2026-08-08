@@ -14,11 +14,14 @@ import React from 'react';
    Reads are cheap (offsetHeight/scrollY) and writes are batched into a single
    rAF, so this stays off the scroll handler's critical path. */
 
-/* Extra height the wrapper needs above the section, in px. Must exceed the
-   largest translate we can produce: depth x tallest hero. */
+/* Default extra height the wrapper carries above the section, in px. Taller
+   heroes want more, since the translate scales with height — pass `overscan`
+   and use the same value for the wrapper's `top`. The translate is clamped to
+   whatever is passed, so a gap is impossible by construction even if the value
+   is too small for the depth; the parallax just stops early instead. */
 export const HERO_OVERSCAN = 160;
 
-export function useHeroParallax({ depth = 0.25, copyDrift = 0.18, fade = true } = {}) {
+export function useHeroParallax({ depth = 0.25, overscan = HERO_OVERSCAN, copyDrift = 0.18, fade = true } = {}) {
   const sectionRef = React.useRef(null);
   const bgRef = React.useRef(null);
   const copyRef = React.useRef(null);
@@ -38,7 +41,10 @@ export function useHeroParallax({ depth = 0.25, copyDrift = 0.18, fade = true } 
       const p = y / h;
 
       if (bgRef.current) {
-        bgRef.current.style.transform = 'translate3d(0,' + (y * depth).toFixed(1) + 'px,0)';
+        // Never travel further than the wrapper overscans, or the photo's top
+        // edge drops below the section top and bares the background.
+        const shift = Math.min(y * depth, overscan);
+        bgRef.current.style.transform = 'translate3d(0,' + shift.toFixed(1) + 'px,0)';
       }
       if (copyRef.current) {
         copyRef.current.style.transform = 'translate3d(0,' + (y * -copyDrift).toFixed(1) + 'px,0)';
@@ -56,7 +62,7 @@ export function useHeroParallax({ depth = 0.25, copyDrift = 0.18, fade = true } 
       window.removeEventListener('resize', onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [depth, copyDrift, fade]);
+  }, [depth, overscan, copyDrift, fade]);
 
   return { sectionRef, bgRef, copyRef };
 }
