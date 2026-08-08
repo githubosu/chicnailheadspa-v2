@@ -28,6 +28,25 @@ function useIsMobile(bp) {
   return m;
 }
 
+/* Scroll-reveal hook: adds evo-reveal class when element enters viewport. */
+function useScrollReveal() {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    if (!ref.current) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('evo-reveal');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+  return ref;
+}
+
 /* Responsive spacing helpers (mobile-first: small by default, grows fluidly). */
 const sectionPad = '(--section-y)';
 const padY = (m) => (m ? '56px clamp(20px, 5vw, 32px)' : 'var(--section-y) clamp(24px, 5vw, var(--gutter))');
@@ -169,6 +188,7 @@ function EvoServices() {
   const order = ['pedi', 'mani', 'acrylic', 'gelx', 'dip', 'headspa'];
   const [cat, setCat] = React.useState('pedi');
   const tabScrollRef = React.useRef(null);
+  const gridRef = useScrollReveal();
   React.useEffect(() => {
     const el = tabScrollRef.current && tabScrollRef.current.querySelector('[aria-selected="true"]');
     if (el) el.scrollIntoView({ block: 'nearest', inline: 'center' });
@@ -204,7 +224,7 @@ function EvoServices() {
             <Button variant="secondary" iconRight={<i className="ph-light ph-envelope-simple" />}>Notify me</Button>
           </div>
         ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, maxWidth: 920, margin: '0 auto' }}>
+        <div ref={gridRef} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, maxWidth: 920, margin: '0 auto' }}>
           {cat === 'pedi' && (
             <p style={{ gridColumn: '1 / -1', fontFamily: 'var(--font-sans)', fontStyle: 'italic', fontSize: 13, color: 'var(--text-muted)', margin: '0 0 4px', display: 'flex', alignItems: 'center', gap: 6 }}>
               <i className="ph-light ph-star" style={{ color: 'var(--gilt)', flexShrink: 0 }} />
@@ -241,6 +261,7 @@ function EvoReserve() {
   const c = window.CNHS_MENU.contact;
   const secRef = React.useRef(null);
   const imgRef = React.useRef(null);
+  const contentRef = useScrollReveal();
   React.useEffect(() => {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let raf = null;
@@ -264,7 +285,7 @@ function EvoReserve() {
     <section ref={secRef} id="evo-book" style={{ position: 'relative', overflow: 'hidden', background: 'var(--espresso-900)', color: 'var(--cream-50)' }}>
       <img ref={imgRef} src={EVO_SALON[0]} alt="" aria-hidden="true" loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.18)', willChange: 'transform' }} />
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(42,29,21,0.78) 0%, rgba(42,29,21,0.88) 100%)' }} />
-      <div style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m), textAlign: 'center' }}>
+      <div ref={contentRef} style={{ position: 'relative', maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m), textAlign: 'center' }}>
         <div style={evoOverline('var(--honey-300)')}>Reserve Your Time</div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(34px, 6vw, 56px)', margin: '14px 0 16px', lineHeight: 1.04, color: 'var(--cream-50)' }}>Ready to be <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pampered</em>?</h2>
         <p style={{ fontSize: 'clamp(16px, 2.5vw, 19px)', lineHeight: 1.6, color: 'var(--taupe-400)', maxWidth: 520, margin: '0 auto 30px' }}>Book your appointment online in seconds. Choose your service, select a time, and arrive ready to unwind.</p>
@@ -335,6 +356,7 @@ function EvoGallery() {
   const [key, setKey] = React.useState(autoKey);
   const t = EVO_THEMES[key];
   const images = evoGalleryImages(key);
+  const gridRef = useScrollReveal();
   // chips: a curated rail — current theme first, then the rest
   const chipKeys = [autoKey, ...Object.keys(EVO_THEMES).filter((k) => k !== autoKey)];
   return (
@@ -349,7 +371,7 @@ function EvoGallery() {
           {!m && <Button variant="ghost" iconRight={<i className="ph-light ph-arrow-right" />}>View full gallery</Button>}
         </div>
         {/* chips hidden — theme auto-selects from date, no UI needed */}
-        <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: m ? 10 : 16 }}>
+        <div ref={gridRef} style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: m ? 10 : 16 }}>
           {images.map((src, i) => (
             <div key={src} style={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--mocha-200)', boxShadow: 'var(--shadow-sm)' }}>
               <img
@@ -375,6 +397,7 @@ function EvoGallery() {
 /* ── Testimonials (auto-fit → 1 col on mobile) ──────────────────────────── */
 function EvoTestimonials() {
   const m = useIsMobile();
+  const containerRef = useScrollReveal();
   const quotes = [
     ['The best hour of my month. I left feeling like I\u2019d been on holiday.', 'Mei R.'],
     ['My scalp has never felt so clean — and the nail art is unreal.', 'Jordan P.'],
@@ -390,7 +413,7 @@ function EvoTestimonials() {
   }, [paused, quotes.length]);
   const [q, who] = quotes[i];
   return (
-    <section style={{ background: 'var(--surface-soft)' }}>
+    <section ref={containerRef} style={{ background: 'var(--surface-soft)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m) }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={evoOverline()}>From Our Clients</div>
@@ -423,9 +446,10 @@ function EvoVisit() {
   const hours = [['Mon – Fri', '9:00 AM – 7:00 PM'], ['Saturday', '9:00 AM – 6:00 PM'], ['Sunday', '10:00 AM – 5:00 PM']];
   const MAP = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.5392476754278!2d-83.2028395!3d40.18666340000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8838eb3894a54019%3A0x8281989e1af8745c!2sChic%20Nail%20and%20Head%20Spa!5e1!3m2!1sen!2s!4v1780990941973!5m2!1sen!2s';
   const mapH = m ? 280 : 400;
+  const contentRef = useScrollReveal();
   return (
     <section id="evo-visit" style={{ background: 'var(--surface-card)', borderTop: '1px solid var(--border-subtle)' }}>
-      <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m), display: 'grid', gridTemplateColumns: m ? '1fr' : '0.8fr 1.2fr', gap: m ? 28 : 48, alignItems: 'stretch' }}>
+      <div ref={contentRef} style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m), display: 'grid', gridTemplateColumns: m ? '1fr' : '0.8fr 1.2fr', gap: m ? 28 : 48, alignItems: 'stretch' }}>
         <div>
           <div style={evoOverline()}>Visit Us</div>
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(30px, 5vw, 44px)', color: 'var(--text-strong)', margin: '12px 0 22px', lineHeight: 1.08 }}>Find us in <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>Plain City</em></h2>
