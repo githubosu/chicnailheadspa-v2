@@ -66,16 +66,24 @@
 
 /* ── Hero ─────────────────────────────────────────────────────────────────
    Pure CSS so it still plays on the prerendered pages with no JS involved.
-   Ken Burns is deliberately linear — over 20s an eased curve reads as a lurch
-   at the start, linear reads as an imperceptible drift. */
+
+   Continuous drift: `alternate` reverses at each end, and easing matters more
+   here than it did for the one-shot. `linear` would flip direction at full
+   speed on the turn and snap visibly; ease-in-out brings velocity to zero at
+   both ends so the reversal is invisible. 28s a leg = ~56s round trip.
+
+   The slight diagonal pan is what makes this read as camera drift rather than
+   a pulse. Displacement peaks near 0.9% of the width against a 3% overscan at
+   the tightest scale, so no edge is ever exposed. */
 @keyframes evoKenBurns {
-  from { transform: scale(1.06); }
-  to   { transform: scale(1.16); }
+  from { transform: scale(1.06) translate3d(-0.8%, 0.4%, 0); }
+  to   { transform: scale(1.16) translate3d(0.8%, -0.4%, 0); }
 }
 
 .evo-hero-image {
-  animation: evoKenBurns 20s linear both;
+  animation: evoKenBurns 28s ease-in-out infinite alternate;
   transform-origin: 50% 45%;
+  will-change: transform;
 }
 
 @keyframes evoHeroRise {
