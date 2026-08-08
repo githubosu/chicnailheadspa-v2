@@ -76,7 +76,7 @@ function EvoHeader() {
             {links.map(([id, label]) => (
               <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 500, color: linkColor, padding: '6px 0', transition: 'color var(--dur) var(--ease-standard)' }}>{label}</button>
             ))}
-            <Button variant="primary" size="sm" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
+            <Button className="evo-button-hover" variant="primary" size="sm" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
           </nav>
         )}
       </div>
@@ -85,7 +85,7 @@ function EvoHeader() {
           {links.map(([id, label]) => (
             <button key={id} onClick={() => go(id)} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontFamily: 'var(--font-sans)', fontSize: 17, fontWeight: 500, color: 'var(--text-strong)', padding: '14px 4px', borderBottom: '1px solid var(--border-subtle)' }}>{label}</button>
           ))}
-          <div style={{ marginTop: 12 }}><Button variant="primary" size="lg" block onClick={() => { window.location.href = 'book.html'; }}>Book now</Button></div>
+          <div style={{ marginTop: 12 }}><Button className="evo-button-hover" variant="primary" size="lg" block onClick={() => { window.location.href = 'book.html'; }}>Book now</Button></div>
         </div>
       )}
     </header>
@@ -112,7 +112,7 @@ function EvoHero() {
             Luxury nail artistry and a restorative head spa — warm water, slow hands, and a quiet room in the heart of Plain City.
           </p>
           <div style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}>
-            <Button variant="primary" size="lg" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
+            <Button className="evo-button-hover" variant="primary" size="lg" onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
             <button onClick={() => go('services')} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--cream-100)', fontFamily: 'var(--font-sans)', fontSize: 16, fontWeight: 500, textDecoration: 'underline', textDecorationThickness: '1px', textUnderlineOffset: '5px', textDecorationColor: 'var(--honey-400)' }}>
               View services
             </button>
@@ -247,7 +247,7 @@ function EvoServices() {
             </p>
           )}
           {list.map((s) => (
-            <Card key={s.name} padding="sm" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <Card key={s.name} padding="sm" className="evo-card-hover" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
                   <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 17, margin: 0, color: 'var(--text-strong)' }}>{s.name}</h3>
@@ -267,7 +267,7 @@ function EvoServices() {
         </div>
         )}
         <div style={{ textAlign: 'center', marginTop: 32 }}>
-          <Button variant="secondary" block={m} onClick={() => { window.location.href = 'services-accordion.html'; }} iconRight={<i className="ph-light ph-arrow-right" />}>View full services &amp; pricing</Button>
+          <Button className="evo-button-hover" variant="secondary" block={m} onClick={() => { window.location.href = 'services-accordion.html'; }} iconRight={<i className="ph-light ph-arrow-right" />}>View full services &amp; pricing</Button>
         </div>
       </div>
     </section>
@@ -309,7 +309,7 @@ function EvoReserve() {
         <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(34px, 6vw, 56px)', margin: '14px 0 16px', lineHeight: 1.04, color: 'var(--cream-50)' }}>Ready to be <em style={{ fontStyle: 'italic', color: 'var(--honey-300)' }}>pampered</em>?</h2>
         <p style={{ fontSize: 'clamp(16px, 2.5vw, 19px)', lineHeight: 1.6, color: 'var(--taupe-400)', maxWidth: 520, margin: '0 auto 30px' }}>Book your appointment online in seconds. Choose your service, select a time, and arrive ready to unwind.</p>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="primary" size="lg" block={m} onClick={() => { window.location.href = 'book.html'; }}>Book online now</Button>
+          <Button className="evo-button-hover" variant="primary" size="lg" block={m} onClick={() => { window.location.href = 'book.html'; }}>Book online now</Button>
         </div>
         <p style={{ fontSize: 14, color: 'var(--taupe-400)', margin: '22px 0 0' }}>Or call us — we&rsquo;re happy to help · <span style={{ color: 'var(--honey-300)' }}>{c.phone}</span></p>
       </div>
@@ -443,6 +443,7 @@ function EvoGallery() {
   const images = evoGalleryImages(key);
   const closeLightbox = React.useCallback(() => setLightbox(null), []);
   const moveLightbox = React.useCallback((dir) => setLightbox((i) => (i + dir + 9) % 9), []);
+  const gridRef = useScrollReveal();
   // chips: a curated rail — current theme first, then the rest
   const chipKeys = [autoKey, ...Object.keys(EVO_THEMES).filter((k) => k !== autoKey)];
   return (
@@ -454,14 +455,15 @@ function EvoGallery() {
             <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: 'clamp(30px, 5vw, 46px)', color: 'var(--text-strong)', margin: '12px 0 0', lineHeight: 1.08 }}>{t.title[0]} <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>{t.title[1]}</em></h2>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--text-muted)', margin: '8px 0 0', letterSpacing: '.04em' }}>{t.caption}</p>
           </div>
-          {!m && <Button variant="ghost" iconRight={<i className="ph-light ph-arrow-right" />}>View full gallery</Button>}
+          {!m && <Button className="evo-button-hover" variant="ghost" iconRight={<i className="ph-light ph-arrow-right" />}>View full gallery</Button>}
         </div>
         {/* chips hidden — theme auto-selects from date, no UI needed */}
-        <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: m ? 10 : 16 }}>
+        <div ref={gridRef} style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: m ? 10 : 16 }}>
           {images.map((src, i) => (
             <div key={src} role="button" tabIndex={0} aria-label={'Enlarge ' + t.tags[i % t.tags.length] + ' nail art photo'}
               onClick={() => setLightbox(i)}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLightbox(i); } }}
+              className="evo-image-hover"
               style={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--mocha-200)', boxShadow: 'var(--shadow-sm)', cursor: 'pointer' }}>
               <img
                 src={src}
@@ -477,7 +479,7 @@ function EvoGallery() {
             </div>
           ))}
         </div>
-        {m && <div style={{ marginTop: 20 }}><Button variant="secondary" block iconRight={<i className="ph-light ph-arrow-right" />}>View full gallery</Button></div>}
+        {m && <div style={{ marginTop: 20 }}><Button className="evo-button-hover" variant="secondary" block iconRight={<i className="ph-light ph-arrow-right" />}>View full gallery</Button></div>}
       </div>
       {lightbox != null && (
         <EvoLightbox images={images} index={lightbox} tags={t.tags} icon={t.icon} onClose={closeLightbox} onMove={moveLightbox} />
@@ -495,15 +497,16 @@ function EvoTestimonials() {
     ['Calm, careful, and genuinely luxurious. Worth every minute.', 'Alyssa T.'],
     ['I booked a head spa on a whim and now it\u2019s my monthly ritual.', 'Dana K.'],
   ];
+  const gridRef = useScrollReveal();
   return (
     <section style={{ background: 'var(--surface-soft)' }}>
       <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: padY(m) }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={evoOverline()}>From Our Clients</div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: m ? 12 : 16, maxWidth: 720, margin: '0 auto' }}>
+        <div ref={gridRef} style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: m ? 12 : 16, maxWidth: 720, margin: '0 auto' }}>
           {quotes.slice(0, 3).map(([q, who]) => (
-            <figure key={who} style={{ margin: 0, background: 'var(--surface-card)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)', padding: '16px 16px', display: 'flex', flexDirection: 'column' }}>
+            <figure key={who} className="evo-card-hover" style={{ margin: 0, background: 'var(--surface-card)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-sm)', padding: '16px 16px', display: 'flex', flexDirection: 'column' }}>
               <i className="ph-light ph-quotes" style={{ fontSize: 18, color: 'var(--gilt)' }} />
               <blockquote style={{ flex: 1, margin: '8px 0 12px', fontFamily: 'var(--font-display)', fontSize: 15, lineHeight: 1.35, color: 'var(--text-strong)', letterSpacing: '-0.01em' }}>{q}</blockquote>
               <figcaption style={{ display: 'flex', alignItems: 'center', gap: 8, borderTop: '1px solid var(--border-subtle)', paddingTop: 10 }}>
@@ -577,7 +580,7 @@ function EvoFooter() {
               </a>
             ))}
           </div>
-          <Button variant="primary" size="lg" style={{ fontSize: 17, padding: '16px 48px' }} onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
+          <Button className="evo-button-hover" variant="primary" size="lg" style={{ fontSize: 17, padding: '16px 48px' }} onClick={() => { window.location.href = 'book.html'; }}>Book now</Button>
         </div>
       </div>
       <div style={{ borderTop: '1px solid rgba(185,142,79,0.22)', padding: '20px ' + padX(m), textAlign: 'center', fontSize: 12, color: 'var(--taupe-400)' }}>© 2026 Chic Nail &amp; Head Spa · Plain City, Ohio</div>
