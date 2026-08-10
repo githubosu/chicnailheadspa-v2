@@ -29,8 +29,12 @@ const SHARED_META = [
   /* Icons. The set is generated square by scripts/icons.mjs — the original
      apple-touch-icon shipped 185x210, which iOS letterboxes. Emitted here
      rather than in thirteen source files for the same reason as the OG tags.
-     No SVG icon: the mark is a bespoke monogram, and tracing it by eye would
-     ship an approximation of the real logo. It wants a proper vector export. */
+
+     The SVG is listed first: browsers that support it prefer it and ignore the
+     PNGs, and it is the only icon format re-evaluated against the colour
+     scheme, so it carries the dark-mode variant. The PNGs stay for Safari and
+     anything older. */
+  '<link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">',
   '<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">',
   '<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">',
   '<link rel="icon" type="image/png" sizes="48x48" href="./assets/favicon-48x48.png">',
