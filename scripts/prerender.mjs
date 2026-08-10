@@ -25,6 +25,26 @@ const LD = renderJsonLd(); // LocalBusiness (same on every page)
 const SHARED_META = [
   '<meta property="og:site_name" content="Chic Nail &amp; Head Spa">',
   '<meta property="og:locale" content="en_US">',
+
+  /* Icons. The set is generated square by scripts/icons.mjs — the original
+     apple-touch-icon shipped 185x210, which iOS letterboxes. Emitted here
+     rather than in thirteen source files for the same reason as the OG tags.
+     No SVG icon: the mark is a bespoke monogram, and tracing it by eye would
+     ship an approximation of the real logo. It wants a proper vector export. */
+  '<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">',
+  '<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">',
+  '<link rel="icon" type="image/png" sizes="48x48" href="./assets/favicon-48x48.png">',
+  '<link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon-180.png">',
+  '<link rel="manifest" href="./site.webmanifest">',
+
+  /* Brand cream, not a generic blue. Split by scheme so the mobile toolbar
+     matches the page ground rather than fighting it. */
+  '<meta name="theme-color" content="#FEF7ED" media="(prefers-color-scheme: light)">',
+  '<meta name="theme-color" content="#2A1D15" media="(prefers-color-scheme: dark)">',
+
+  /* twitter:site is deliberately absent — the studio has Facebook, Instagram
+     and Google, but no X account. Inventing a handle would attribute the
+     brand to somebody else's profile. Add it here if one is ever created. */
 ].join('\n');
 
 /* Every page has its own card (scripts/og-images.mjs). The source HTML
